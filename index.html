@@ -349,6 +349,7 @@
       <div class="card-title" style="margin-bottom:0">Select Lift</div>
       <div style="display:flex;gap:6px" id="phase-toggles"></div>
     </div>
+    <div class="filter-bar" id="category-toggles" style="margin-bottom:10px"></div>
     <div class="chart-selector" id="lift-selector"></div>
   </div>
 
@@ -478,6 +479,194 @@ const KEY_LIFTS = [
   { id:'pullup',        name:'Pull-up (Reps)',          kw:['pull up','pull-up','pullup','chin up','assisted pull'], types:['pull_strength','pull_hypertrophy','sat'], trackReps:true },
 ];
 
+// ===== EXERCISE ALIAS SYSTEM =====
+// Maps canonical display name → lowercase variant strings found in session data.
+// Used by the category Progress view to unify all spelling/name variants.
+const EXERCISE_ALIASES = {
+  // — PUSH —
+  'Incline Press': [
+    'incline press','plate machine incline press','db incline press',
+    'incline dumbbell press','incline dumbell press','incline smith press',
+    'incline smith machine','iso-incline bench press','iso-incline bench',
+    'incline plate machine','incline db press'
+  ],
+  'Decline Press': [
+    'decline press','plate machine decline press','decline press (machine)',
+    'iso-leverage decline','iso-leverage decline chest press',
+    'iso- leverage decline chest press',
+    'decline bench press (machine)','decline bench press','machine decline press'
+  ],
+  'Bench / Flat Chest Press': [
+    'bench press','dumbell bench press','barbell or db bench press',
+    'iso-lateral chest press','iso-lateral chest press x',
+    'machine chest press','smith machine bench press','plate bench press'
+  ],
+  'Chest Fly': [
+    'cable chest fly','cable chest fly (low to mid)','cable chest fly (high low)',
+    'cable chest fly (low to high)','cable chest fly (low- to-high)',
+    'cable fly ( high to low)','cable fly (low to high)',
+    'cable chest fly dumbell (low high)','cable chest fly (mid to mid)',
+    'cable chest fly (low to high) lateral raise',
+    'db incline fly','machine pecs fly','machine pec fly',
+    'hybrid pectoral fly machine','machine hybrid pectoral fly',
+    'low high fly dumbell','db chest fly (low to high)','db chest fly (high to low)',
+    'standing low to high cable fly','dumbell low fly (scoop)','standing mid cable fly'
+  ],
+  'Shoulder Press': [
+    'shoulder press','seated shoulder db press','seated shoulder press',
+    'seated shoulder press dumbell','seated db shoulder press',
+    'db shoulder press','dumbbell shoulder press',
+    'machine shoulder press','iso-lateral shoulder press',
+    'arnold press','arnold shoulder press','seated shoulder db press lateral raise'
+  ],
+  'Lateral Raise': [
+    'lateral raise','single-side cable lateral raise','cable lateral raise',
+    'lateral raise db','db lateral raise','lateral raise dumbell',
+    'cable lateral raise drop set','lateral raise drop set',
+    'standing multi flight lateral raise'
+  ],
+  'Tricep Pushdown': [
+    'rope pushdown','triceps pushdown','tricep cable pushdown','rope tricep pushdown',
+    'single arm cable push down','cable tricep extension',
+    'tricep rope pushdown super set finisher'
+  ],
+  'Overhead Tricep Extension': [
+    'overhead tricep extension','overhead triceps extension',
+    'db overhead tricep extension','tricep db'
+  ],
+  'Tricep Kickback': ['cable kickback','tricep cable kickback','kickback'],
+  'Dips':            ['dips','dips (slow tempo)'],
+  'Skullcrushers':   ['skullcrushers'],
+
+  // — PULL —
+  'Lat Pulldown': [
+    'wide grip lat pulldown','narrow-grip pulldown','machine lat pulldown',
+    'iso-lateral lat pull down','iso-lateral lat pulldown',
+    "jeff nippard's style cross body lat pulldown",
+    'jeff nippard\'s style cross body lat pulldown',
+    'single-arm lat cable pulldown (jn\'s style)',
+    'pull-ups or lat pulldown',
+    'medium-grip pulldown','neutral grip lat pulldown','medium grip lat pulldown',
+    'wide grip cable lat pulldown'
+  ],
+  'Pull-up': [
+    'pull up','pull ups','chest to pull up','rope pull up',
+    'pull-up (assisted band)','assist pull up','assist chin up (hanner grip)'
+  ],
+  'Row': [
+    'machine supported row','machine-supported row','machine row',
+    'chest supported single arm seated cable row',
+    'chest supported t- bar row','t-bar chest supported row','t-bar row',
+    'free bar t-bar row','barbell or chest- supported row',
+    'cable row (neutral grip)','seated cable row (bilateral)',
+    'chest supported machine low row','chest-supported row','chest supported row',
+    'row','diverging seated row','v-bar cable row',
+    'wide-grip row','low row','landmine row (v handle)',
+    'iso-lateral row (with chest support)','iso high row (with chest support)'
+  ],
+  'Straight-arm Pulldown': [
+    'straight-arm pulldown','straight arm cable pulldown','straight arm pulldown'
+  ],
+  'Face Pull / Rear Delt': [
+    'face pull','face pulls',
+    'rear delt machine reverse pec fly','rear-delt reverse pec fly',
+    'rear delt machine','machine rear delt reverse pec fly',
+    'rear-delt cable fly','cable rear delt (high to low)',
+    'rear cable crossover','rear delt pec fly (machine)'
+  ],
+  'EZ-Bar / Preacher Curl': [
+    'ez bar curl','ez-bar curl','preacher curl','preacher ez bar curl',
+    'cable curl','cable curl burnout','wide bar cable bicep curl'
+  ],
+  'Hammer / Neutral Curl': [
+    'hammer curl','hammer curl (rope)','cable hammer curl','cable hammer curl (rope)',
+    'bayesian cable curl','bayesian cable curl ( high to low)',
+    'bayesian cable curl (mid to mid)',
+    "hammer curl (rope) 1. i like rack pull better than bar. and focuses more on 2. i don't understand why gym. last week i trial only do 10 reps. 3. i did the hammer curl machine as face pull. 4. at 25 kgs, to lift ez bars reps on every set."
+  ],
+  'Deadlift / Rack Pull': [
+    'deadlift','deadlift or rack pull','rack pull'
+  ],
+  'Shrugs': [
+    'smith machine shrugs','smith machine shrug','kelso shrug'
+  ],
+  'Back Extension': [
+    'back extension','lower back extension'
+  ],
+
+  // — LEGS —
+  'Leg Press': [
+    'leg press','leg press ( low and narrow(','leg press ( low and narrow)'
+  ],
+  'Squat': [
+    'squat','smith machine squat','squat or hack squat','v-squat','hack squat'
+  ],
+  'Leg Curl': [
+    'leg curl','lying leg curl','seated leg curl'
+  ],
+  'Hip Thrust': [
+    'hip thrust','plated hip thrust','machine hip thrust','glute bridge'
+  ],
+  'Leg Extension': ['leg extension'],
+  'Calf Raise': [
+    'standing calf raise','standing calf raise (on leg press machine)',
+    'standing calf raise (on v squat machine)','standing calf raise (plate machine)'
+  ],
+  'RDL / Romanian Deadlift': [
+    'dumbell rdl','romanian deadlift','dumbell deadlift','rdl','dumbbell rdl'
+  ],
+  'Adductor / Abductor': [
+    'machine adductor','machine abductor','adductor','abductor'
+  ],
+
+  // — ABS / CORE (spans all session types, shown under Abs tab) —
+  'Abs / Core': [
+    'standing cable crunch','cable abs crunch','cable abs cru',
+    'lower abs leg raises','standing cable crunch incline walk',
+    'standing cable crunch battle rope',
+    'leg raises','leg raise','lying leg raise',
+    'leg raises alternating waves battle rope','leg raises incline walk',
+    'cable crunch',
+    'dragon flag','lying abs raise',
+    "standing cable crunch 1. incline was used so started 2. i couldn't lift to 8 for dropped to 60 kgs for 3. i don't think i'm back shoulder press to 15"
+  ],
+};
+
+// Force these canonical names into a specific category regardless of session type
+const EXERCISE_CATEGORY_OVERRIDE = {
+  'Abs / Core':          'abs',
+  'Face Pull / Rear Delt':'pull',
+  'Hip Thrust':          'legs',
+};
+
+/// Build reverse lookup once: lowercase variant → canonical name
+let _aliasMap = null;
+function getAliasMap() {
+  if (_aliasMap) return _aliasMap;
+  _aliasMap = {};
+  const norm = s => s.toLowerCase().replace(/[''ʼ′]/g, "'");
+  for (const [canonical, aliases] of Object.entries(EXERCISE_ALIASES)) {
+    _aliasMap[norm(canonical)] = canonical;
+    for (const alias of aliases) _aliasMap[norm(alias)] = canonical;
+  }
+  return _aliasMap;
+}
+
+function normalizeExerciseName(name) {
+  const map = getAliasMap();
+  const lower = name.toLowerCase().trim().replace(/[‘’ʼ′]/g, "’");
+  if (map[lower]) return map[lower];
+  // Fallback: exercise name may have session notes appended (e.g. "Cable Crunch 1. I think...")
+  // Only match if the suffix looks like a note: starts with space+digit or punctuation
+  for (const key of Object.keys(map)) {
+    if (lower.startsWith(key)) {
+      const rest = lower.slice(key.length);
+      if (rest === '' || /^\s+\d/.test(rest) || /^[,;:]/.test(rest)) return map[key];
+    }
+  }
+  return name;
+}
+
 // ===== DATA CORRECTIONS =====
 // Fix: Push Strength had two "Phase 3 Week 2" entries in the PDF.
 // The first occurrence is the real W2; the second (currently stored as W2) is W3.
@@ -517,8 +706,83 @@ let activeChart = null;
 let activeVolumeChart = null;
 let currentLiftId = 'deadlift';
 let historyFilter = 'all';
-let chartPhaseFilter = 3;  // default: Phase 3 only
+let chartPhaseFilter = 3;
+let muscleGroupFilter = null;  // null=Key Lifts, 'push','pull','legs','sat'
+let selectedExercise = null;   // exercise name in category mode
 let allSessions = [];  // HISTORY + corrections + localStorage
+
+function getExercisesForCategory(cat) {
+  const typeMap = {
+    push: ['push_strength','push_hypertrophy'],
+    pull: ['pull_strength','pull_hypertrophy'],
+    legs: ['legs_strength'],
+    abs:  [],   // abs uses category override only — spans all session types
+    sat:  ['sat']
+  };
+  const sessionTypes = typeMap[cat] || [];
+  const counts = {};
+  const SKIP = /^(liss|rest|stretch|foam|walk|warm|cool|plank|arnold press lateral raise|barbell jerk|barbell clean|\d)/i;
+
+  for (const s of allSessions) {
+    const stype = s.session_type || s.type;
+    for (const ex of (s.exercises || [])) {
+      const canonical = normalizeExerciseName(ex.name);
+      if (SKIP.test(canonical.trim())) continue;
+      const override = EXERCISE_CATEGORY_OVERRIDE[canonical];
+      const belongs = override ? override === cat : sessionTypes.includes(stype);
+      if (!belongs) continue;
+      if (!counts[canonical]) counts[canonical] = { name: canonical, n: 0 };
+      counts[canonical].n++;
+    }
+  }
+  return Object.values(counts)
+    .sort((a,b) => b.n - a.n || a.name.localeCompare(b.name))
+    .map(e => e.name);
+}
+
+function getAnyExerciseData(exName, phaseFilter) {
+  const canonical = normalizeExerciseName(exName).toLowerCase();
+  const points = [];
+  allSessions
+    .filter(s => phaseFilter == null || s.phase === phaseFilter)
+    .sort((a,b) => (a.phase*100+a.week)-(b.phase*100+b.week))
+    .forEach(s => {
+      let bestKg = 0, bestEx = null;
+      for (const ex of (s.exercises||[])) {
+        if (normalizeExerciseName(ex.name).toLowerCase() !== canonical) continue;
+        const kg = ex.maxKg;
+        if (kg && kg > 2 && kg > bestKg) { bestKg = kg; bestEx = ex; }
+      }
+      if (bestEx) points.push({ label:`P${s.phase}W${s.week}`, phase:s.phase, week:s.week, kg:bestKg, exName:bestEx.name, weight:bestEx.weight });
+    });
+  return points;
+}
+
+function getAnyExerciseVolume(exName, phaseFilter) {
+  const canonical = normalizeExerciseName(exName).toLowerCase();
+  const weekMap = {};
+  allSessions
+    .filter(s => phaseFilter == null || s.phase === phaseFilter)
+    .sort((a,b) => (a.phase*100+a.week)-(b.phase*100+b.week))
+    .forEach(s => {
+      const key = `P${s.phase}W${s.week}`;
+      for (const ex of (s.exercises||[])) {
+        if (normalizeExerciseName(ex.name).toLowerCase() !== canonical) continue;
+        const sets = buildSetList(ex.reps, ex.weight, ex.name);
+        if (!sets) continue;
+        let vol = 0;
+        sets.forEach(set => {
+          if (set.reps && set.kg) {
+            vol += set.reps * set.kg;
+            if (set.isDrop && set.dropReps) set.dropReps.forEach((r,i)=>{ vol += r*(set.dropKg?.[i]??set.kg); });
+          }
+        });
+        if (!weekMap[key]) weekMap[key] = { label:key, phase:s.phase, week:s.week, vol:0 };
+        weekMap[key].vol += Math.round(vol);
+      }
+    });
+  return Object.values(weekMap).filter(d=>d.vol>0);
+}
 
 // ===== INIT =====
 function init() {
@@ -867,8 +1131,19 @@ function getPullupData() {
 }
 
 // ===== PROGRESS =====
+function setMuscleGroup(cat) {
+  muscleGroupFilter = cat;
+  selectedExercise = null;
+  renderProgress();
+}
+
+function selectCategoryExercise(name) {
+  selectedExercise = name;
+  renderProgress();
+}
+
 function renderProgress(liftId, phaseFilter) {
-  if (liftId !== undefined) currentLiftId = liftId;
+  if (liftId !== undefined && muscleGroupFilter === null) currentLiftId = liftId;
   if (phaseFilter !== undefined) chartPhaseFilter = phaseFilter;
 
   const pf = chartPhaseFilter;
@@ -885,16 +1160,108 @@ function renderProgress(liftId, phaseFilter) {
       onclick="renderProgress(undefined,${p})">${label}</button>`;
   }).join('');
 
-  // Lift selector buttons
-  document.getElementById('lift-selector').innerHTML = KEY_LIFTS.map(l =>
-    `<button class="filter-btn ${l.id===currentLiftId?'active':''}" onclick="renderProgress('${l.id}')"
-      style="${l.id===currentLiftId?'background:var(--accent);color:#fff;border-color:var(--accent)':''}">${l.name}</button>`
-  ).join('');
+  // Category toggle buttons (Key Lifts / Push / Pull / Legs)
+  const CATS = [
+    { id: null,   label: 'Key Lifts' },
+    { id: 'push', label: 'Push' },
+    { id: 'pull', label: 'Pull' },
+    { id: 'legs', label: 'Legs' },
+    { id: 'abs',  label: 'Abs' },
+  ];
+  document.getElementById('category-toggles').innerHTML = CATS.map(c => {
+    const active = muscleGroupFilter === c.id;
+    const callArg = c.id === null ? 'null' : `'${c.id}'`;
+    return `<button class="filter-btn ${active?'active':''}"
+      style="${active?'background:var(--accent);color:#fff;border-color:var(--accent)':''}"
+      onclick="setMuscleGroup(${callArg})">${c.label}</button>`;
+  }).join('');
 
-  const lift = KEY_LIFTS.find(l => l.id === currentLiftId);
+  // Exercise selector — KEY_LIFTS or all exercises in category
+  if (muscleGroupFilter === null) {
+    document.getElementById('lift-selector').innerHTML = KEY_LIFTS.map(l =>
+      `<button class="filter-btn ${l.id===currentLiftId?'active':''}" onclick="renderProgress('${l.id}')"
+        style="${l.id===currentLiftId?'background:var(--accent)22;color:var(--accent);border-color:var(--accent)':''}">${l.name}</button>`
+    ).join('');
+  } else {
+    const exercises = getExercisesForCategory(muscleGroupFilter);
+    window.__catExercises = exercises;
+    document.getElementById('lift-selector').innerHTML = exercises.length
+      ? exercises.map((name, i) => {
+          const active = name === selectedExercise;
+          return `<button class="filter-btn ${active?'active':''}"
+            style="${active?'background:var(--accent)22;color:var(--accent);border-color:var(--accent)':''}"
+            data-exidx="${i}" onclick="selectCategoryExercise(window.__catExercises[this.dataset.exidx])">${name}</button>`;
+        }).join('')
+      : '<span style="color:var(--muted);font-size:13px">No sessions found for this category.</span>';
+  }
+
+  const lift = muscleGroupFilter === null ? KEY_LIFTS.find(l => l.id === currentLiftId) : null;
   if (activeChart) { activeChart.destroy(); activeChart = null; }
   if (activeVolumeChart) { activeVolumeChart.destroy(); activeVolumeChart = null; }
   const ctx = document.getElementById('progressChart').getContext('2d');
+
+  // Category mode: no exercise selected yet
+  if (muscleGroupFilter !== null && !selectedExercise) {
+    document.getElementById('volume-card').style.display = 'none';
+    document.getElementById('chart-title').textContent = '— Select an exercise above —';
+    document.getElementById('chart-stats').innerHTML = '';
+    return;
+  }
+
+  // Category mode: use selected exercise name directly
+  if (muscleGroupFilter !== null && selectedExercise) {
+    const phaseColors = { 1:'#7c6bff', 2:'#10b981', 3:'#f97316' };
+    // Volume chart
+    let vData = getAnyExerciseVolume(selectedExercise, pf);
+    if (!vData.length && pf != null) vData = getAnyExerciseVolume(selectedExercise, null);
+    const volCard = document.getElementById('volume-card');
+    if (vData.length >= 2) {
+      volCard.style.display = '';
+      document.getElementById('volume-title').textContent = selectedExercise + ' — Total Volume per Week (kg)';
+      const volCtx = document.getElementById('volumeChart').getContext('2d');
+      activeVolumeChart = new Chart(volCtx, {
+        type:'bar',
+        data:{ labels:vData.map(d=>d.label), datasets:[{
+          label:'Total Volume', data:vData.map(d=>d.vol),
+          backgroundColor:vData.map(d=>(phaseColors[d.phase]||'#10b981')+'99'),
+          borderColor:vData.map(d=>phaseColors[d.phase]||'#10b981'),
+          borderWidth:2, borderRadius:4 }] },
+        options:{ responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` ${c.parsed.y.toLocaleString()} kg total`}} },
+          scales:{ x:{ticks:{color:'#7070a0',font:{size:11}},grid:{color:'#2e2e3e'}},
+                   y:{ticks:{color:'#7070a0',font:{size:11},callback:v=>v.toLocaleString()+'kg'},grid:{color:'#2e2e3e'}} } }
+      });
+      const maxV=Math.max(...vData.map(d=>d.vol)), fV=vData[0], lV=vData[vData.length-1];
+      document.getElementById('volume-stats').innerHTML =
+        `<span style="margin-right:16px">Start: <strong>${fV.vol.toLocaleString()}kg</strong></span>
+         <span style="margin-right:16px">Peak: <strong>${maxV.toLocaleString()}kg</strong></span>
+         <span style="margin-right:16px">Latest: <strong>${lV.vol.toLocaleString()}kg</strong> (${lV.label})</span>`;
+    } else { volCard.style.display='none'; }
+    // Weight chart
+    let wData = getAnyExerciseData(selectedExercise, pf);
+    if (!wData.length && pf != null) wData = getAnyExerciseData(selectedExercise, null);
+    document.getElementById('chart-title').textContent = selectedExercise + ' — Top Weight per Session';
+    if (!wData.length) { document.getElementById('chart-stats').textContent = 'No weight data found.'; return; }
+    const pc=wData.map(d=>phaseColors[d.phase]||'#7c6bff'), lc=pf!=null?(phaseColors[pf]||'#7c6bff'):'#7c6bff';
+    activeChart = new Chart(ctx, {
+      type:'line',
+      data:{ labels:wData.map(d=>d.label), datasets:[{
+        label:selectedExercise, data:wData.map(d=>d.kg),
+        borderColor:lc, backgroundColor:lc+'15', tension:0.3, fill:true,
+        pointBackgroundColor:pc, pointBorderColor:pc, pointRadius:5, pointHoverRadius:7 }] },
+      options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>{const d=wData[c.dataIndex];return[`${d.kg}kg`,d.weight].filter(Boolean).join(' — ');}}} },
+        scales:{ x:{ticks:{color:'#7070a0',font:{size:11}},grid:{color:'#2e2e3e'}},
+                 y:{ticks:{color:'#7070a0',font:{size:11},callback:v=>v+'kg'},grid:{color:'#2e2e3e'}} } }
+    });
+    const mx=Math.max(...wData.map(d=>d.kg)), f=wData[0], l=wData[wData.length-1], g=l.kg-f.kg;
+    document.getElementById('chart-stats').innerHTML =
+      `<span style="margin-right:16px">Start: <strong>${f.kg}kg</strong> (${f.label})</span>
+       <span style="margin-right:16px">Max: <strong>${mx}kg</strong></span>
+       <span style="margin-right:16px">Latest: <strong>${l.kg}kg</strong> (${l.label})</span>
+       <span class="${g>=0?'up':'down'}">${g>=0?'▲':'▼'} ${Math.abs(g)}kg</span>`;
+    return;
+  }
 
   // Pull-up uses rep tracking instead of weight
   if (lift.trackReps) {
