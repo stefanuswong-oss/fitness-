@@ -43,6 +43,7 @@ Target: **60–75 min per session**, down from ~2 hours. Rule of thumb applied t
 | Machine Shoulder Press | 3 x 8-10 | |
 | Cable Lateral Raise | 3 x 12-15 | straight sets; one drop set only on the final set if you want it |
 | Rope Tricep Pushdown | 3 x 10-12 | one triceps exercise, not three |
+| Cable Abs Crunch | 3 x 15 | quick finisher, ~3 min |
 
 ### Tuesday — Pull Strength (4-6 rep focus)
 | Exercise | Sets x Reps | Notes |
@@ -52,6 +53,7 @@ Target: **60–75 min per session**, down from ~2 hours. Rule of thumb applied t
 | Straight-Arm Pulldown OR Cross-Body Pulldown | 3 x 10-12 | pick one, alternate week to week — not both |
 | Cable Rear Delt / Face Pull | 3 x 12-15 | |
 | Bayesian Cable Curl | 3 x 10-12 | one biceps exercise |
+| Hanging or Lying Leg Raise | 3 x 12 | quick finisher, ~3 min |
 
 ### Wednesday — Legs Strength (keep mostly as-is — this day is already well built)
 | Exercise | Sets x Reps | Notes |
@@ -62,6 +64,7 @@ Target: **60–75 min per session**, down from ~2 hours. Rule of thumb applied t
 | Leg Curl | 3 x 10-12 | |
 | Leg Extension | 3 x 10-12 | |
 | Abductor OR Adductor | 3 x 10-12 | alternate weekly, not both same day |
+| Standing Cable Crunch | 3 x 15 | quick finisher, ~3 min |
 
 ### Thursday — Push Hypertrophy (10-15 rep focus)
 | Exercise | Sets x Reps | Notes |
@@ -71,6 +74,7 @@ Target: **60–75 min per session**, down from ~2 hours. Rule of thumb applied t
 | Arnold Press or Machine Shoulder Press | 3 x 10-12 | |
 | Cable Lateral Raise | 3 x 12-15 | one drop set on final set only |
 | Cable Tricep Pushdown or DB Overhead Extension | 3 x 12-15 | pick one |
+| Ab Wheel or Cable Crunch | 3 x 12 | rotate with Monday's crunch for variety |
 
 ### Friday — Pull Hypertrophy (10-15 rep focus)
 | Exercise | Sets x Reps | Notes |
@@ -80,6 +84,7 @@ Target: **60–75 min per session**, down from ~2 hours. Rule of thumb applied t
 | Jeff Nippard-style Cross-Body Lat Pulldown | 3 x 12-15 | you've noted you really feel this one — keep it, drop the other redundant pulldown variations |
 | Rear Delt Row/Fly | 3 x 12-15 | |
 | Bayesian Cable Curl | 3 x 12-15 | |
+| Lying or Hanging Leg Raise | 3 x 15 | quick finisher, ~3 min |
 
 ### Saturday — Legs + Core + Light Push Finisher (revised 2026-07-24)
 | Exercise | Sets x Reps | Notes |
