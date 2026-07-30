@@ -7188,6 +7188,19 @@ function applyDataCorrections(sessions) {
     ]
   };
   sessions.push(trueW2);
+
+  // Fix: the Phase/Week fields defaulted to a stale "3"/"4" (see setDefaultPhaseWeek)
+  // instead of tracking the actual program, so every session logged 2026-07-24 through
+  // 2026-07-29 got saved as "Phase 3 Week 4" even though they already followed the
+  // Phase 4 trimmed plan (written 2026-07-24 — exercise lists match PHASE_4_TRAINING_PLAN.md
+  // exactly). Relabel them to Phase 4 Week 1 so charts/grouping reflect what was actually run.
+  sessions.forEach(s => {
+    if (s.phase === 3 && s.week === 4 && s.logged_at >= '2026-07-24' && s.logged_at <= '2026-07-29') {
+      s.phase = 4;
+      s.week = 1;
+    }
+  });
+
   return sessions;
 }
 
@@ -7277,6 +7290,7 @@ function getAnyExerciseVolume(exName, phaseFilter) {
 // ===== INIT =====
 function init() {
   loadLocalSessions();
+  setDefaultPhaseWeek();
   setTodayDate();
   renderDashboard();
   renderHistory();
@@ -7305,6 +7319,18 @@ function loadLocalSessions() {
 
 function setTodayDate() {
   document.getElementById('log-date').value = new Date().toISOString().split('T')[0];
+}
+
+// Phase/Week inputs used to be hardcoded HTML defaults (value="3"/"4") that never
+// updated, so every logged session silently inherited whatever was last typed —
+// which is how a full week of Phase 4 sessions got saved as "Phase 3 Week 4".
+// Default them instead to the most recently logged session's phase/week.
+function setDefaultPhaseWeek() {
+  const logged = allSessions.filter(s => s.logged_at);
+  if (!logged.length) return;
+  const latest = logged.reduce((a, b) => (b.phase * 100 + b.week) > (a.phase * 100 + a.week) ? b : a);
+  document.getElementById('log-phase').value = latest.phase;
+  document.getElementById('log-week').value = latest.week;
 }
 
 // ===== PAGE NAV =====
@@ -8036,11 +8062,11 @@ const SUGGESTED_WORKOUTS = {
     label: 'Push Strength',
     focus: 'Main lift heavy, 4-6 rep range. Straight sets — one drop set max (lateral raise only, last set). Target 60-75 min.',
     exercises: [
-      { name: 'DB or Machine Incline Press', reps: '4 x 7', note: 'main lift — use your last top weight, add load once all sets hit 8 reps' },
-      { name: 'Machine Chest Press', reps: '3 x 9', note: 'second press only — skip a 3rd pressing variation' },
-      { name: 'Machine Shoulder Press', reps: '3 x 9', note: '' },
-      { name: 'Cable Lateral Raise', reps: '3 x 13', note: 'straight sets; optional single drop set on the last set only' },
-      { name: 'Rope Tricep Pushdown', reps: '3 x 11', note: 'one triceps exercise, not three' },
+      { name: 'DB or Machine Incline Press', reps: '4 x 8', note: 'main lift — use your last top weight, add load once all sets hit 8 reps' },
+      { name: 'Machine Chest Press', reps: '3 x 10', note: 'second press only — skip a 3rd pressing variation' },
+      { name: 'Machine Shoulder Press', reps: '3 x 10', note: '' },
+      { name: 'Cable Lateral Raise', reps: '3 x 15', note: 'straight sets; optional single drop set on the last set only' },
+      { name: 'Rope Tricep Pushdown', reps: '3 x 12', note: 'one triceps exercise, not three' },
       { name: 'Cable Abs Crunch', reps: '3 x 15', note: 'one quick core finisher, ~3 min — not a full ab circuit' }
     ]
   },
@@ -8048,11 +8074,11 @@ const SUGGESTED_WORKOUTS = {
     label: 'Pull Strength',
     focus: 'Main lift heavy, 4-6 rep range. Pick ONE secondary pulldown variation, not both. Target 60-75 min.',
     exercises: [
-      { name: 'Machine Lat Pulldown or Assisted Pull-up', reps: '4 x 7', note: 'pick one as your main vertical pull' },
-      { name: 'Chest-Supported / Low Row', reps: '3 x 9', note: 'horizontal pull' },
-      { name: 'Straight-Arm Pulldown or Cross-Body Pulldown', reps: '3 x 11', note: 'pick one, alternate week to week — not both' },
-      { name: 'Cable Rear Delt / Face Pull', reps: '3 x 13', note: '' },
-      { name: 'Bayesian Cable Curl', reps: '3 x 11', note: 'one biceps exercise' },
+      { name: 'Machine Lat Pulldown or Assisted Pull-up', reps: '4 x 8', note: 'pick one as your main vertical pull' },
+      { name: 'Chest-Supported / Low Row', reps: '3 x 10', note: 'horizontal pull' },
+      { name: 'Straight-Arm Pulldown or Cross-Body Pulldown', reps: '3 x 12', note: 'pick one, alternate week to week — not both' },
+      { name: 'Cable Rear Delt / Face Pull', reps: '3 x 15', note: '' },
+      { name: 'Bayesian Cable Curl', reps: '3 x 12', note: 'one biceps exercise' },
       { name: 'Hanging or Lying Leg Raise', reps: '3 x 12', note: 'one quick core finisher, ~3 min' }
     ]
   },
@@ -8060,12 +8086,12 @@ const SUGGESTED_WORKOUTS = {
     label: 'Legs Strength',
     focus: 'Already efficient — kept close to as-is. Alternate abductor/adductor weekly instead of both.',
     exercises: [
-      { name: 'V-Squat', reps: '4 x 7', note: '' },
-      { name: 'Leg Press (low/narrow)', reps: '3 x 9', note: '' },
-      { name: 'Machine Hip Thrust', reps: '3 x 9', note: '' },
-      { name: 'Leg Curl', reps: '3 x 11', note: '' },
-      { name: 'Leg Extension', reps: '3 x 11', note: '' },
-      { name: 'Abductor or Adductor', reps: '3 x 11', note: 'alternate weekly, not both same day' },
+      { name: 'V-Squat', reps: '4 x 8', note: '' },
+      { name: 'Leg Press (low/narrow)', reps: '3 x 10', note: '' },
+      { name: 'Machine Hip Thrust', reps: '3 x 10', note: '' },
+      { name: 'Leg Curl', reps: '3 x 12', note: '' },
+      { name: 'Leg Extension', reps: '3 x 12', note: '' },
+      { name: 'Abductor or Adductor', reps: '3 x 12', note: 'alternate weekly, not both same day' },
       { name: 'Standing Cable Crunch', reps: '3 x 15', note: 'one quick core finisher, ~3 min' }
     ]
   },
@@ -8073,11 +8099,11 @@ const SUGGESTED_WORKOUTS = {
     label: 'Push Hypertrophy',
     focus: '10-15 rep range. Alternate the 2nd press and triceps pick week to week for variety. Target 60-75 min.',
     exercises: [
-      { name: 'DB Incline Press', reps: '3 x 11', note: '' },
-      { name: 'Machine Chest Press or Iso-leverage Decline', reps: '3 x 11', note: 'alternate week to week, not both' },
-      { name: 'Arnold Press or Machine Shoulder Press', reps: '3 x 11', note: '' },
-      { name: 'Cable Lateral Raise', reps: '3 x 13', note: 'optional single drop set on the last set only' },
-      { name: 'Cable Tricep Pushdown or DB Overhead Extension', reps: '3 x 13', note: 'pick one' },
+      { name: 'DB Incline Press', reps: '3 x 12', note: '' },
+      { name: 'Machine Chest Press or Iso-leverage Decline', reps: '3 x 12', note: 'alternate week to week, not both' },
+      { name: 'Arnold Press or Machine Shoulder Press', reps: '3 x 12', note: '' },
+      { name: 'Cable Lateral Raise', reps: '3 x 15', note: 'optional single drop set on the last set only' },
+      { name: 'Cable Tricep Pushdown or DB Overhead Extension', reps: '3 x 15', note: 'pick one' },
       { name: 'Ab Wheel or Cable Crunch', reps: '3 x 12', note: 'rotate with Monday\'s crunch for variety' }
     ]
   },
@@ -8085,11 +8111,11 @@ const SUGGESTED_WORKOUTS = {
     label: 'Pull Hypertrophy',
     focus: '10-15 rep range. Keep the JN cross-body pulldown — you said you really feel it. Target 60-75 min.',
     exercises: [
-      { name: 'Wide Grip or Machine Lat Pulldown', reps: '4 x 11', note: '' },
-      { name: 'Chest-Supported Low Row', reps: '3 x 11', note: '' },
-      { name: "Jeff Nippard-style Cross-Body Lat Pulldown", reps: '3 x 13', note: 'keep — drop the other redundant pulldown variations' },
-      { name: 'Rear Delt Row/Fly', reps: '3 x 13', note: '' },
-      { name: 'Bayesian Cable Curl', reps: '3 x 13', note: '' },
+      { name: 'Wide Grip or Machine Lat Pulldown', reps: '4 x 12', note: '' },
+      { name: 'Chest-Supported Low Row', reps: '3 x 12', note: '' },
+      { name: "Jeff Nippard-style Cross-Body Lat Pulldown", reps: '3 x 15', note: 'keep — drop the other redundant pulldown variations' },
+      { name: 'Rear Delt Row/Fly', reps: '3 x 15', note: '' },
+      { name: 'Bayesian Cable Curl', reps: '3 x 15', note: '' },
       { name: 'Lying or Hanging Leg Raise', reps: '3 x 15', note: 'one quick core finisher, ~3 min' }
     ]
   },
@@ -8097,9 +8123,9 @@ const SUGGESTED_WORKOUTS = {
     label: 'Legs + Core + Light Push Finisher',
     focus: 'Legs/core first, conditioning is your Oct 17 fat-loss lever — not extra lifting. Push finisher is deliberately light (stop 3-4 reps short of failure, no drop sets) so it adds frequency without adding fatigue debt.',
     exercises: [
-      { name: 'Hip Thrust or Deficit Sumo Squat', reps: '3 x 11', note: 'alternate weekly' },
-      { name: 'Glute Kickback or Hip Abductor', reps: '3 x 13', note: '' },
-      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', reps: '3 x 13', note: 'rotate one variation per week' },
+      { name: 'Hip Thrust or Deficit Sumo Squat', reps: '4 x 12', note: 'alternate weekly; 3-4 sets per the plan' },
+      { name: 'Glute Kickback or Hip Abductor', reps: '3 x 15', note: '' },
+      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', reps: '3 x 15', note: 'rotate one variation per week; 2-3 sets per the plan' },
       { name: 'Machine Chest Press or Pec Fly (light)', reps: '2 x 15', note: 'pump work — stop well short of failure, this is a frequency top-up not a 3rd full session' },
       { name: 'Cable Lateral Raise (light)', reps: '2 x 18', note: 'higher reps, light weight, no drop set' },
       { name: 'Conditioning finisher — incline walk, battle rope, or Hyrox circuit', reps: '', note: '15-20 min, no weight to log' }

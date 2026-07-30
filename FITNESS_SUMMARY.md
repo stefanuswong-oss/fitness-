@@ -5,8 +5,8 @@
 
 ## Current Status
 
-- Phase 3, Week 4. Full session history embedded in tracker (through 2026-07-23).
-- Body scan 2026-07-04: 68.6kg, 15% fat, 80.5% muscle, BCM 6402 (up from 66.7kg/13.6% fat on 2026-06-03 — lean bulk/recomp, not pure fat gain — see Insights tab).
+- Phase 4, Week 1 (corrected 2026-07-30 — sessions 07-24 through 07-29 had been mislabeled "Phase 3 Week 4" due to a tracker bug where the Log Workout Phase/Week fields never auto-updated; no session data was lost, only the phase/week tag. Fixed in code: inputs now default to the last logged session's phase/week, and a data correction relabels the affected sessions).
+- Body scan 2026-07-30: 69.2kg, 14.2% fat, 81.2% muscle, BCM 6318 (down from 68.6kg/15% fat/80.5% muscle/BCM 6402 on 2026-07-04). Fat down, muscle up, weight roughly flat — still recomping in the right direction. BCM drop and WHR uptick (0.93, into "bad" band) are most likely bioimpedance/hydration noise rather than real muscle loss, since they moved opposite to the muscle%/fat% trend in the same reading — watch the next scan before reacting. Raw scan images in `Body Scan Log/`.
 - Injury: thumb pain from a pull-up fall (noted 2026-07-03), status unconfirmed since — check before assuming resolved.
 - Ipamorelin: Week 6 as of 2026-07-24.
 - Goal: abs-ready by 2026-10-17. Training on **Phase 4 plan** — see `PHASE_4_TRAINING_PLAN.md` for full rationale (fixed a 3rd accidental full chest/shoulder session on Saturdays, exercise redundancy, drop-set bloat). Chest/shoulders stay 2x/week + a short light Saturday finisher (his call, kept deliberately light). One ab exercise per weekday + Saturday core rotation. Tracker's "Suggested Workout" card (Log Workout page) mirrors this plan live — read that doc, not the old Phase 3 PDFs, for anything about his current program.
