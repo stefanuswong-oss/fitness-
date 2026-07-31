@@ -176,6 +176,30 @@
 
   /* CURRENT BLOCK */
   .current-session { border-left: 3px solid; padding-left: 12px; margin-bottom: 12px; }
+
+  /* ===== Log Workout redesign: color-coded session pills, context strip, tabs, sparklines ===== */
+  .day-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  @media (min-width: 420px) { .day-pills { grid-template-columns: repeat(6, 1fr); } }
+  .day-pill { text-align: center; padding: 8px 4px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; transition: border-color .15s, background .15s; }
+  .day-pill .dp-day { display: block; font-family: var(--font-head); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
+  .day-pill .dp-label { font-family: var(--font-head); font-size: 11px; font-weight: 600; line-height: 1.25; }
+  .day-pill.active { border-color: transparent; }
+
+  .ctx-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent2); border-radius: 3px; padding: 10px 12px; }
+  .ctx-card.good { border-left-color: var(--green); }
+  .ctx-label { font-family: var(--font-head); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 5px; }
+  .ctx-body { font-size: 12px; line-height: 1.4; }
+  .ctx-trend { display: flex; gap: 10px; align-items: baseline; }
+  .ctx-trend .val { font-family: var(--font-head); font-size: 15px; font-weight: 700; }
+  .ctx-trend .arrow.good { color: var(--green); }
+  .ctx-trend .arrow.watch { color: var(--accent2); }
+  @media (max-width: 480px) { #context-strip { grid-template-columns: 1fr; } }
+
+  .subtabs { display: flex; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 3px; gap: 3px; margin-bottom: 12px; }
+  .subtab { flex: 1; text-align: center; padding: 7px 4px; border-radius: 3px; font-family: var(--font-head); font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
+  .subtab.active { background: var(--surface3, #232323); color: var(--text); }
+
+  .ex-spark { vertical-align: middle; margin: 0 6px; flex: none; }
 </style>
 </head>
 <body>
@@ -183,13 +207,13 @@
 <nav>
   <div class="logo">💪 <span>STEFANUS</span></div>
   <button class="hamburger" onclick="toggleNav()" id="hamburger-btn">
-    <span>☰</span><span class="nav-label" id="nav-label">Dashboard</span>
+    <span>☰</span><span class="nav-label" id="nav-label">Log Workout</span>
   </button>
 </nav>
 <div class="stripe-bar"></div>
 <div class="nav-dropdown" id="nav-dropdown">
-  <button class="active" onclick="showPage('dashboard')" data-page="dashboard">Dashboard</button>
-  <button onclick="showPage('log')" data-page="log">Log Workout</button>
+  <button class="active" onclick="showPage('log')" data-page="log">Log Workout</button>
+  <button onclick="showPage('dashboard')" data-page="dashboard">Dashboard</button>
   <button onclick="showPage('history')" data-page="history">History</button>
   <button onclick="showPage('progress')" data-page="progress">Progress</button>
   <button onclick="showPage('insights')" data-page="insights">Insights</button>
@@ -197,7 +221,7 @@
 </div>
 
 <!-- DASHBOARD -->
-<div id="page-dashboard" class="page active">
+<div id="page-dashboard" class="page">
   <div class="section-header">
     <h2>Dashboard</h2>
     <div id="today-badge"></div>
@@ -248,29 +272,37 @@
 </div>
 
 <!-- LOG WORKOUT -->
-<div id="page-log" class="page">
+<div id="page-log" class="page active">
   <div class="section-header">
     <h2>Log Workout</h2>
   </div>
+
+  <!-- Context strip: surfaces Insights' "Next Up" + Body page's latest trend right here,
+       since this is the only page that actually gets visited day to day. -->
+  <div class="grid2" id="context-strip" style="margin-bottom:14px"></div>
+
   <div class="card">
-    <div class="grid2" style="margin-bottom:14px">
-      <div class="form-row" style="margin-bottom:0">
-        <label>Session Type</label>
-        <select id="log-type">
-          <option value="push_strength">Push Strength</option>
-          <option value="pull_strength">Pull Strength</option>
-          <option value="legs_strength">Legs Strength</option>
-          <option value="push_hypertrophy">Push Hypertrophy</option>
-          <option value="pull_hypertrophy">Pull Hypertrophy</option>
-          <option value="sat">Full Body / Legs+Core / Hyrox</option>
-        </select>
-      </div>
+    <div class="card-title" style="margin-bottom:10px">Session Type</div>
+    <div class="day-pills" id="log-type-pills"></div>
+    <select id="log-type" style="display:none">
+      <option value="push_strength">Push Strength</option>
+      <option value="pull_strength">Pull Strength</option>
+      <option value="legs_strength">Legs Strength</option>
+      <option value="push_hypertrophy">Push Hypertrophy</option>
+      <option value="pull_hypertrophy">Pull Hypertrophy</option>
+      <option value="sat">Full Body / Legs+Core / Hyrox</option>
+    </select>
+    <div class="grid2" style="margin-top:14px">
       <div class="form-row" style="margin-bottom:0">
         <label>Phase / Week</label>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
           <input type="number" id="log-phase" placeholder="Phase" min="1" value="3">
           <input type="number" id="log-week" placeholder="Week" min="1" value="4">
         </div>
+      </div>
+      <div class="form-row" style="margin-bottom:0">
+        <label>&nbsp;</label>
+        <div id="pw-auto-tag" style="font-size:11px;color:var(--muted);padding-top:10px"></div>
       </div>
     </div>
     <div class="form-row">
@@ -292,14 +324,31 @@
     <div id="today-session-list"></div>
   </div>
 
-  <!-- Suggested Workout — Phase 4 trimmed plan (set 2026-07-24) -->
-  <div class="card" id="suggested-workout-card">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px">
-      <div class="card-title" style="margin-bottom:0">🎯 Suggested Workout — Phase 4</div>
-      <button class="btn btn-secondary btn-sm" onclick="loadSuggestedWorkout()">Load All Into Current Exercise</button>
+  <!-- Suggested Workout + Reference Session — merged into one tabbed card so both
+       "what to do" and "what I did last time" live in one place instead of two
+       separately-scrolled cards. -->
+  <div class="card" id="plan-card">
+    <div class="subtabs" id="plan-subtabs">
+      <div class="subtab active" data-plan-tab="suggested">🎯 Suggested</div>
+      <div class="subtab" data-plan-tab="reference">Last Time</div>
     </div>
-    <div id="suggested-workout-focus" style="font-size:12px;color:var(--muted);margin-bottom:10px"></div>
-    <div id="suggested-workout-content"></div>
+
+    <div id="suggested-workout-pane">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:6px">
+        <div id="suggested-workout-focus" style="font-size:12px;color:var(--muted);flex:1;min-width:180px"></div>
+        <button class="btn btn-secondary btn-sm" onclick="loadSuggestedWorkout()">Load All</button>
+      </div>
+      <div id="suggested-workout-content"></div>
+    </div>
+
+    <div id="reference-pane" style="display:none">
+      <div style="display:flex;align-items:center;justify-content:flex-end;margin-bottom:10px">
+        <select id="ref-session-select" onchange="renderLogReference(false)" style="font-size:12px;padding:5px 8px;width:auto">
+          <option value="">Most recent</option>
+        </select>
+      </div>
+      <div id="log-ref-content"><span style="color:var(--muted)">Select a session type above</span></div>
+    </div>
   </div>
 
   <!-- Current exercise entry -->
@@ -312,19 +361,6 @@
               style="flex:2;background:var(--green);border-color:var(--green)">💾 Save Session</button>
       <button class="btn btn-secondary btn-sm" onclick="clearExerciseForm()" style="flex:1">Clear</button>
     </div>
-  </div>
-
-  <!-- Last session reference -->
-  <div class="card" id="log-reference">
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
-      <div class="card-title" style="margin-bottom:0">Reference Session</div>
-      <div style="display:flex;align-items:center;gap:6px">
-        <select id="ref-session-select" onchange="renderLogReference(false)" style="font-size:12px;padding:5px 8px;width:auto">
-          <option value="">Most recent</option>
-        </select>
-      </div>
-    </div>
-    <div id="log-ref-content"><span style="color:var(--muted)">Select a session type above</span></div>
   </div>
 
   <!-- Session Notes — what you typed in the Notes field on past sessions -->
@@ -7291,6 +7327,7 @@ function getAnyExerciseVolume(exName, phaseFilter) {
 function init() {
   loadLocalSessions();
   setDefaultPhaseWeek();
+  setDefaultSessionType();
   setTodayDate();
   renderDashboard();
   renderHistory();
@@ -7302,7 +7339,11 @@ function init() {
   initSuggestedWorkoutClicks();
   renderSuggestedWorkout();
   renderSessionNotes();
-  document.getElementById('log-type').addEventListener('change', () => { renderLogReference(); renderSuggestedWorkout(); });
+  initTypePills();
+  initPlanSubtabs();
+  renderContextStrip();
+  document.getElementById('pw-auto-tag').textContent = 'Auto-filled from your last session — edit if starting a new week';
+  document.getElementById('log-type').addEventListener('change', () => { renderLogReference(); renderSuggestedWorkout(); syncTypePills(); });
 }
 
 function loadLocalSessions() {
@@ -7331,6 +7372,129 @@ function setDefaultPhaseWeek() {
   const latest = logged.reduce((a, b) => (b.phase * 100 + b.week) > (a.phase * 100 + a.week) ? b : a);
   document.getElementById('log-phase').value = latest.phase;
   document.getElementById('log-week').value = latest.week;
+}
+
+// ===== LOG WORKOUT REDESIGN: type pills, context strip, plan tabs, sparklines =====
+// Defaults the Session Type picker to today's session (Mon-Sat) instead of
+// silently sitting on whichever option happens to be first in the <select>.
+function setDefaultSessionType() {
+  const select = document.getElementById('log-type');
+  if (!select) return;
+  const dayAbbr = { Sunday:null, Monday:'Mon', Tuesday:'Tue', Wednesday:'Wed', Thursday:'Thu', Friday:'Fri', Saturday:'Sat' };
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const todayAbbr = dayAbbr[days[new Date().getDay()]];
+  const todayType = Object.entries(SESSION_META).find(([,m]) => m.day === todayAbbr);
+  if (todayType) select.value = todayType[0];
+}
+
+function initTypePills() {
+  const container = document.getElementById('log-type-pills');
+  const select = document.getElementById('log-type');
+  if (!container || !select) return;
+  container.innerHTML = Object.entries(SESSION_META).map(([key, m]) => `
+    <div class="day-pill" data-type="${key}">
+      <span class="dp-day">${m.day}</span>
+      <span class="dp-label">${m.label}</span>
+    </div>`).join('');
+  container.addEventListener('click', (ev) => {
+    const pill = ev.target.closest('.day-pill[data-type]');
+    if (!pill) return;
+    select.value = pill.dataset.type;
+    select.dispatchEvent(new Event('change'));
+  });
+  syncTypePills();
+}
+
+function syncTypePills() {
+  const select = document.getElementById('log-type');
+  const container = document.getElementById('log-type-pills');
+  if (!container || !select) return;
+  const active = select.value;
+  container.querySelectorAll('.day-pill').forEach(p => {
+    const isActive = p.dataset.type === active;
+    const m = SESSION_META[p.dataset.type];
+    p.classList.toggle('active', isActive);
+    p.style.background = isActive ? m.color : '';
+    p.style.color = isActive ? '#fff' : '';
+  });
+}
+
+function initPlanSubtabs() {
+  const tabs = document.getElementById('plan-subtabs');
+  if (!tabs || tabs.dataset.bound) return;
+  tabs.dataset.bound = '1';
+  tabs.addEventListener('click', (ev) => {
+    const tab = ev.target.closest('.subtab[data-plan-tab]');
+    if (!tab) return;
+    tabs.querySelectorAll('.subtab').forEach(t => t.classList.toggle('active', t === tab));
+    const showSuggested = tab.dataset.planTab === 'suggested';
+    document.getElementById('suggested-workout-pane').style.display = showSuggested ? '' : 'none';
+    document.getElementById('reference-pane').style.display = showSuggested ? 'none' : '';
+  });
+}
+
+function daysBetween(d1, d2) {
+  return Math.round((new Date(d2) - new Date(d1)) / 86400000);
+}
+
+// Surfaces the Insights page's "Next Up" phase/week and the Body page's latest
+// scan trend directly on Log Workout, since that's the only page that actually
+// gets visited day to day — see conversation 2026-07-31.
+function renderContextStrip() {
+  const el = document.getElementById('context-strip');
+  if (!el || !allSessions.length) return;
+
+  const latestPhase = Math.max(...allSessions.map(s => s.phase));
+  const latestWeek = Math.max(...allSessions.filter(s => s.phase === latestPhase).map(s => s.week));
+  const dayAbbr = { Sunday:null, Monday:'Mon', Tuesday:'Tue', Wednesday:'Wed', Thursday:'Thu', Friday:'Fri', Saturday:'Sat' };
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const todayAbbr = dayAbbr[days[new Date().getDay()]];
+  const todayType = Object.entries(SESSION_META).find(([,m]) => m.day === todayAbbr);
+  const nextUpBody = todayType
+    ? `<b>${escapeHtml(todayType[1].label)}</b> is today's session — Phase ${latestPhase}, Week ${latestWeek}. Hit the top of each rep range before adding load.`
+    : `Phase ${latestPhase}, Week ${latestWeek}. Rest day — next session picks up where you left off.`;
+
+  let bodyHtml = `<div class="ctx-label">Body Trend</div><div class="ctx-body" style="color:var(--muted)">No scans logged yet.</div>`;
+  const scans = getAllBodyScans();
+  if (scans.length) {
+    const latest = scans[scans.length - 1];
+    const prev = scans.length >= 2 ? scans[scans.length - 2] : null;
+    const fatArrow = prev ? (latest.fat <= prev.fat ? '<span class="arrow good">▼</span>' : '<span class="arrow watch">▲</span>') : '';
+    const muscleArrow = prev ? (latest.muscle >= prev.muscle ? '<span class="arrow good">▲</span>' : '<span class="arrow watch">▼</span>') : '';
+    bodyHtml = `
+      <div class="ctx-label">Body Trend${prev ? ` · ${daysBetween(prev.date, latest.date)}d` : ''}</div>
+      <div class="ctx-trend">
+        <span class="val">${latest.fat}% ${fatArrow}</span>
+        <span class="val">${latest.muscle}% ${muscleArrow}</span>
+      </div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px">fat · muscle — ${latest.date}</div>`;
+  }
+
+  el.innerHTML = `
+    <div class="ctx-card good">
+      <div class="ctx-label">Next Up</div>
+      <div class="ctx-body">${nextUpBody}</div>
+    </div>
+    <div class="ctx-card">${bodyHtml}</div>`;
+}
+
+function sparklineSvg(vals, color) {
+  const nums = (vals || []).filter(v => v != null && v > 0);
+  if (nums.length < 2) return '';
+  const w = 44, h = 18, pad = 2;
+  const min = Math.min(...nums), max = Math.max(...nums);
+  const range = (max - min) || 1;
+  const pts = nums.map((v, i) => {
+    const x = pad + (i / (nums.length - 1)) * (w - pad * 2);
+    const y = h - pad - ((v - min) / range) * (h - pad * 2);
+    return [x, y];
+  });
+  const line = pts.map((p,i) => (i===0?'M':'L') + p[0].toFixed(1) + ',' + p[1].toFixed(1)).join(' ');
+  const last = pts[pts.length - 1];
+  return `<svg class="ex-spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
+    <path d="${line}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="1.8" fill="${color}"/>
+  </svg>`;
 }
 
 // ===== PAGE NAV =====
@@ -8462,15 +8626,21 @@ function renderLogReference(resetSelect) {
 
   currentRefSession = session;
 
+  const sparkColor = SESSION_META[type]?.color || '#ff3b1f';
   document.getElementById('log-ref-content').innerHTML = `
     <div style="color:var(--muted);font-size:12px;margin-bottom:8px">Phase ${session.phase} · Week ${session.week}${session.note ? ' — ' + escapeHtml(session.note) : ''}</div>
     <table class="ex-table">
-      <thead><tr><th>Exercise</th><th>Sets</th></tr></thead>
-      <tbody>${session.exercises.map((e, idx) => `
+      <thead><tr><th>Exercise</th><th>Sets</th><th></th></tr></thead>
+      <tbody>${session.exercises.map((e, idx) => {
+        const setList = buildSetList(e.reps, e.weight, e.name);
+        const spark = sparklineSvg(setList ? setList.map(s => s.kg) : [], sparkColor);
+        return `
         <tr>
           <td class="ex-name" data-ex-idx="${idx}" style="cursor:pointer">${escapeHtml(e.name)} <span style="color:var(--accent);font-size:10px">↑ use</span></td>
           <td>${renderSetChips(e.reps, e.weight, e.name)}</td>
-        </tr>`).join('')}
+          <td>${spark}</td>
+        </tr>`;
+      }).join('')}
       </tbody>
     </table>`;
 }
@@ -9019,6 +9189,18 @@ const BODY_BASELINE = [
       rArm: { m: 3.3, f: 0.5 }, lArm: { m: 3.3, f: 0.6 },
       torso: { m: 26.4, f: 5.5 },
       rLeg: { m: 8.4, f: 1.5 }, lLeg: { m: 8.5, f: 1.6 }
+    }
+  },
+  {
+    id: 'scan_2026_07_30',
+    date: '2026-07-30',
+    label: 'Phase 4 Week 1 check-in',
+    weight: 69.2, fat: 14.2, muscle: 81.2, bodyAge: 46,
+    visceral: 5, bmi: 25.4, whr: 0.93, bmr: 1603, bcm: 6318,
+    segments: {
+      rArm: { m: 3.5, f: 0.5 }, lArm: { m: 3.4, f: 0.5 },
+      torso: { m: 27, f: 5.4 },
+      rLeg: { m: 8.4, f: 1.4 }, lLeg: { m: 8.6, f: 1.5 }
     }
   }
 ];
