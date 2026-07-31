@@ -30,6 +30,14 @@
     --gold: #f59e0b;
     --font-display: 'Bebas Neue', 'Oswald', -apple-system, sans-serif;
     --font-head: 'Oswald', -apple-system, sans-serif;
+
+    /* Yassified skin — glam gradient + glow tokens, layered on top of the
+       existing palette rather than replacing it (session-type colors keep
+       their meaning; this is a shine pass, not a rebrand). */
+    --glam: linear-gradient(115deg, #ff3b1f 0%, #ff7a3d 30%, #ffc300 62%, #ff2ea6 100%);
+    --glam-soft: linear-gradient(115deg, rgba(255,59,31,.14), rgba(255,195,0,.10) 55%, rgba(255,46,166,.12));
+    --glow-flame: 0 0 20px -4px rgba(255,59,31,.55);
+    --glow-good: 0 0 12px -2px rgba(16,185,129,.7);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; min-height: 100vh; padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
@@ -41,7 +49,13 @@
   /* NAV */
   nav { background: #000; border-bottom: 2px solid var(--accent); padding: 0 16px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; height: 54px; }
   nav .logo { font-family: var(--font-display); font-weight: 400; font-size: 24px; letter-spacing: .04em; white-space: nowrap; color: var(--text); text-transform: uppercase; }
-  nav .logo span { color: var(--accent); }
+  nav .logo span {
+    color: var(--accent);
+    background: var(--glam); background-size: 220% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: glam-shimmer 6s linear infinite;
+  }
+  @keyframes glam-shimmer { to { background-position: 220% center; } }
+  @media (prefers-reduced-motion: reduce) { nav .logo span { animation: none; } }
   .nav-current { font-size: 13px; color: var(--accent); font-weight: 600; }
   .hamburger { background: none; border: 1px solid var(--border); border-radius: 3px; color: var(--text); cursor: pointer; padding: 7px 11px; font-size: 18px; line-height: 1; display: flex; align-items: center; gap: 8px; }
   .hamburger .nav-label { font-family: var(--font-head); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
@@ -49,7 +63,7 @@
   .nav-dropdown.open { display: block; }
   .nav-dropdown button { display: block; width: 100%; text-align: left; background: none; border: none; border-bottom: 1px solid var(--border); color: var(--muted); cursor: pointer; padding: 16px 20px; font-family: var(--font-head); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; transition: background .1s, color .1s; }
   .nav-dropdown button:last-child { border-bottom: none; }
-  .nav-dropdown button.active { color: var(--accent); background: var(--surface2); border-left: 3px solid var(--accent); }
+  .nav-dropdown button.active { color: #fff; background: var(--glam); border-left: 3px solid transparent; box-shadow: inset var(--glow-flame); }
   .nav-dropdown button:hover:not(.active) { background: var(--surface2); color: var(--text); }
 
   /* LAYOUT */
@@ -159,7 +173,7 @@
   .prog-bar { height: 100%; border-radius: 3px; transition: width .4s; }
 
   /* TOAST */
-  #toast { position: fixed; bottom: 24px; right: 24px; background: var(--accent); color: #fff; padding: 12px 20px; border-radius: 3px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; font-size: 13px; display: none; z-index: 999; box-shadow: 0 4px 20px #0006; }
+  #toast { position: fixed; bottom: 24px; right: 24px; background: var(--glam); color: #fff; padding: 12px 20px; border-radius: 30px; font-family: var(--font-head); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; font-size: 13px; display: none; z-index: 999; box-shadow: var(--glow-flame), 0 4px 20px #0006; }
 
   /* SCROLLBAR */
   ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -172,7 +186,10 @@
 
   /* SECTION HEADER */
   .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; padding-left: 10px; border-left: 4px solid var(--accent); }
-  .section-header h2 { font-family: var(--font-display); font-size: 26px; font-weight: 400; text-transform: uppercase; letter-spacing: .03em; }
+  .section-header h2 {
+    font-family: var(--font-display); font-size: 26px; font-weight: 400; text-transform: uppercase; letter-spacing: .03em;
+    color: var(--text); background: var(--glam); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
 
   /* CURRENT BLOCK */
   .current-session { border-left: 3px solid; padding-left: 12px; margin-bottom: 12px; }
@@ -180,13 +197,21 @@
   /* ===== Log Workout redesign: color-coded session pills, context strip, tabs, sparklines ===== */
   .day-pills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
   @media (min-width: 420px) { .day-pills { grid-template-columns: repeat(6, 1fr); } }
-  .day-pill { text-align: center; padding: 8px 4px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; transition: border-color .15s, background .15s; }
+  .day-pill { text-align: center; padding: 8px 4px; border-radius: 4px; border: 1px solid var(--border); background: var(--surface2); cursor: pointer; transition: border-color .15s, background .15s; position: relative; overflow: hidden; }
   .day-pill .dp-day { display: block; font-family: var(--font-head); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 2px; }
   .day-pill .dp-label { font-family: var(--font-head); font-size: 11px; font-weight: 600; line-height: 1.25; }
   .day-pill.active { border-color: transparent; }
+  .day-pill.active::after {
+    content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent, rgba(255,255,255,.35), transparent);
+    animation: glam-sweep 2.6s ease-in-out infinite;
+  }
+  @keyframes glam-sweep { 0% { transform: translateX(-120%); } 60%, 100% { transform: translateX(120%); } }
+  @media (prefers-reduced-motion: reduce) { .day-pill.active::after { display: none; } }
 
-  .ctx-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent2); border-radius: 3px; padding: 10px 12px; }
+  .ctx-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent2); border-radius: 3px; padding: 10px 12px; position: relative; overflow: hidden; }
   .ctx-card.good { border-left-color: var(--green); }
+  .ctx-card::before { content: ''; position: absolute; inset: 0; background: var(--glam-soft); pointer-events: none; }
+  .ctx-card > * { position: relative; }
   .ctx-label { font-family: var(--font-head); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 5px; }
   .ctx-body { font-size: 12px; line-height: 1.4; }
   .ctx-trend { display: flex; gap: 10px; align-items: baseline; }
@@ -197,14 +222,14 @@
 
   .subtabs { display: flex; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 3px; gap: 3px; margin-bottom: 12px; }
   .subtab { flex: 1; text-align: center; padding: 7px 4px; border-radius: 3px; font-family: var(--font-head); font-size: 11px; font-weight: 600; letter-spacing: .03em; text-transform: uppercase; color: var(--muted); cursor: pointer; }
-  .subtab.active { background: var(--surface3, #232323); color: var(--text); }
+  .subtab.active { background: var(--glam); color: #fff; box-shadow: var(--glow-flame); }
 
   .ex-spark { vertical-align: middle; margin: 0 6px; flex: none; }
 
   .pw-display { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 10px 12px; }
   .pw-info { display: flex; align-items: baseline; gap: 8px; }
   .pw-num { font-family: var(--font-head); font-size: 20px; font-weight: 700; }
-  .pw-auto-tag { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--green); background: rgba(16,185,129,.15); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(16,185,129,.4); }
+  .pw-auto-tag { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--green); background: rgba(16,185,129,.15); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(16,185,129,.4); box-shadow: var(--glow-good); }
   .pw-edit-btn { font-size: 11px; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 6px 10px; border-radius: 3px; cursor: pointer; font-family: inherit; }
   .pw-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
 </style>
@@ -365,8 +390,8 @@
     <div id="exercise-rows"></div>
     <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
       <button class="btn btn-secondary btn-sm" onclick="addExerciseRow()" style="flex:1">+ Add Set</button>
-      <button class="btn btn-primary" onclick="saveWorkout()"
-              style="flex:2;background:var(--green);border-color:var(--green)">💾 Save Session</button>
+      <button id="save-session-btn" class="btn btn-primary" onclick="saveWorkout()"
+              style="flex:2;background:var(--glam);background-size:220% auto;border-color:transparent;box-shadow:var(--glow-flame)">✨ Save Session</button>
       <button class="btn btn-secondary btn-sm" onclick="clearExerciseForm()" style="flex:1">Clear</button>
     </div>
   </div>
@@ -7453,6 +7478,7 @@ function syncTypePills() {
     p.classList.toggle('active', isActive);
     p.style.background = isActive ? m.color : '';
     p.style.color = isActive ? '#fff' : '';
+    p.style.boxShadow = isActive ? `0 0 16px -4px ${m.color}` : '';
   });
 }
 
@@ -7530,7 +7556,7 @@ function sparklineSvg(vals, color) {
   const last = pts[pts.length - 1];
   return `<svg class="ex-spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">
     <path d="${line}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="1.8" fill="${color}"/>
+    <circle cx="${last[0].toFixed(1)}" cy="${last[1].toFixed(1)}" r="1.8" fill="${color}" style="filter:drop-shadow(0 0 3px ${color})"/>
   </svg>`;
 }
 
@@ -8813,6 +8839,7 @@ function saveWorkout() {
   allSessions = applyDataCorrections([...HISTORY, ...saved]);
 
   showToast('✅ Workout saved!');
+  celebrateSave();
 
   // Clear only the exercise form — keep session type / phase / week / date so user can log the next exercise
   clearExerciseForm();
@@ -8832,6 +8859,39 @@ function showToast(message) {
   toast.style.display = 'block';
   clearTimeout(toast._hideTimer);
   toast._hideTimer = setTimeout(() => { toast.style.display = 'none'; }, 2200);
+}
+
+// One deliberate celebratory moment on save — not animation scattered
+// everywhere. Skipped entirely under prefers-reduced-motion.
+function celebrateSave() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const btn = document.getElementById('save-session-btn');
+  if (!btn) return;
+  const rect = btn.getBoundingClientRect();
+  let layer = document.getElementById('confetti-layer');
+  if (!layer) {
+    layer = document.createElement('div');
+    layer.id = 'confetti-layer';
+    layer.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden';
+    document.body.appendChild(layer);
+  }
+  const colors = ['#ff3b1f', '#ffc300', '#ec4899', '#8b5cf6', '#10b981'];
+  for (let i = 0; i < 24; i++) {
+    const p = document.createElement('div');
+    const size = 5 + Math.random() * 5;
+    p.style.cssText = `position:absolute;width:${size}px;height:${size*0.5}px;border-radius:2px;background:${colors[i % colors.length]};left:${rect.left + rect.width/2}px;top:${rect.top + rect.height/2}px`;
+    layer.appendChild(p);
+    const angle = Math.random() * Math.PI * 2;
+    const dist = 70 + Math.random() * 120;
+    const dx = Math.cos(angle) * dist;
+    const dy = Math.sin(angle) * dist - 50;
+    const rot = Math.random() * 720 - 360;
+    p.animate([
+      { transform: 'translate(0,0) rotate(0deg)', opacity: 1 },
+      { transform: `translate(${dx}px, ${dy + 200}px) rotate(${rot}deg)`, opacity: 0 }
+    ], { duration: 1000 + Math.random() * 500, easing: 'cubic-bezier(.2,.7,.3,1)' });
+    setTimeout(() => p.remove(), 1600);
+  }
 }
 
 // Clear just the exercise rows (not session metadata)
