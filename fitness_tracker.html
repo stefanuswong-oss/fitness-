@@ -200,6 +200,13 @@
   .subtab.active { background: var(--surface3, #232323); color: var(--text); }
 
   .ex-spark { vertical-align: middle; margin: 0 6px; flex: none; }
+
+  .pw-display { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 3px; padding: 10px 12px; }
+  .pw-info { display: flex; align-items: baseline; gap: 8px; }
+  .pw-num { font-family: var(--font-head); font-size: 20px; font-weight: 700; }
+  .pw-auto-tag { font-size: 9px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--green); background: rgba(16,185,129,.15); padding: 2px 7px; border-radius: 10px; border: 1px solid rgba(16,185,129,.4); }
+  .pw-edit-btn { font-size: 11px; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 6px 10px; border-radius: 3px; cursor: pointer; font-family: inherit; }
+  .pw-edit-btn:hover { border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
 <body>
@@ -292,17 +299,18 @@
       <option value="pull_hypertrophy">Pull Hypertrophy</option>
       <option value="sat">Full Body / Legs+Core / Hyrox</option>
     </select>
-    <div class="grid2" style="margin-top:14px">
-      <div class="form-row" style="margin-bottom:0">
-        <label>Phase / Week</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <input type="number" id="log-phase" placeholder="Phase" min="1" value="3">
-          <input type="number" id="log-week" placeholder="Week" min="1" value="4">
+    <div class="form-row" style="margin-top:14px;margin-bottom:0">
+      <label>Phase / Week</label>
+      <div class="pw-display" id="pw-display">
+        <div class="pw-info">
+          <span class="pw-num" id="pw-num"></span>
+          <span class="pw-auto-tag" id="pw-auto-tag" style="display:none">Auto</span>
         </div>
+        <button type="button" class="pw-edit-btn" id="pw-edit-btn" onclick="togglePwEdit()">Edit ✎</button>
       </div>
-      <div class="form-row" style="margin-bottom:0">
-        <label>&nbsp;</label>
-        <div id="pw-auto-tag" style="font-size:11px;color:var(--muted);padding-top:10px"></div>
+      <div id="pw-edit-fields" style="display:none;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+        <input type="number" id="log-phase" placeholder="Phase" min="1" value="3">
+        <input type="number" id="log-week" placeholder="Week" min="1" value="4">
       </div>
     </div>
     <div class="form-row">
@@ -7342,7 +7350,9 @@ function init() {
   initTypePills();
   initPlanSubtabs();
   renderContextStrip();
-  document.getElementById('pw-auto-tag').textContent = 'Auto-filled from your last session — edit if starting a new week';
+  renderPwDisplay();
+  document.getElementById('log-phase').addEventListener('input', () => { pwIsAuto = false; });
+  document.getElementById('log-week').addEventListener('input', () => { pwIsAuto = false; });
   document.getElementById('log-type').addEventListener('change', () => { renderLogReference(); renderSuggestedWorkout(); syncTypePills(); });
 }
 
@@ -7366,12 +7376,39 @@ function setTodayDate() {
 // updated, so every logged session silently inherited whatever was last typed —
 // which is how a full week of Phase 4 sessions got saved as "Phase 3 Week 4".
 // Default them instead to the most recently logged session's phase/week.
+let pwIsAuto = false;
 function setDefaultPhaseWeek() {
   const logged = allSessions.filter(s => s.logged_at);
   if (!logged.length) return;
   const latest = logged.reduce((a, b) => (b.phase * 100 + b.week) > (a.phase * 100 + a.week) ? b : a);
   document.getElementById('log-phase').value = latest.phase;
   document.getElementById('log-week').value = latest.week;
+  pwIsAuto = true;
+}
+
+// Compact "P4 · W1 [Auto]" display over the raw number inputs — the inputs
+// stay functional underneath, this just avoids showing two plain number
+// boxes when the value is usually just an unedited auto-fill.
+function renderPwDisplay() {
+  const phase = document.getElementById('log-phase').value || '—';
+  const week = document.getElementById('log-week').value || '—';
+  document.getElementById('pw-num').textContent = `P${phase} · W${week}`;
+  document.getElementById('pw-auto-tag').style.display = pwIsAuto ? '' : 'none';
+}
+
+function togglePwEdit() {
+  const fields = document.getElementById('pw-edit-fields');
+  const btn = document.getElementById('pw-edit-btn');
+  const editing = fields.style.display !== 'none';
+  if (editing) {
+    fields.style.display = 'none';
+    btn.textContent = 'Edit ✎';
+    renderPwDisplay();
+  } else {
+    fields.style.display = 'grid';
+    btn.textContent = 'Done ✓';
+    document.getElementById('log-phase').focus();
+  }
 }
 
 // ===== LOG WORKOUT REDESIGN: type pills, context strip, plan tabs, sparklines =====
@@ -8627,8 +8664,14 @@ function renderLogReference(resetSelect) {
   currentRefSession = session;
 
   const sparkColor = SESSION_META[type]?.color || '#ff3b1f';
+  // Show the actual date here — Phase/Week alone can look identical to today's
+  // not-yet-logged auto-filled values (2026-07-31: this cost a "wait, did I
+  // already log today?" moment), so make it unambiguous this is a past session.
+  const dateStr = session.logged_at
+    ? new Date(session.logged_at + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    : null;
   document.getElementById('log-ref-content').innerHTML = `
-    <div style="color:var(--muted);font-size:12px;margin-bottom:8px">Phase ${session.phase} · Week ${session.week}${session.note ? ' — ' + escapeHtml(session.note) : ''}</div>
+    <div style="color:var(--muted);font-size:12px;margin-bottom:8px">Phase ${session.phase} · Week ${session.week}${dateStr ? ` — <b style="color:var(--text)">${dateStr}</b>` : ''}${session.note ? ' — ' + escapeHtml(session.note) : ''}</div>
     <table class="ex-table">
       <thead><tr><th>Exercise</th><th>Sets</th><th></th></tr></thead>
       <tbody>${session.exercises.map((e, idx) => {
