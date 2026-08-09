@@ -90,7 +90,10 @@ None of this means your training is "bad" — the exercise selection is sound an
 
 I can't advise on dosing or expected timelines for a peptide — that's a conversation for your prescribing physician, especially since 6 weeks is early for most GH-secretagogue protocols to show visible body composition change. What I can say factually: visible muscle/fat changes are driven primarily by training consistency and sustained caloric balance, not the compound itself. If the program below doesn't move the needle either, that's useful information to bring back to your doctor.
 
-## On "abs-ready by Oct 17"
+## On "abs-ready by Oct 17" — ⛔ SUPERSEDED GOAL (historical)
+
+> The Oct 17 abs goal was replaced on 2026-08-09. The live targets are **10 Dec and
+> 31 Dec**; 17 Oct is a waypoint. Kept for the fat-loss reasoning only.
 
 Your last body scan (2026-07-04) had you at 15% body fat, 68.6kg. Visible abs for most people show up somewhere around 10–12% body fat. Closing that gap in ~12 weeks is achievable but it is overwhelmingly a **nutrition/caloric deficit** problem, not a training-volume problem — no amount of extra lifting reveals abs without the fat loss. The trimmed program below is built to preserve/build muscle and free up time for conditioning, but the deficit has to come from your diet. Worth tracking body scans monthly through October to make sure you're trending down, not just recomping in place.
 
@@ -237,7 +240,7 @@ gave clean +1 rep progression at unchanged load on all three main lifts.**
 > **gentle ~275 kcal/day deficit** reaches ~11.2% by 11 Oct. No crash needed. The only cost
 > is that +1 kg/block muscle pauses until 20 Oct — deferred, not lost.
 
-### Original build-first table
+### ⛔ SUPERSEDED — original build-first table (do not prescribe from this)
 
 Baseline scan 2026-07-30: **69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603.**
 "Other" (bone + mineral) held at 3.2 kg.
@@ -261,7 +264,12 @@ intermediate. +2 to +3 kg is the likelier real outcome. Chase +1/block; treat +0
 pivoted to cut-first. **Then superseded again the same day** — Oct 17 is only a nice-to-have;
 the real targets are 10 Dec (Tomorrowland) and 31 Dec (White Party). See header.
 
-### Live plan — cut first
+### ⛔ SUPERSEDED — 2nd revision (cut-first for Oct 17). NOT the live plan.
+
+> This table was written before Stefanus confirmed that **December is the real target** and
+> that he travels to Singapore 17–21 Sep. It still shows Phase 5 as a **build block**, which
+> is wrong — Phase 5 is a *continued cut*. **The live sequence is in the header of this file.**
+> Kept only to show the reasoning. Do not act on the numbers below.
 
 | Block | Date | Posture | Muscle | Fat | Weight | BF% |
 |---|---|---|---|---|---|---|
@@ -285,7 +293,7 @@ Muscle is flat-to-+0.4 through the cut. That is the honest trade for abs on the 
 | Fat | 60 g | 55 g |
 
 Conditioning back up to ~75 min/wk: 25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri.
-10,000 steps daily floor. Scans at Wk 4 (22 Aug) and Wk 8 (19 Sep) — only tighten by 150 kcal
+10,000 steps daily floor. Scans: **22 Aug · 16 Sep · 11 Oct · 1 Dec** — only tighten by 150 kcal
 if fat loss is under 0.2 kg/wk across **two** scans.
 
 ### Peak & HK week
@@ -323,7 +331,11 @@ hamstrings **3 → 6** · quads **7 → 10** · core 8 → 12 · conditioning **
 
 ---
 
-## Nutrition — build block
+## ⛔ SUPERSEDED — build-block nutrition. NOT the live macros.
+
+> **Live macros are 2,100 kcal / 170 g protein / 220 g carbs / 60 g fat on training days —
+> a DEFICIT.** The surplus figures below belong to the abandoned build-first plan. See the
+> header and "Cut macros (Phase 4 Wk 3–11)" above. Do not prescribe from this table.
 
 TDEE ≈ **2,400 kcal**.
 
@@ -344,12 +356,13 @@ TDEE ≈ **2,400 kcal**.
 
 Reported: 200 g egg white + 1 yolk / 200 g lean minced beef / 1 scoop whey post-workout /
 3 air-fried chicken breast (~110 g meat) / 1 scoop whey at 8 pm ≈ **~138 g protein, ~825 kcal**
-— roughly **22 g short** of the 160 g target.
+— roughly **32 g short** of the live **170 g** cut target (was assessed against 160 g when the build-first plan was still current).
 
 *Open question:* "3 chicken breast, ~100–110 g" — total or each? If each (~330 g), he's at
 ~200 g protein and the fix is different.
 
 | Time | Prescribed | Protein | Change |
+<!-- live target: 170 g/day, 140 g floor when travelling -->
 |---|---|---|---|
 | Morning | 200 g egg white + **2 whole eggs** | ~38 g | 25 g is below the MPS threshold after an overnight fast |
 | Afternoon | 200 g lean minced beef | ~42 g | unchanged — best-dosed meal he has |
@@ -359,7 +372,7 @@ Reported: 200 g egg white + 1 yolk / 200 g lean minced beef / 1 scoop whey post-
 
 **Sources are all complete and high-leucine — the problem is dosing, not selection.**
 
-**The bigger risk is total calories, not protein.** Only ~825 kcal of the 2,550 target comes
+**The bigger risk is total calories, not protein.** Only ~825 kcal of the 2,100 live target comes
 from these foods. Week 2's load regressions look like under-fuelling. Track TOTAL intake for
 a week, not just protein.
 

@@ -5,20 +5,21 @@
 
 ## Current Status
 
-- Phase 4, Week 1 (corrected 2026-07-30 — sessions 07-24 through 07-29 had been mislabeled "Phase 3 Week 4" due to a tracker bug where the Log Workout Phase/Week fields never auto-updated; no session data was lost, only the phase/week tag. Fixed in code: inputs now default to the last logged session's phase/week, and a data correction relabels the affected sessions).
+- **Phase 4, Week 2 complete** (Aug 3–8, all 6 sessions logged). **Week 3 begins Mon 2026-08-10** — first week of the cut, and he is in Bali 11–20/21 Aug for most of Wk 3–4.
+- Historical note: sessions 07-24 → 07-29 were once mislabeled "Phase 3 Week 4" by a tracker bug (Log Workout Phase/Week never auto-updated). Fixed 2026-07-30 — inputs now default to the last logged session's phase/week, and a data correction relabels the affected sessions. No data was lost.
 - Body scan 2026-07-30: 69.2kg, 14.2% fat, 81.2% muscle, BCM 6318 (down from 68.6kg/15% fat/80.5% muscle/BCM 6402 on 2026-07-04). Fat down, muscle up, weight roughly flat — still recomping in the right direction. BCM drop and WHR uptick (0.93, into "bad" band) are most likely bioimpedance/hydration noise rather than real muscle loss, since they moved opposite to the muscle%/fat% trend in the same reading — watch the next scan before reacting. Raw scan images in `Body Scan Log/`.
 - Injury: thumb pain from a pull-up fall (noted 2026-07-03), last logged as still healing 2026-07-28. Lat Pulldown has since jumped to 70kg and Wk4 prescribes 75 — check before assuming resolved.
-- Ipamorelin: Week 6 as of 2026-07-24.
 
 ### Goal (final as of 2026-08-09) — read this before advising
 
 - **The target is DECEMBER, not October.** 10 Dec (Tomorrowland, Bangkok) and 31 Dec
   (White Party) are his "album unveiling". **17 Oct (HK birthday, yacht) is a nice-to-have
   waypoint** that arrives free on the way — do not treat it as the goal.
-- **Live plan: cut straight through, peak 10 Dec at ~9.4% / 66.8 kg.** ~300 kcal/day deficit
-  (2,100 training days), protein 170 g, held from 10 Aug to 30 Nov.
-- **He is in HK 12–19 Oct** — that is a planned **diet break at maintenance**, not a lapse.
-  Peak for the yacht (~11%) is banked by Sat 11 Oct.
+- **Live plan: cut straight through, peak 10 Dec at ~9.7% / 66.9 kg.** ~300 kcal/day deficit
+  (2,100 training days), protein 170 g, across ~14 cut weeks from 10 Aug to 30 Nov.
+- **He is in HK 12–19 Oct** — a planned **diet break at maintenance**, not a lapse.
+  Yacht condition (~11.3%) is banked by Sat 11 Oct.
+  *(Adding the Singapore break cost ~0.3 pts vs the pre-SG model: 9.4% → 9.7%, 11.0% → 11.3%.)*
 - **10–31 Dec: HOLD at maintenance.** Do not diet between the two events — arriving flat on
   the 31st is the bigger risk.
 - **Block naming (his rule):** Phase 4 keeps counting **Wk 3 → Wk 11** through the cut.
@@ -26,7 +27,8 @@
   **continued cut**, not a build block.
 - **Muscle stays roughly flat (+0.5 kg over 17 weeks). This was an explicit, informed trade**
   — he chose cut-through over build-then-cut after seeing both sets of numbers. The
-  +1 kg/4-week build target is deferred to **January**, from a ~9.5% base. Don't re-litigate.
+  +1 kg/4-week build target is deferred to **January**, from a ~9.7% base. Don't re-litigate.
+
 ### Travel & scans (confirmed 2026-08-09)
 
 | Trip | Dates | Block | Posture |
@@ -45,7 +47,6 @@
 - **Scans: Sat 22 Aug · Tue 16 Sep · Sat 11 Oct · Mon 1 Dec.** The Sep scan was moved off
   19 Sep because he is in Singapore — scan pre-flight for a clean read. Same FTL branch each
   time where possible; different units calibrate differently.
-
 - Tracker's "Suggested Workout" card carries per-week weight + rep prescriptions
   (`wk: {3:…, 4:…}`); the "Phase 4 Plan" card holds checkpoints, cut macros, protein
   schedule, scan protocol and the event protocol for 17 Oct / 10 Dec / 31 Dec. Weeks 5+
@@ -68,7 +69,7 @@
 - **Standing position: none of these three is his limiting factor.** Week 2 showed the real
   constraints were under-fuelling and program drift, both fixed 2026-08-09. Don't recommend
   adding a compound to solve a programming problem. Revisit at the 11 Oct scan with three
-  readings of trend data (30 Jul / 22 Aug / 19 Sep), not before.
+  readings of trend data (30 Jul / 22 Aug / 16 Sep), not before.
 - **Never advise on dosing, protocol, or whether to start/stop any of these.** Physician's
   call. Agents here may only address how a compound interacts with the training plan.
 
