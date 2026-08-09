@@ -8326,48 +8326,66 @@ function deleteSession(id) {
 // Block targets. Baseline scan 2026-07-30: 69.2kg / 14.2% fat (9.8kg) / 56.2kg muscle.
 // "other" (bone+mineral) held at 3.2kg throughout.
 const PHASE_PLAN = {
-  posture: 'CUT — hold through to December',
-  goal: 'Peak 10 Dec (Tomorrowland, Bangkok) + 31 Dec (White Party) · yacht 17 Oct is a waypoint, not the summit',
+  posture: 'CUT — with 3 planned travel breaks',
+  goal: 'Peak 10 Dec (Tomorrowland, BKK) + 31 Dec (White Party) · 3 birthdays en route: SG Sep, HK Oct, BKK Dec',
   baseline: '30 Jul 2026 · 69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603',
-  note: 'Phase 4 Wk 3 → Wk 11 = cut (10 Aug – 11 Oct). HK 12–19 Oct = diet break at maintenance. Phase 5 Wk 1 starts Mon 20 Oct and CONTINUES the cut — it is not a build block. Build phase is deferred to January, from a lean base.',
+  note: 'Phase 4 Wk 3 → Wk 11 = cut. Phase 5 Wk 1 starts Mon 20 Oct and CONTINUES the cut. Singapore and HK are PLANNED diet breaks at maintenance — a break every ~5-6 weeks on a 15-week cut restores training performance and adherence. Build phase deferred to January.',
   checkpoints: [
-    { label: 'Phase 4 Wk 4',      date: '22 Aug', posture: 'cut',   muscle: '56.3', fat: '9.3', weight: '68.7', bf: '13.5%' },
-    { label: 'Phase 4 Wk 8',      date: '19 Sep', posture: 'cut',   muscle: '56.4', fat: '8.3', weight: '67.9', bf: '12.2%' },
-    { label: 'Phase 4 Wk 11 ✈',   date: '11 Oct', posture: 'cut',   muscle: '56.5', fat: '7.4', weight: '67.1', bf: '11.0%' },
-    { label: 'HK — diet break 🛥', date: '12–19 Oct', posture: 'hold', muscle: '56.5', fat: '7.8', weight: '67.7', bf: '11.5%' },
-    { label: 'Phase 5 Wk 6',      date: '30 Nov', posture: 'cut',   muscle: '56.7', fat: '6.2', weight: '66.1', bf: '9.4%' },
-    { label: 'TOMORROWLAND 🎧',    date: '10 Dec', posture: 'peak',  muscle: '56.7', fat: '6.2', weight: '66.8', bf: '~9.4%' },
-    { label: 'WHITE PARTY 🤍',     date: '31 Dec', posture: 'hold',  muscle: '56.7', fat: '6.5', weight: '67.0', bf: '~9.8%' }
+    { label: 'Phase 4 Wk 4',      date: '22 Aug',    posture: 'cut',   muscle: '56.3', fat: '9.3', weight: '68.8', bf: '13.5%' },
+    { label: 'Pre-Singapore',     date: '16 Sep',    posture: 'cut',   muscle: '56.4', fat: '8.3', weight: '67.9', bf: '12.2%' },
+    { label: 'SG — birthday 🇸🇬',  date: '17–21 Sep', posture: 'hold',  muscle: '56.4', fat: '8.5', weight: '68.1', bf: '12.5%' },
+    { label: 'Phase 4 Wk 11 ✈',   date: '11 Oct',    posture: 'cut',   muscle: '56.5', fat: '7.6', weight: '67.3', bf: '11.3%' },
+    { label: 'HK — yacht 🛥',      date: '12–19 Oct', posture: 'hold',  muscle: '56.5', fat: '8.0', weight: '67.7', bf: '11.8%' },
+    { label: 'Phase 5 Wk 6',      date: '30 Nov',    posture: 'cut',   muscle: '56.7', fat: '6.4', weight: '66.3', bf: '9.7%' },
+    { label: 'TOMORROWLAND 🎧',    date: '10 Dec',    posture: 'peak',  muscle: '56.7', fat: '6.4', weight: '66.9', bf: '~9.7%' },
+    { label: 'WHITE PARTY 🤍',     date: '31 Dec',    posture: 'hold',  muscle: '56.7', fat: '6.7', weight: '67.1', bf: '~10.0%' }
+  ],
+  // Three trips, three birthdays. Spacing them as deliberate breaks is better practice on a
+  // 15-week cut than white-knuckling through — and far more likely to actually be followed.
+  travel: [
+    { place: 'Bali 🇮🇩',      dates: '11–20/21 Aug', block: 'Phase 4 Wk 3–4', posture: 'cut',
+      note: 'Same FTL branch — identical machines, so the prescribed loads transfer exactly. No alcohol. This is NOT a break: run the block as written. Ikan bakar / ayam bakar make the protein target easy.' },
+    { place: 'Singapore 🇸🇬', dates: '17–21 Sep', block: 'Phase 4 Wk 8', posture: 'break',
+      note: 'Real birthday. Maintenance ~2,400, protein floor 140 g. Budget 2 free days, not 5 — that halves the cost (0.2 kg vs 0.4 kg fat). Alcohol fine on the free days.' },
+    { place: 'Hong Kong 🇭🇰', dates: '12–19 Oct', block: 'Phase 4 Wk 12', posture: 'break',
+      note: 'Yacht 17 Oct at ~11.3%. Full diet break at maintenance after 9 weeks of cutting — physiologically useful. Easy on alcohol + heavy sodium on the 16th only.' },
+    { place: 'Bangkok 🇹🇭',   dates: '~10 Dec', block: 'Phase 5 Wk 7', posture: 'peak',
+      note: 'Tomorrowland — the unveiling. Carb-load 6–9 Dec. Then HOLD at maintenance to White Party 31 Dec; do not diet between the two events.' }
+  ],
+  scans: [
+    'Sat 22 Aug — Phase 4 Wk 4 (back from Bali the 20th/21st)',
+    'Tue 16 Sep — moved OFF 19 Sep: you are in Singapore. Scan before you fly, for a clean read.',
+    'Sat 11 Oct — pre-HK, the yacht checkpoint',
+    'Mon 1 Dec — final trajectory check before the 10 Dec peak'
   ],
   nutrition: {
     tdee: '~2,400 kcal',
     training: { kcal: '2,100', protein: '170 g', carbs: '220 g', fat: '60 g' },
     rest:     { kcal: '1,900', protein: '170 g', carbs: '165 g', fat: '55 g' },
     rules: [
-      'Moderate deficit (~300 kcal/day) → ~0.27 kg fat/week, held from 10 Aug to 30 Nov. Do NOT go harder — this rate is what protects strength across a 15-week cut.',
-      'Protein goes UP in a deficit, not down: 170 g (2.45 g/kg).',
-      'HK 12–19 Oct is a planned DIET BREAK at maintenance (~2,400). Eat. After 9 weeks of deficit it restores training performance and makes the second half of the cut work better. It is part of the plan, not a lapse.',
-      '1–9 Dec: back to maintenance, then carb-load the final 4 days. Arrive full, not flat.',
-      '10–31 Dec: HOLD at maintenance. Do not try to get leaner between the two events — arriving flat on the 31st is the bigger risk.',
-      'Conditioning: ~25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri. 10,000 steps daily floor.',
-      'Scan at Wk 4 (22 Aug), Wk 8 (19 Sep), Wk 11 (11 Oct). Only tighten by 150 kcal if fat loss is under 0.2 kg/wk across TWO consecutive scans.'
+      'Moderate deficit (~300 kcal/day) → ~0.27 kg fat/week across ~14 cut weeks. Do NOT go harder — this rate is what protects strength over a long cut.',
+      'Protein goes UP in a deficit, not down: 170 g (2.45 g/kg). Travel floor: 140 g.',
+      'Breaks are at MAINTENANCE (~2,400), not surplus. A break is not a write-off — the point is to stop the deficit, not reverse it.',
+      'Alcohol only on break days. In a deficit it is dense empty calories, blunts protein synthesis, and wrecks the sleep your recovery runs on.',
+      '1–9 Dec: maintenance, then carb-load the final 4 days. Arrive full, not flat.',
+      '10–31 Dec: HOLD at maintenance. Do not diet between the two events — arriving flat on the 31st is the bigger risk.',
+      'Conditioning ~25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri. 10,000 steps daily floor.',
+      'Only tighten by 150 kcal if fat loss is under 0.2 kg/wk across TWO consecutive scans.'
     ]
   },
-  // Diet as reported 2026-08-09: ~138 g protein against a 170 g cut target. Chicken confirmed
-  // ~110 g TOTAL across 3 breasts (~10 g protein each), so dinner is the biggest single gap.
   proteinPlan: {
-    target: '170 g/day (cut target) · currently ~138 g',
+    target: '170 g/day (140 g floor when travelling) · currently ~138 g',
     meals: [
       { time: 'Morning',      food: '200 g egg white + 2 whole eggs',               protein: '~38 g', change: '+2 whole eggs. 25 g was below the MPS threshold after an overnight fast — highest-value single fix.' },
       { time: 'Afternoon',    food: '200 g lean minced beef',                       protein: '~42 g', change: 'unchanged — best-dosed meal you have' },
-      { time: 'Post-workout', food: '1 scoop whey + 40 g carbs',                    protein: '20 g',  change: 'keep the carbs here even in a deficit — this slot refills glycogen' },
-      { time: 'Dinner',       food: 'Chicken breast — 5 breasts / ~185 g meat',     protein: '~52 g', change: 'confirmed ~110 g total for 3, so ~10 g protein each. +2 breasts, not +1. Cheap in a cut (~110 kcal each).' },
-      { time: 'Pre-bed',      food: '250 g Greek yogurt / cottage cheese / casein', protein: '~30 g', change: 'was whey — whey clears in ~2 h before a ~10 h fast, and spikes insulin MORE than casein, which also suits a bedtime Ipamorelin dose.' }
+      { time: 'Post-workout', food: '1 scoop whey + 40 g carbs',                    protein: '20 g',  change: 'keep the carbs here even in a deficit' },
+      { time: 'Dinner',       food: 'Chicken breast — 5 breasts / ~185 g meat',     protein: '~52 g', change: 'confirmed ~110 g total for 3, so ~10 g each. +2 breasts, not +1.' },
+      { time: 'Pre-bed',      food: '250 g Greek yogurt / cottage cheese / casein', protein: '~30 g', change: 'was whey — clears in ~2 h before a ~10 h fast, and spikes insulin MORE than casein.' }
     ],
-    warning: 'Lands ~182 g — over the 170 g target, which is fine. The discipline in this block is TOTAL calories: 2,100 on training days. Muscle stays roughly flat (+0.5 kg over 17 weeks) — that is the accepted cost of peaking in December. The build phase is January, from ~9.5%, where partitioning is far better.'
+    warning: 'Lands ~182 g, over target — fine. The discipline is TOTAL calories: 2,100 on training days. Muscle stays roughly flat (+0.5 kg over 17 weeks) — the accepted cost of peaking in December. Build phase is January, from ~9.7%, where partitioning is far better.'
   },
   scanProtocol: [
-    'Same time of day as the 30 Jul scan, same fasted/fed state.',
+    'Same time of day as the 30 Jul scan, same fasted/fed state. Same FTL branch where possible — different units calibrate slightly differently.',
     'Carb-load the 24 h before (+150 g above target).',
     '3 L water the day prior; normal intake scan morning. Do not go in dehydrated.',
     'No training that morning. No alcohol 48 h out.',
@@ -8377,11 +8395,10 @@ const PHASE_PLAN = {
     title: 'Event protocol — 17 Oct waypoint · 10 Dec + 31 Dec peak',
     items: [
       'NEVER dehydrate, use diuretics, or cut salt before an event. Dangerous, counterproductive, and not something to stack with a prescribed peptide.',
-      '17 OCT (yacht): waypoint, not the summit — ~11% arrives free on the way to December. Last heavy legs Wed 8 Oct (you fly the 12th). After 9 weeks of cutting, HK carbs will make you look FULLER, not worse. Easy on alcohol and heavy sodium on the 16th.',
-      '1–9 DEC: calories back to maintenance. Carb-load the final 4 days (+100–150 g/day). A depleted muscle looks flat — this is what makes the difference in photos.',
+      '17 OCT (yacht): waypoint, not the summit — ~11.3% arrives free on the way to December. Last heavy legs Wed 8 Oct (you fly the 12th). After 9 weeks of cutting, HK carbs will make you look FULLER.',
+      '1–9 DEC: calories back to maintenance. Carb-load the final 4 days (+100–150 g/day). A depleted muscle looks flat — this is what shows up in photos.',
       '10 DEC (Tomorrowland): last heavy legs Fri 5 Dec so leg water settles. Light pump work the morning of. Sleep matters more than anything you do in the gym that week.',
-      '10–31 DEC: HOLD at maintenance. Do not diet between the events. Three weeks is easy to hold and very easy to ruin by trying to get leaner.',
-      'Tomorrowland is multi-day — sleep loss, alcohol and dancing will deplete you. Between the 10th and the 31st prioritise sleep, protein and normal sodium/water to refill for White Party.',
+      '10–31 DEC: HOLD at maintenance. Multi-day festival = sleep loss and dehydration; between the 10th and 31st prioritise sleep, protein and normal sodium/water to refill for White Party.',
       'Colour reads as definition in photos. Gradual sun or self-tanner — not tanning beds.'
     ]
   }
@@ -8721,6 +8738,31 @@ function renderPhasePlanCard() {
       </tbody>
     </table>
     </div>
+
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Travel — 3 trips, 3 birthdays</div>
+    <div style="overflow-x:auto">
+    <table class="ex-table" style="margin-bottom:14px">
+      <thead><tr><th>Trip</th><th>Dates</th><th>Posture</th></tr></thead>
+      <tbody>${p.travel.map(t => {
+        const tone = { cut: 'var(--muted)', break: 'var(--accent)', peak: 'var(--accent)' }[t.posture] || 'var(--muted)';
+        return `
+        <tr>
+          <td style="vertical-align:top">
+            <strong>${escapeHtml(t.place)}</strong>
+            <div style="color:var(--muted);font-size:10.5px;font-weight:400;line-height:1.45;margin-top:3px">${escapeHtml(t.block)} — ${escapeHtml(t.note)}</div>
+          </td>
+          <td style="vertical-align:top;white-space:nowrap">${escapeHtml(t.dates)}</td>
+          <td style="vertical-align:top;white-space:nowrap;color:${tone};text-transform:uppercase;font-size:10px;letter-spacing:.05em">${escapeHtml(t.posture)}</td>
+        </tr>`;
+      }).join('')}
+      </tbody>
+    </table>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Scan schedule</div>
+    <ul style="font-size:11.5px;color:var(--muted);line-height:1.65;padding-left:18px;margin:0 0 14px">
+      ${p.scans.map(x => `<li>${escapeHtml(x)}</li>`).join('')}
+    </ul>
 
     <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Daily macros — cut</div>
     <div style="overflow-x:auto">

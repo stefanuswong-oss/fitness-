@@ -13,13 +13,37 @@
 >
 > | Milestone | Date | Posture | Muscle | Fat | Weight | BF% |
 > |---|---|---|---|---|---|---|
-> | Phase 4 Wk 4 | 22 Aug | cut | 56.3 | 9.3 | 68.7 | 13.5% |
-> | Phase 4 Wk 8 | 19 Sep | cut | 56.4 | 8.3 | 67.9 | 12.2% |
-> | Phase 4 Wk 11 ✈ | 11 Oct | cut | 56.5 | 7.4 | 67.1 | **11.0%** 🛥 |
-> | HK — diet break | 12–19 Oct | hold | 56.5 | 7.8 | 67.7 | 11.5% |
-> | Phase 5 Wk 6 | 30 Nov | cut | 56.7 | 6.2 | 66.1 | 9.4% |
-> | **TOMORROWLAND** | **10 Dec** | peak | 56.7 | 6.2 | 66.8 | **~9.4%** |
-> | **WHITE PARTY** | **31 Dec** | hold | 56.7 | 6.5 | 67.0 | ~9.8% |
+> | Phase 4 Wk 4 | 22 Aug | cut | 56.3 | 9.3 | 68.8 | 13.5% |
+> | Pre-Singapore | 16 Sep | cut | 56.4 | 8.3 | 67.9 | 12.2% |
+> | SG — birthday | 17–21 Sep | break | 56.4 | 8.5 | 68.1 | 12.5% |
+> | Phase 4 Wk 11 ✈ | 11 Oct | cut | 56.5 | 7.6 | 67.3 | **11.3%** 🛥 |
+> | HK — yacht | 12–19 Oct | break | 56.5 | 8.0 | 67.7 | 11.8% |
+> | Phase 5 Wk 6 | 30 Nov | cut | 56.7 | 6.4 | 66.3 | 9.7% |
+> | **TOMORROWLAND** | **10 Dec** | peak | 56.7 | 6.4 | 66.9 | **~9.7%** |
+> | **WHITE PARTY** | **31 Dec** | hold | 56.7 | 6.7 | 67.1 | ~10.0% |
+>
+> ### Travel — 3 trips, 3 birthdays (confirmed 2026-08-09)
+>
+> | Trip | Dates | Block | Posture |
+> |---|---|---|---|
+> | **Bali** | 11–20/21 Aug | Phase 4 Wk 3–4 | **cut — not a break** |
+> | **Singapore** (real birthday) | 17–21 Sep | Phase 4 Wk 8 | break |
+> | **Hong Kong** (yacht 17 Oct) | 12–19 Oct | Phase 4 Wk 12 | break |
+> | **Bangkok** (Tomorrowland) | ~10 Dec | Phase 5 Wk 7 | peak |
+>
+> - **Bali is the same FTL branch** — identical machines, so the prescribed loads transfer
+>   exactly. No alcohol there. Run the block as written; it is not a diet break.
+> - **SG and HK are planned diet breaks at maintenance (~2,400), not surplus.** A break every
+>   ~5–6 weeks on a 15-week cut restores training performance and adherence. Alcohol only on
+>   break days — he doesn't normally drink, but may in SG and HK.
+> - Budgeting SG as **2 free days rather than 5** halves its cost (0.2 kg vs 0.4 kg fat).
+>
+> ### Scan schedule (revised 2026-08-09)
+>
+> - **Sat 22 Aug** — Phase 4 Wk 4 (back from Bali the 20th/21st)
+> - **Tue 16 Sep** — moved OFF 19 Sep, he is in Singapore. Scan pre-flight for a clean read.
+> - **Sat 11 Oct** — pre-HK, the yacht checkpoint
+> - **Mon 1 Dec** — final trajectory check before the 10 Dec peak
 >
 > ### Why cut-through beat build-then-cut
 >

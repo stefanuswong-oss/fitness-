@@ -27,6 +27,25 @@
 - **Muscle stays roughly flat (+0.5 kg over 17 weeks). This was an explicit, informed trade**
   — he chose cut-through over build-then-cut after seeing both sets of numbers. The
   +1 kg/4-week build target is deferred to **January**, from a ~9.5% base. Don't re-litigate.
+### Travel & scans (confirmed 2026-08-09)
+
+| Trip | Dates | Block | Posture |
+|---|---|---|---|
+| **Bali** | 11–20/21 Aug | Phase 4 Wk 3–4 | **cut — NOT a break** |
+| **Singapore** (real birthday) | 17–21 Sep | Phase 4 Wk 8 | break |
+| **Hong Kong** (yacht 17 Oct) | 12–19 Oct | Phase 4 Wk 12 | break |
+| **Bangkok** (Tomorrowland) | ~10 Dec | Phase 5 Wk 7 | peak |
+
+- **Bali = same FTL gym brand**, identical machines, so prescribed loads transfer exactly.
+  No alcohol there. It is a normal cut block that happens to be abroad.
+- **SG and HK are planned diet breaks at MAINTENANCE (~2,400), not surplus.** Breaks every
+  ~5–6 weeks on a 15-week cut are good practice, not a concession. He doesn't normally drink;
+  may in SG and HK — that's budgeted.
+- **Three birthday celebrations**: Sep (SG, the real one), Oct (HK), Dec (BKK).
+- **Scans: Sat 22 Aug · Tue 16 Sep · Sat 11 Oct · Mon 1 Dec.** The Sep scan was moved off
+  19 Sep because he is in Singapore — scan pre-flight for a clean read. Same FTL branch each
+  time where possible; different units calibrate differently.
+
 - Tracker's "Suggested Workout" card carries per-week weight + rep prescriptions
   (`wk: {3:…, 4:…}`); the "Phase 4 Plan" card holds checkpoints, cut macros, protein
   schedule, scan protocol and the event protocol for 17 Oct / 10 Dec / 31 Dec. Weeks 5+
