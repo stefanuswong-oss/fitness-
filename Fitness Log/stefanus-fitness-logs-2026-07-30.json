@@ -1,0 +1,296 @@
+[
+  {
+    "id": "custom_1784884296450",
+    "session_type": "pull_hypertrophy",
+    "type": "pull_hypertrophy",
+    "day": "Fri",
+    "label": "Pull Hypertrophy",
+    "color": "#8b5cf6",
+    "phase": 3,
+    "week": 4,
+    "note": "",
+    "logged_at": "2026-07-24",
+    "exercises": [
+      {
+        "name": "Wide Grip or Machine Lat Pulldown",
+        "reps": "1 x 12, 1 x 12, 1 x 10, 1 x 10",
+        "weight": "36.3-40.8-45.4-45.4",
+        "maxKg": 45.4
+      },
+      {
+        "name": "Chest-Supported Low Row",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "45-50-55",
+        "maxKg": 55
+      },
+      {
+        "name": "Jeff Nippard-style Cross-Body Lat Pulldown",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "22.7-27.2-31.8",
+        "maxKg": 31.8
+      },
+      {
+        "name": "Rear Delt Row/Fly",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "18.1-22.7-27.2",
+        "maxKg": 27.2
+      },
+      {
+        "name": "Bayesian Cable Curl",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "18.1-22.7-27.2",
+        "maxKg": 27.2
+      }
+    ]
+  },
+  {
+    "id": "custom_1784971090683",
+    "session_type": "sat",
+    "type": "sat",
+    "day": "Sat",
+    "label": "Sat: Legs+Core",
+    "color": "#ec4899",
+    "phase": 3,
+    "week": 4,
+    "note": "",
+    "logged_at": "2026-07-25",
+    "exercises": [
+      {
+        "name": "Hip Thrust",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "65-75-85",
+        "maxKg": 85
+      },
+      {
+        "name": "Glute Kickback",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "13.6-18.1-19.5",
+        "maxKg": 19.5
+      },
+      {
+        "name": "Back Extension (Glutes Target)",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "20-22-24",
+        "maxKg": 24
+      },
+      {
+        "name": "Machine Chest Press or Pec Fly (light)",
+        "reps": "1 x 15, 1 x 15",
+        "weight": "15-15",
+        "maxKg": 15
+      },
+      {
+        "name": "Cable Lateral Raise (light)",
+        "reps": "1 x 20, 1 x 20",
+        "weight": "9.1-10.5",
+        "maxKg": 10.5
+      },
+      {
+        "name": "Cable Abs Crunch",
+        "reps": "1 x 12, 1 x 12, 1 x 13",
+        "weight": "40.8-45.4-49.9",
+        "maxKg": 49.9
+      }
+    ]
+  },
+  {
+    "id": "custom_1785139099223",
+    "session_type": "push_strength",
+    "type": "push_strength",
+    "day": "Mon",
+    "label": "Push Strength",
+    "color": "#ef4444",
+    "phase": 3,
+    "week": 4,
+    "note": "",
+    "logged_at": "2026-07-27",
+    "exercises": [
+      {
+        "name": "DB or Machine Incline Press",
+        "reps": "1 x 8, 1 x 8, 1 x 7, 1 x 4",
+        "weight": "22-24-26-26",
+        "maxKg": 26
+      },
+      {
+        "name": "Machine Chest Press",
+        "reps": "1 x 10, 1 x 10, 1 x 8",
+        "weight": "55-60-65",
+        "maxKg": 65
+      },
+      {
+        "name": "Cable Chest Fly (High to Low)",
+        "reps": "1 x 10, 1 x 10, 1 x 10",
+        "weight": "10-15-20",
+        "maxKg": 20
+      },
+      {
+        "name": "Machine Shoulder Press",
+        "reps": "1 x 10, 1 x 10, 1 x 8",
+        "weight": "30-35-40",
+        "maxKg": 40
+      },
+      {
+        "name": "Cable Lateral Raise",
+        "reps": "1 x 12, 1 x 12, 1 x 12,10,10,10,10,10,10",
+        "weight": "13.6-15-15,13.6,13.6,13.6,9.1,9.1,9.1",
+        "maxKg": 15
+      },
+      {
+        "name": "Rope Tricep Pushdown",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "40.8-45.4-49.9",
+        "maxKg": 49.9
+      }
+    ]
+  },
+  {
+    "id": "custom_1785232512662",
+    "session_type": "pull_strength",
+    "type": "pull_strength",
+    "day": "Tue",
+    "label": "Pull Strength",
+    "color": "#3b82f6",
+    "phase": 3,
+    "week": 4,
+    "note": "1. Thumb is still healing. Doing wide grip Lat pull down at 45.8 is difficult.",
+    "logged_at": "2026-07-28",
+    "exercises": [
+      {
+        "name": "Wide Grip Cable Lat Pulldown",
+        "reps": "1 x 8, 1 x 8, 1 x 8, 1 x 8",
+        "weight": "36.3-40.8-45.4-43",
+        "maxKg": 45.4
+      },
+      {
+        "name": "Low Row",
+        "reps": "1 x 9, 1 x 9, 1 x 9",
+        "weight": "50-55-60",
+        "maxKg": 60
+      },
+      {
+        "name": "Straight-Arm Pulldown or Cross-Body Pulldown",
+        "reps": "1 x 11, 1 x 11, 1 x 9",
+        "weight": "31.8-36.8-38",
+        "maxKg": 38
+      },
+      {
+        "name": "cable rear delt (high to low)",
+        "reps": "1 x 13, 1 x 13, 1 x 12",
+        "weight": "13.6-16.1-22.7",
+        "maxKg": 22.7
+      },
+      {
+        "name": "Bayesian Cable Curl",
+        "reps": "1 x 11, 1 x 11, 1 x 10",
+        "weight": "18.1-22.7-27.2",
+        "maxKg": 27.2
+      }
+    ]
+  },
+  {
+    "id": "custom_1785313232707",
+    "session_type": "legs_strength",
+    "type": "legs_strength",
+    "day": "Wed",
+    "label": "Legs Strength",
+    "color": "#10b981",
+    "phase": 3,
+    "week": 4,
+    "note": "",
+    "logged_at": "2026-07-29",
+    "exercises": [
+      {
+        "name": "Leg Press (low/narrow)",
+        "reps": "1 x 9, 1 x 9, 1 x 9",
+        "weight": "100-105-110",
+        "maxKg": 110
+      },
+      {
+        "name": "Machine Hip Thrust",
+        "reps": "1 x 9, 1 x 9, 1 x 9",
+        "weight": "70-80-90",
+        "maxKg": 90
+      },
+      {
+        "name": "V-Squat",
+        "reps": "1 x 7, 1 x 7, 1 x 7, 1 x 7",
+        "weight": "95-100-105-110",
+        "maxKg": 110
+      },
+      {
+        "name": "Leg Curl",
+        "reps": "1 x 11, 1 x 11, 1 x 8",
+        "weight": "50-55-60",
+        "maxKg": 60
+      },
+      {
+        "name": "Leg Extension",
+        "reps": "1 x 11, 1 x 11, 1 x 11",
+        "weight": "50-55-60",
+        "maxKg": 60
+      },
+      {
+        "name": "Abductor",
+        "reps": "1 x 11, 1 x 11, 1 x 11",
+        "weight": "55-60-65",
+        "maxKg": 65
+      }
+    ]
+  },
+  {
+    "id": "custom_1785399743734",
+    "session_type": "push_hypertrophy",
+    "type": "push_hypertrophy",
+    "day": "Thu",
+    "label": "Push Hypertrophy",
+    "color": "#f97316",
+    "phase": 4,
+    "week": 1,
+    "note": "",
+    "logged_at": "2026-07-30",
+    "exercises": [
+      {
+        "name": "DB Incline Press",
+        "reps": "1 x 11, 1 x 11, 1 x 11",
+        "weight": "20-22-24",
+        "maxKg": 24
+      },
+      {
+        "name": "Iso-leverage Decline",
+        "reps": "1 x 11, 1 x 11, 1 x 11",
+        "weight": "20-22.5-25",
+        "maxKg": 25
+      },
+      {
+        "name": "Hybrid Pectoral Fly",
+        "reps": "1 x 11, 1 x 11, 1 x 8",
+        "weight": "20-25-30",
+        "maxKg": 30
+      },
+      {
+        "name": "Machine Shoulder Press",
+        "reps": "1 x 11, 1 x 11, 1 x 11",
+        "weight": "25-30-35",
+        "maxKg": 35
+      },
+      {
+        "name": "Cable Lateral Raise",
+        "reps": "1 x 11, 1 x 13, 1 x 13",
+        "weight": "15-15-16.1",
+        "maxKg": 16.1
+      },
+      {
+        "name": "Tricep Cable Extension",
+        "reps": "1 x 13, 1 x 13, 1 x 13",
+        "weight": "18.1-22.7-27.2",
+        "maxKg": 27.2
+      },
+      {
+        "name": "Cable Abs Crunch",
+        "reps": "1 x 12, 1 x 12, 1 x 12",
+        "weight": "40.8-45.4-49.9",
+        "maxKg": 49.9
+      }
+    ]
+  }
+]

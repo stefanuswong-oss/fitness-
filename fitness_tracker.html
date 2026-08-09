@@ -405,6 +405,16 @@
     <div id="session-notes-content"></div>
   </div>
 
+  <!-- Phase 4 block targets, macros, protein schedule and scan-day protocol.
+       Reference material — the numbers the Suggested Workout prescriptions are built to serve. -->
+  <div class="card" id="phase-plan-card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+      <div class="card-title" style="margin-bottom:0">📋 Phase 4 Plan — Targets &amp; Nutrition</div>
+      <button class="btn btn-secondary btn-sm" onclick="togglePhasePlan()" id="phase-plan-toggle">Show</button>
+    </div>
+    <div id="phase-plan-content" style="display:none"></div>
+  </div>
+
   <!-- EXPORT / IMPORT — bottom of Log page -->
   <div class="card" style="margin-top:16px">
     <div class="card-title">Data Backup</div>
@@ -7372,12 +7382,14 @@ function init() {
   initSuggestedWorkoutClicks();
   renderSuggestedWorkout();
   renderSessionNotes();
+  renderPhasePlanCard();
   initTypePills();
   initPlanSubtabs();
   renderContextStrip();
   renderPwDisplay();
   document.getElementById('log-phase').addEventListener('input', () => { pwIsAuto = false; });
-  document.getElementById('log-week').addEventListener('input', () => { pwIsAuto = false; });
+  // Week drives which prescription the Suggested Workout shows, so re-render on change.
+  document.getElementById('log-week').addEventListener('input', () => { pwIsAuto = false; renderSuggestedWorkout(); });
   document.getElementById('log-type').addEventListener('change', () => { renderLogReference(); renderSuggestedWorkout(); syncTypePills(); });
 }
 
@@ -8272,93 +8284,316 @@ function deleteSession(id) {
   updateBackupCount();
 }
 
-// ===== SUGGESTED WORKOUT — Phase 4 trimmed plan (rev. 2026-07-24b) =====
-// Written 2026-07-24 after reviewing all 6 Phase 3 PDFs against actual logged sessions.
-// Root issue found: Saturday ("sat") had drifted into a FULL 3rd weekly chest/shoulder
-// session (same volume as Mon/Thu) on top of redundant same-pattern exercises and long
-// drop-set ladders within each Push/Pull session — the likely cause of ~2hr sessions and
-// stalled progress. Frequency itself (3x/week push) is not the problem — total weekly
-// volume and per-session redundancy is. Revised 2026-07-24 per Stefanus: he wants to keep
-// training chest/shoulders 3x/week for growth. Saturday now carries a short, light,
-// not-to-failure push finisher (2 exercises, 2 sets, higher reps) instead of either a full
-// duplicate session or nothing — adds frequency without adding much fatigue. Weekly totals
-// with this plan land ~15 chest sets / ~14 shoulder-press+lateral sets, within normal
-// hypertrophy ranges. See PHASE_4_TRAINING_PLAN.md for the full write-up.
+// ===== PHASE 4 PLAN + SUGGESTED WORKOUT (rev. 2026-08-09) =====
+// Rewritten 2026-08-09 after benchmarking Phase 4 Week 2 (the first complete week of the
+// new split) against Week 1 and the Phase 3 logs.
+//
+// GOAL CHANGE (2026-08-09): target is now 12% body fat by December with +1 kg muscle per
+// 4-week block — NOT a short-term cut. That flips the calorie posture from deficit to a
+// small surplus for the build blocks. Phase 4 stays "Phase 4" and the week number keeps
+// counting (Wk 3, 4, 5 ... 12) through the whole build; the deficit block gets a new phase
+// number only when Stefanus says to switch.
+//
+// WHAT WEEK 2 SHOWED
+//  1. Zero conditioning logged in Phase 4 Wk1 or Wk2 — the Saturday finisher has never
+//     actually been done. Saturday core was skipped too.
+//  2. Volume crept back onto exactly what Phase 4 cut: a 3rd chest movement on BOTH push
+//     days (Mon added Hybrid Pectoral Fly, Thu ran Incline + Fly + Decline), a 9-set
+//     lateral raise ladder on Thu, and a duplicate rear delt movement on Fri.
+//     Weekly chest landed ~22 sets against the ~15 the plan targeted.
+//  3. Meanwhile prescribed work got dropped: Tue Bayesian Curl (biceps = 3 sets ALL WEEK),
+//     Wed Leg Extension, Fri + Sat core, Sat conditioning.
+//  4. Strength days progressed, hypertrophy days regressed — DB Incline 24>22, Hybrid Fly
+//     30>20, Iso-lev Decline 25>22.5, Low Row 55>50, Bayesian Curl 27.2>19.3 (-29%),
+//     Rope Pushdown 49.9>45.4. Classic fatigue debt + under-fuelling.
+//  5. Wednesday — the one day run exactly as written — gave clean +1 rep progression at
+//     unchanged load on all three main lifts. The plan works when it is followed.
+//
+// WHAT CHANGED HERE
+//  - Structural cuts kept (3rd chest movement, 9-set ladder, duplicate rear delt) — junk
+//    volume is junk volume in a surplus too.
+//  - Restored: Tue Bayesian Curl, Wed Leg Extension, Fri/Sat core, Sat conditioning.
+//  - Added at the two real gaps: a 2nd biceps slot on Tue (arms are the laggard segment —
+//    3.5/3.4 kg against a 27 kg torso) and a 2nd hamstring slot on Sat (hams were 3 sets
+//    against 7-10 for quads).
+//  - Conditioning cut from 65 to ~40 min/wk. It is no longer the primary lever; it stays
+//    for visceral fat 5 / WHR 0.93, both of which sit in the red band.
+//  - Every exercise now carries an explicit per-week WEIGHT and REP prescription, derived
+//    from the Week 2 numbers by double progression.
+// See PHASE_4_TRAINING_PLAN.md for the full write-up.
+
+// Block targets. Baseline scan 2026-07-30: 69.2kg / 14.2% fat (9.8kg) / 56.2kg muscle.
+// "other" (bone+mineral) held at 3.2kg throughout.
+const PHASE_PLAN = {
+  posture: 'CUT — moderate deficit',
+  goal: 'Abs on the yacht 17 Oct (HK birthday) → then 12% body fat by December',
+  baseline: '30 Jul 2026 · 69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603',
+  note: 'Phase 4 keeps counting Wk 3 → Wk 11 (10 Aug – 11 Oct) through the CUT. HK 12–19 Oct is a travel week, not a block. Phase 5 Wk 1 starts Mon 20 Oct as the post-HK build block.',
+  checkpoints: [
+    { label: 'Phase 4 Wk 4',      date: '22 Aug', posture: 'cut',   muscle: '56.3', fat: '9.3', weight: '68.7', bf: '13.5%' },
+    { label: 'Phase 4 Wk 8',      date: '19 Sep', posture: 'cut',   muscle: '56.5', fat: '8.3', weight: '67.9', bf: '12.2%' },
+    { label: 'Phase 4 Wk 11 ✈',   date: '11 Oct', posture: 'cut',   muscle: '56.6', fat: '7.6', weight: '67.4', bf: '11.2%' },
+    { label: 'HK — yacht 🛥',      date: '17 Oct', posture: 'hold',  muscle: '56.6', fat: '7.6', weight: '~68',  bf: '~11.2%' },
+    { label: 'Phase 5 Wk 4',      date: '14 Nov', posture: 'build', muscle: '57.6', fat: '7.9', weight: '68.7', bf: '11.5%' },
+    { label: 'Phase 5 Wk 8',      date: '12 Dec', posture: 'build', muscle: '58.6', fat: '8.2', weight: '70.0', bf: '11.7%' }
+  ],
+  nutrition: {
+    tdee: '~2,400 kcal',
+    training: { kcal: '2,100', protein: '170 g', carbs: '220 g', fat: '60 g' },
+    rest:     { kcal: '1,900', protein: '170 g', carbs: '165 g', fat: '55 g' },
+    rules: [
+      'Moderate deficit (~275 kcal/day) → ~0.25 kg fat/week. Do NOT go harder — strength holds at this rate, and it is enough to land ~11.2% by 11 Oct.',
+      'Protein goes UP in a deficit, not down: 170 g (2.45 g/kg) protects muscle while fat comes off.',
+      'Keep carbs around training. The Week 2 load regressions were under-fuelling — a cut is not licence to repeat them.',
+      '60–80 g carbs 90 min pre-session on Mon and Wed, your two heaviest days.',
+      'Conditioning is back up: ~25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri.',
+      '10,000 steps daily floor, 2.5–3 L water.',
+      'Scan at Wk 4 (22 Aug) and Wk 8 (19 Sep). If fat loss is under 0.2 kg/wk across two scans, tighten by 150 kcal — not before.'
+    ]
+  },
+  // Diet as reported 2026-08-09 came to ~138 g protein against a now-170 g cut target.
+  // Chicken confirmed as ~110 g TOTAL across 3 breasts (~10 g protein each), so dinner is
+  // the biggest single gap. Sources are all complete and high-leucine — dosing, not selection.
+  proteinPlan: {
+    target: '170 g/day (cut target, up from 160) · currently ~138 g',
+    meals: [
+      { time: 'Morning',      food: '200 g egg white + 2 whole eggs',               protein: '~38 g', change: '+2 whole eggs. 25 g was below the MPS threshold after an overnight fast — highest-value single fix.' },
+      { time: 'Afternoon',    food: '200 g lean minced beef',                       protein: '~42 g', change: 'unchanged — best-dosed meal you have' },
+      { time: 'Post-workout', food: '1 scoop whey + 40 g carbs',                    protein: '20 g',  change: 'keep the carbs here even in a deficit — this slot refills glycogen' },
+      { time: 'Dinner',       food: 'Chicken breast — 5 breasts / ~185 g meat',     protein: '~52 g', change: 'confirmed ~110 g total for 3, so ~10 g protein each. +2 breasts, not +1. Cheap protein in a cut (~110 kcal each).' },
+      { time: 'Pre-bed',      food: '250 g Greek yogurt / cottage cheese / casein', protein: '~30 g', change: 'was whey — whey clears in ~2 h before a ~10 h fast. Casein also spikes insulin LESS than whey, which suits a bedtime Ipamorelin dose.' }
+    ],
+    warning: 'That lands ~182 g — comfortably over the 170 g target, which is fine. The real discipline in this block is total calories: 2,100 on training days. Track TOTAL intake for one week to confirm, not just protein.'
+  },
+  scanProtocol: [
+    'Same time of day as the 30 Jul scan, same fasted/fed state.',
+    'Carb-load the 24 h before (+150 g above target).',
+    '3 L water the day prior; normal intake scan morning. Do not go in dehydrated.',
+    'No training that morning. No alcohol 48 h out.',
+    'BIA muscle mass swings ±1 kg on glycogen and hydration alone — judge a block on the trend across three scans, not one reading.'
+  ],
+  // 12–19 Oct: HK, birthday, yacht on the 17th. Diet will be all over the place and training
+  // intermittent — that is planned for, not a failure. Peak condition is banked by 11 Oct.
+  peakWeek: {
+    title: 'Peak & HK week — 5 Oct → 19 Oct',
+    items: [
+      'NO dehydration, NO diuretics, NO salt-cutting. Genuinely dangerous, they backfire visually, and you do not stack that with a prescribed peptide.',
+      'Last heavy leg session Tue 13 Oct is too late — you fly on the 12th. Make it Wed 8 Oct, so water retention has settled before you land.',
+      'Peak condition is banked by Sat 11 Oct (~11.2%). The 5 days in HK before the 17th will not undo it.',
+      'A few days of higher carbs in HK will likely make you look BETTER on the 17th — fuller muscles after a 9-week cut. Do not try to keep dieting there.',
+      'The two levers that do matter on the 16th: go easy on alcohol and very high sodium. Those cause the puffiness people blame on the food.',
+      'Training in HK: 2–3 short full-body sessions if the hotel has a gym, otherwise walk. Do not try to run the split. Maintenance needs far less than you think.',
+      'Eat protein-forward at the first meal each day in HK and the rest takes care of itself.'
+    ]
+  }
+};
+
+// Per-week prescriptions. reps/weight use the same format the log parser expects:
+//   reps   "1 x 8, 1 x 8, 1 x 7"      (one group per set)
+//   weight "26-26-24"                  (dash-separated, one per set; comma = drop stages)
+// A week with no entry falls back to the last defined week + a double-progression prompt.
 const SUGGESTED_WORKOUTS = {
   push_strength: {
     label: 'Push Strength',
-    focus: 'Main lift heavy, 4-6 rep range. Straight sets — one drop set max (lateral raise only, last set). Target 60-75 min.',
+    focus: 'Main lift 6-8 reps. Straight sets — one drop set max (lateral raise, last set only). The 3rd chest movement stays cut. Target 60-75 min.',
     exercises: [
-      { name: 'DB or Machine Incline Press', reps: '4 x 8', note: 'main lift — use your last top weight, add load once all sets hit 8 reps' },
-      { name: 'Machine Chest Press', reps: '3 x 10', note: 'second press only — skip a 3rd pressing variation' },
-      { name: 'Machine Shoulder Press', reps: '3 x 10', note: '' },
-      { name: 'Cable Lateral Raise', reps: '3 x 15', note: 'straight sets; optional single drop set on the last set only' },
-      { name: 'Rope Tricep Pushdown', reps: '3 x 12', note: 'one triceps exercise, not three' },
-      { name: 'Cable Abs Crunch', reps: '3 x 15', note: 'one quick core finisher, ~3 min — not a full ab circuit' }
+      { name: 'DB or Machine Incline Press', note: 'main lift — Wk2 was 24/26/26/26 for 8,7,7,7',
+        wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '26-26-26-26' },
+              4: { reps: '1 x 7, 1 x 7, 1 x 6, 1 x 8', weight: '28-28-28-26' } } },
+      { name: 'Machine Chest Press', note: 'second press only — do NOT add a fly here, that was the Wk2 drift',
+        wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '60-65-65' },
+              4: { reps: '1 x 10, 1 x 8, 1 x 8', weight: '65-70-70' } } },
+      { name: 'Machine Shoulder Press', note: 'best progressor on this day — 40 → 45 kg in Wk2',
+        wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
+              4: { reps: '1 x 10, 1 x 8, 1 x 7', weight: '45-50-50' } } },
+      { name: 'Cable Lateral Raise', note: 'straight sets, no ladder',
+        wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
+              4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '18.1-18.1-20.4' } } },
+      { name: 'Rope Tricep Pushdown', note: 'regressed 49.9 → 45.4 in Wk2 — take it back',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' },
+              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '49.9-54.4-54.4' } } },
+      { name: 'Cable Abs Crunch', note: 'quick finisher, ~3 min',
+        wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-49.9' },
+              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' } } },
+      { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
     ]
   },
   pull_strength: {
     label: 'Pull Strength',
-    focus: 'Main lift heavy, 4-6 rep range. Pick ONE secondary pulldown variation, not both. Target 60-75 min.',
+    focus: 'Main lift 6-8 reps. Biceps RESTORED — Wk2 logged zero curls here, arms are your laggard segment. Target 60-75 min.',
     exercises: [
-      { name: 'Machine Lat Pulldown or Assisted Pull-up', reps: '4 x 8', note: 'pick one as your main vertical pull' },
-      { name: 'Chest-Supported / Low Row', reps: '3 x 10', note: 'horizontal pull' },
-      { name: 'Straight-Arm Pulldown or Cross-Body Pulldown', reps: '3 x 12', note: 'pick one, alternate week to week — not both' },
-      { name: 'Cable Rear Delt / Face Pull', reps: '3 x 15', note: '' },
-      { name: 'Bayesian Cable Curl', reps: '3 x 12', note: 'one biceps exercise' },
-      { name: 'Hanging or Lying Leg Raise', reps: '3 x 12', note: 'one quick core finisher, ~3 min' }
+      { name: 'Machine Lat Pulldown or Assisted Pull-up', note: 'big Wk2 jump to 70 kg — confirm the thumb is healed before 75',
+        wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-70' },
+              4: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 6', weight: '65-70-75-75' } } },
+      { name: 'Chest-Supported / Low Row', note: 'horizontal pull',
+        wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '55-60-65' },
+              4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '60-65-70' } } },
+      { name: 'Straight-Arm Pulldown', note: 'pick one pulldown variation, not both',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '29.5-31.8-34' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '31.8-34-36.3' } } },
+      { name: 'Cable Rear Delt / Face Pull', note: '',
+        wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
+              4: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '22.7-27.2-29.5' } } },
+      { name: 'Bayesian Cable Curl', note: 'RESTORED — this was skipped in Wk2',
+        wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '18.1-22.7-27.2' },
+              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '22.7-27.2-27.2' } } },
+      { name: 'Hammer or Incline DB Curl', note: 'NEW — 2nd biceps slot. Arms 3.5/3.4 kg vs 27 kg torso; they need the volume',
+        wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '10-12-12' },
+              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '12-12-14' } } },
+      { name: 'Hanging or Lying Leg Raise', note: 'bodyweight, quick finisher',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' } } },
+      { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
     ]
   },
   legs_strength: {
     label: 'Legs Strength',
-    focus: 'Already efficient — kept close to as-is. Alternate abductor/adductor weekly instead of both.',
+    focus: 'Your best day — Wk2 gave +1 rep at unchanged load on all three main lifts, so everything moves up. Leg Extension RESTORED.',
     exercises: [
-      { name: 'V-Squat', reps: '4 x 8', note: '' },
-      { name: 'Leg Press (low/narrow)', reps: '3 x 10', note: '' },
-      { name: 'Machine Hip Thrust', reps: '3 x 10', note: '' },
-      { name: 'Leg Curl', reps: '3 x 12', note: '' },
-      { name: 'Leg Extension', reps: '3 x 12', note: '' },
-      { name: 'Abductor or Adductor', reps: '3 x 12', note: 'alternate weekly, not both same day' },
-      { name: 'Standing Cable Crunch', reps: '3 x 15', note: 'one quick core finisher, ~3 min' }
+      { name: 'V-Squat', note: 'Wk2 hit 8 reps on all 4 sets — top of range, so add load',
+        wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 6', weight: '100-105-110-115' },
+              4: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 6', weight: '105-110-115-120' } } },
+      { name: 'Leg Press (low/narrow)', note: 'Wk2 hit 10s across — add load',
+        wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-120' },
+              4: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '115-120-130' } } },
+      { name: 'Machine Hip Thrust', note: 'Wk2 hit 10s across — add load',
+        wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
+              4: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '85-95-105' } } },
+      { name: 'Leg Curl', note: 'get 12 on all three before adding load',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '55-60-65' } } },
+      { name: 'Leg Extension', note: 'RESTORED — skipped in Wk2, quads dropped to 7 sets',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-60' },
+              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '55-60-65' } } },
+      { name: 'Abductor or Adductor', note: 'alternate weekly. Wk2 dropped to 50/55/60 from Phase 3 55/60/65',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '60-65-70' } } },
+      { name: 'Standing Cable Crunch', note: 'quick finisher, ~3 min',
+        wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
+              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' } } }
     ]
   },
   push_hypertrophy: {
     label: 'Push Hypertrophy',
-    focus: '10-15 rep range. Alternate the 2nd press and triceps pick week to week for variety. Target 60-75 min.',
+    focus: 'The day that needs the most repair — every chest lift regressed in Wk2. ONE second chest movement (alternates weekly), and the 9-set lateral ladder is gone.',
     exercises: [
-      { name: 'DB Incline Press', reps: '3 x 12', note: '' },
-      { name: 'Machine Chest Press or Iso-leverage Decline', reps: '3 x 12', note: 'alternate week to week, not both' },
-      { name: 'Arnold Press or Machine Shoulder Press', reps: '3 x 12', note: '' },
-      { name: 'Cable Lateral Raise', reps: '3 x 15', note: 'optional single drop set on the last set only' },
-      { name: 'Cable Tricep Pushdown or DB Overhead Extension', reps: '3 x 15', note: 'pick one' },
-      { name: 'Ab Wheel or Cable Crunch', reps: '3 x 12', note: 'rotate with Monday\'s crunch for variety' }
+      { name: 'DB Incline Press', note: 'Wk2 dropped to 18/20/22 from Wk1 20/22/24 — take it back',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22-22' },
+              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '22-24-24' } } },
+      { name: 'Iso-leverage Decline', note: 'Wk3 pick — ONE second chest movement, alternates with the fly. Never both.',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '20-22.5-25' },
+              4: { name: 'Hybrid Pectoral Fly', reps: '1 x 12, 1 x 11, 1 x 9', weight: '20-25-30' } } },
+      { name: 'Machine Shoulder Press', note: 'the one lift that progressed here in Wk2',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '30-35-35' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '30-35-40' } } },
+      { name: 'Cable Lateral Raise', note: '3 straight sets + ONE drop on the last set. The Wk2 9-set ladder down to 4.5 kg cost 12 min and bought nothing.',
+        wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12,12', weight: '13.6-14.8-14.8,9.1' },
+              4: { reps: '1 x 15, 1 x 14, 1 x 12,12', weight: '14.8-14.8-16.1,10.25' } } },
+      { name: 'Cable Overhead Extension', note: 'one triceps exercise',
+        wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
+              4: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '27.2-27.2-29.5' } } },
+      { name: 'Ab Wheel or Lying Leg Raise', note: 'bodyweight, quick finisher',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' } } },
+      { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
     ]
   },
   pull_hypertrophy: {
     label: 'Pull Hypertrophy',
-    focus: '10-15 rep range. Keep the JN cross-body pulldown — you said you really feel it. Target 60-75 min.',
+    focus: '10-15 rep range. Duplicate rear delt movement CUT. Low Row and Bayesian Curl both regressed in Wk2 — these prescriptions take them back.',
     exercises: [
-      { name: 'Wide Grip or Machine Lat Pulldown', reps: '4 x 12', note: '' },
-      { name: 'Chest-Supported Low Row', reps: '3 x 12', note: '' },
-      { name: "Jeff Nippard-style Cross-Body Lat Pulldown", reps: '3 x 15', note: 'keep — drop the other redundant pulldown variations' },
-      { name: 'Rear Delt Row/Fly', reps: '3 x 15', note: '' },
-      { name: 'Bayesian Cable Curl', reps: '3 x 15', note: '' },
-      { name: 'Lying or Hanging Leg Raise', reps: '3 x 15', note: 'one quick core finisher, ~3 min' }
+      { name: 'Machine Lat Pulldown', note: '',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '50-55-60-60' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 11, 1 x 10', weight: '55-60-65-65' } } },
+      { name: 'Chest-Supported Low Row', note: 'Wk2 dropped to 40/45/50 from 45/50/55 — take it back',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-60' } } },
+      { name: 'Jeff Nippard-style Cross-Body Lat Pulldown', note: 'progressed well in Wk2 — keep pushing it',
+        wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '27.2-31.8-34' },
+              4: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '29.5-34-36.3' } } },
+      { name: 'Rear Delt Row/Fly', note: 'ONE rear delt movement — Wk2 ran two, the second is cut',
+        wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-29.5' },
+              4: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '24-28.5-31.8' } } },
+      { name: 'Bayesian Cable Curl', note: 'biggest Wk2 regression: 27.2 → 19.3 kg (-29%). Rebuild it.',
+        wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '18.1-22.7-24' },
+              4: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '18.1-22.7-27.2' } } },
+      { name: 'Lying or Hanging Leg Raise', note: 'RESTORED — core was skipped here in Wk2',
+        wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
+      { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
     ]
   },
   sat: {
     label: 'Legs + Core + Light Push Finisher',
-    focus: 'Legs/core first, conditioning is your Oct 17 fat-loss lever — not extra lifting. Push finisher is deliberately light (stop 3-4 reps short of failure, no drop sets) so it adds frequency without adding fatigue debt.',
+    focus: 'Core and conditioning RESTORED — neither was logged in Phase 4 Wk1 or Wk2. Push finisher stays deliberately light (3-4 reps short of failure, no drop sets).',
     exercises: [
-      { name: 'Hip Thrust or Deficit Sumo Squat', reps: '4 x 12', note: 'alternate weekly; 3-4 sets per the plan' },
-      { name: 'Glute Kickback or Hip Abductor', reps: '3 x 15', note: '' },
-      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', reps: '3 x 15', note: 'rotate one variation per week; 2-3 sets per the plan' },
-      { name: 'Machine Chest Press or Pec Fly (light)', reps: '2 x 15', note: 'pump work — stop well short of failure, this is a frequency top-up not a 3rd full session' },
-      { name: 'Cable Lateral Raise (light)', reps: '2 x 18', note: 'higher reps, light weight, no drop set' },
-      { name: 'Conditioning finisher — incline walk, battle rope, or Hyrox circuit', reps: '', note: '15-20 min, no weight to log' }
+      { name: 'Hip Thrust or Deficit Sumo Squat', note: 'Wk2 was 55/65/70/75 — still below your Phase 3 top of 85',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '65-75-80-85' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 11, 1 x 10', weight: '70-80-90-95' } } },
+      { name: 'Seated or Lying Leg Curl', note: 'NEW — 2nd hamstring slot. Hams were 3 sets/wk against 7-10 for quads.',
+        wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-55' },
+              4: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-60' } } },
+      { name: 'Glute Kickback or Hip Abductor', note: '',
+        wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '19-24-27' },
+              4: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '21-26-29' } } },
+      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', note: 'RESTORED — skipped in Wk2. Rotate one variation per week.',
+        wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
+              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' } } },
+      { name: 'Machine Chest Press or Pec Fly (light)', note: '2 sets only — frequency top-up, not a 3rd full session. Stop well short of failure.',
+        wk: { 3: { reps: '1 x 15, 1 x 15', weight: '20-20' },
+              4: { reps: '1 x 15, 1 x 15', weight: '20-20' } } },
+      { name: 'Cable Lateral Raise (light)', note: 'crept to 13.6 in Wk2 — bring it back to 10.25. Light means light.',
+        wk: { 3: { reps: '1 x 18, 1 x 18', weight: '10.25-10.25' },
+              4: { reps: '1 x 18, 1 x 18', weight: '10.25-10.25' } } },
+      { name: 'Conditioning — incline walk or Hyrox circuit', note: '25 min, 14% incline @ 5.0 km/h, HR 125-140. Non-negotiable in a cut — never logged in Wk1 or Wk2. Nothing to log.',
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
     ]
   }
 };
+
+// The stored rep/weight strings use the log parser's verbose format ("1 x 8, 1 x 8" /
+// "26-26-26"). That's unreadable in a phone-width table, so display gets a compact form:
+//   "1 x 8, 1 x 8, 1 x 12,12"  ->  "8 · 8 · 12→12"
+//   "26-26-14.8,9.1"           ->  "26 · 26 · 14.8→9.1"   (→ = drop stage)
+function compactReps(reps) {
+  if (!reps) return '';
+  return reps.split(/,\s*(?=\d+\s*[×x])/).map(g => {
+    const m = g.trim().match(/^(\d+)\s*[×x]\s*(.+)$/);
+    if (!m) return g.trim();
+    const n = parseInt(m[1], 10);
+    const label = m[2].split(',').map(s => s.trim()).join('→');
+    return n > 1 ? `${n}×${label}` : label;
+  }).join(' · ');
+}
+function compactWeight(w) {
+  if (!w) return '';
+  return w.split(/\s*-\s*/).map(seg => seg.split(',').map(s => s.trim()).join('→')).join(' · ');
+}
+// Render a compact string as non-breaking per-set tokens, so a long prescription wraps
+// between sets instead of mid-number (or forcing the table wider than the phone).
+function numCell(s) {
+  if (!s) return '—';
+  return s.split(' · ').map(t => `<span style="white-space:nowrap">${escapeHtml(t)}</span>`).join(' · ');
+}
+
+// Which week the Log form is currently set to.
+function currentPlanWeek() {
+  return parseInt(document.getElementById('log-week')?.value, 10) || 1;
+}
+
+// Resolve an exercise's prescription for a given week. Weeks past the last defined week
+// carry the last one forward and flag it, rather than inventing numbers we can't know.
+function resolveRx(ex, week) {
+  const defined = Object.keys(ex.wk || {}).map(Number).sort((a, b) => a - b);
+  if (!defined.length) return null;
+  if (ex.wk[week]) return { ...ex.wk[week], carried: false };
+  const nearest = week > defined[defined.length - 1] ? defined[defined.length - 1] : defined[0];
+  return { ...ex.wk[nearest], carried: true, carriedFrom: nearest };
+}
 
 function renderSuggestedWorkout() {
   const type = document.getElementById('log-type').value;
@@ -8370,15 +8605,31 @@ function renderSuggestedWorkout() {
     contentEl.innerHTML = '<span style="color:var(--muted)">No suggested workout for this session type yet.</span>';
     return;
   }
+  const week = currentPlanWeek();
   focusEl.textContent = plan.focus;
+
+  const rows = plan.exercises.map((e, idx) => {
+    const rx = resolveRx(e, week) || { reps: '', weight: '', carried: false };
+    const name = rx.name || e.name;
+    return { idx, name, rx, note: e.note };
+  });
+  const anyCarried = rows.some(r => r.rx.carried);
+
   contentEl.innerHTML = `
+    ${anyCarried ? `<div style="font-size:11px;color:var(--accent);background:rgba(255,255,255,.06);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.5">
+      <strong>Week ${week} — no fixed prescription.</strong> Showing Week ${rows.find(r => r.rx.carried)?.rx.carriedFrom} as the baseline.
+      Apply double progression from your last logged session: hit the top of the rep range on <em>every</em> set → add 2.5–5 kg. Otherwise repeat the load and chase the reps.
+    </div>` : ''}
     <table class="ex-table">
-      <thead><tr><th>Exercise</th><th>Sets</th><th>Note</th></tr></thead>
-      <tbody>${plan.exercises.map((e, idx) => `
+      <thead><tr><th>Exercise</th><th style="text-align:right">Reps</th><th style="text-align:right">Kg</th></tr></thead>
+      <tbody>${rows.map(r => `
         <tr>
-          <td class="sw-name" data-sw-idx="${idx}" style="cursor:pointer">${escapeHtml(e.name)}${e.reps ? ' <span style="color:var(--accent);font-size:10px">↑ use</span>' : ''}</td>
-          <td>${escapeHtml(e.reps || '—')}</td>
-          <td style="color:var(--muted);font-size:11px">${escapeHtml(e.note || '')}</td>
+          <td class="sw-name" data-sw-idx="${r.idx}" style="cursor:pointer;vertical-align:top">
+            ${escapeHtml(r.name)}${r.rx.reps ? ' <span style="color:var(--accent);font-size:10px;white-space:nowrap">↑ use</span>' : ''}
+            ${r.note ? `<div style="color:var(--muted);font-size:10.5px;font-weight:400;line-height:1.45;margin-top:3px">${escapeHtml(r.note)}</div>` : ''}
+          </td>
+          <td style="text-align:right;vertical-align:top;font-variant-numeric:tabular-nums;line-height:1.5">${numCell(compactReps(r.rx.reps))}</td>
+          <td style="text-align:right;vertical-align:top;font-variant-numeric:tabular-nums;line-height:1.5">${numCell(compactWeight(r.rx.weight))}</td>
         </tr>`).join('')}
       </tbody>
     </table>`;
@@ -8394,8 +8645,10 @@ function initSuggestedWorkoutClicks() {
     const type = document.getElementById('log-type').value;
     const plan = SUGGESTED_WORKOUTS[type];
     const e = plan?.exercises[parseInt(td.dataset.swIdx, 10)];
-    if (!e || !e.reps) return; // conditioning finisher has no reps — nothing to load
-    prefillExercise(e.name, e.reps, '');
+    if (!e) return;
+    const rx = resolveRx(e, currentPlanWeek());
+    if (!rx || !rx.reps) return; // conditioning rows have no reps — nothing to load
+    prefillExercise(rx.name || e.name, rx.reps, rx.weight || '');
   });
 }
 
@@ -8403,15 +8656,107 @@ function loadSuggestedWorkout() {
   const type = document.getElementById('log-type').value;
   const plan = SUGGESTED_WORKOUTS[type];
   if (!plan) { alert('No suggested workout for this session type yet.'); return; }
-  const loadable = plan.exercises.filter(e => e.reps);
-  if (!confirm(`Load all ${loadable.length} exercises from Suggested Workout — ${plan.label} into Current Exercise? This replaces what's currently in the form.`)) return;
+  const week = currentPlanWeek();
+  const loadable = plan.exercises
+    .map(e => ({ e, rx: resolveRx(e, week) }))
+    .filter(x => x.rx && x.rx.reps);
+  if (!confirm(`Load all ${loadable.length} exercises from Suggested Workout — ${plan.label} (Week ${week}), with prescribed weights, into Current Exercise? This replaces what's currently in the form.`)) return;
   document.getElementById('exercise-rows').innerHTML = '';
   exerciseRowCount = 0;
   setRowCounters = {};
   dropRowCounters = {};
-  loadable.forEach(e => addExerciseRow({ name: e.name, reps: e.reps, weight: '', stripDrops: true }));
+  loadable.forEach(({ e, rx }) => addExerciseRow({
+    name: rx.name || e.name,
+    reps: rx.reps,
+    weight: rx.weight || '',
+    stripDrops: false   // prescriptions include intended drop stages — keep them
+  }));
   document.getElementById('exercise-rows').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  showToast('Suggested workout loaded — fill in your actual weights and save.');
+  showToast(`Week ${week} prescription loaded — adjust to what you actually lifted before saving.`);
+}
+
+// ===== PHASE 4 PLAN CARD (Log page) =====
+// Collapsed by default — it's reference material, not something you read mid-set.
+function togglePhasePlan() {
+  const el = document.getElementById('phase-plan-content');
+  const btn = document.getElementById('phase-plan-toggle');
+  if (!el || !btn) return;
+  const open = el.style.display !== 'none';
+  el.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? 'Show' : 'Hide';
+}
+
+function renderPhasePlanCard() {
+  const el = document.getElementById('phase-plan-content');
+  if (!el) return;
+  const p = PHASE_PLAN;
+  const n = p.nutrition;
+  el.innerHTML = `
+    <div style="font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:12px">
+      <div><strong style="color:var(--accent)">Goal</strong> — ${escapeHtml(p.goal)}</div>
+      <div><strong style="color:var(--accent)">Posture</strong> — ${escapeHtml(p.posture)} · TDEE ${escapeHtml(n.tdee)}</div>
+      <div><strong style="color:var(--accent)">Baseline</strong> — ${escapeHtml(p.baseline)}</div>
+      <div style="margin-top:6px;font-style:italic">${escapeHtml(p.note)}</div>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Checkpoints</div>
+    <div style="overflow-x:auto">
+    <table class="ex-table" style="margin-bottom:14px">
+      <thead><tr><th>Block</th><th>Date</th><th>Muscle</th><th>Fat</th><th>Weight</th><th>BF%</th></tr></thead>
+      <tbody>${p.checkpoints.map(c => `
+        <tr${c.posture === 'cut' ? ' style="opacity:.72"' : ''}>
+          <td>${escapeHtml(c.label)}${c.posture === 'cut' ? ' <span style="font-size:10px;color:var(--accent)">cut</span>' : ''}</td>
+          <td style="white-space:nowrap">${escapeHtml(c.date)}</td>
+          <td>${escapeHtml(c.muscle)}</td>
+          <td>${escapeHtml(c.fat)}</td>
+          <td>${escapeHtml(c.weight)}</td>
+          <td><strong>${escapeHtml(c.bf)}</strong></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Daily macros — build block</div>
+    <div style="overflow-x:auto">
+    <table class="ex-table" style="margin-bottom:10px">
+      <thead><tr><th>Day</th><th>kcal</th><th>Protein</th><th>Carbs</th><th>Fat</th></tr></thead>
+      <tbody>
+        <tr><td>Training (Mon–Sat)</td><td><strong>${escapeHtml(n.training.kcal)}</strong></td><td>${escapeHtml(n.training.protein)}</td><td>${escapeHtml(n.training.carbs)}</td><td>${escapeHtml(n.training.fat)}</td></tr>
+        <tr><td>Rest (Sun)</td><td><strong>${escapeHtml(n.rest.kcal)}</strong></td><td>${escapeHtml(n.rest.protein)}</td><td>${escapeHtml(n.rest.carbs)}</td><td>${escapeHtml(n.rest.fat)}</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <ul style="font-size:11.5px;color:var(--muted);line-height:1.65;padding-left:18px;margin:0 0 14px">
+      ${n.rules.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+    </ul>
+
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Protein schedule — ${escapeHtml(p.proteinPlan.target)}</div>
+    <div style="overflow-x:auto">
+    <table class="ex-table" style="margin-bottom:10px">
+      <thead><tr><th>Time</th><th>Food</th><th>Protein</th><th>Change</th></tr></thead>
+      <tbody>${p.proteinPlan.meals.map(m => `
+        <tr>
+          <td style="white-space:nowrap">${escapeHtml(m.time)}</td>
+          <td>${escapeHtml(m.food)}</td>
+          <td style="white-space:nowrap"><strong>${escapeHtml(m.protein)}</strong></td>
+          <td style="color:var(--muted);font-size:11px">${escapeHtml(m.change)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+    </div>
+    <div style="font-size:11.5px;color:var(--accent);background:rgba(255,255,255,.06);border-radius:8px;padding:9px 11px;margin-bottom:14px;line-height:1.6">
+      ⚠ ${escapeHtml(p.proteinPlan.warning)}
+    </div>
+
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Scan-day protocol</div>
+    <ul style="font-size:11.5px;color:var(--muted);line-height:1.65;padding-left:18px;margin:0 0 14px">
+      ${p.scanProtocol.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+    </ul>
+
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">🛥 ${escapeHtml(p.peakWeek.title)}</div>
+    <ul style="font-size:11.5px;color:var(--muted);line-height:1.65;padding-left:18px;margin:0">
+      ${p.peakWeek.items.map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+    </ul>`;
 }
 
 // ===== LOG WORKOUT =====

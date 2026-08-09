@@ -1,5 +1,23 @@
 # Phase 4 Training Plan — Trimmed Split
-**Written:** 2026-07-24 | **Goal:** abs-ready by 2026-10-17 (~12 weeks out)
+**Written:** 2026-07-24 | **Revised:** 2026-08-09 (twice — see below)
+**Goal:** Abs on the yacht 17 Oct (HK birthday) → then 12% body fat by December
+
+> ⚠️ **PLAN PIVOTED 2026-08-09 (second revision). This supersedes the build-first version.**
+>
+> Sequence is now **CUT first, build after HK**:
+> - **Phase 4 Wk 3 → Wk 11** (10 Aug – 11 Oct): moderate cut, ~275 kcal/day deficit,
+>   2,100 kcal training days, protein **170 g**. Lands ~11.2% BF by 11 Oct.
+> - **12–19 Oct: HK.** Birthday, yacht on the 17th. Travel week — diet off-plan and training
+>   intermittent by design. Not a block, not a failure. Peak condition is banked by 11 Oct.
+> - **Phase 5 Wk 1 starts Mon 20 Oct**: post-HK build block, +1 kg muscle per 4 weeks.
+>   Lands ~11.7% BF and ~58.6 kg muscle by 12 Dec — both goals met.
+>
+> **Block naming (Stefanus's rule, updated):** Phase 4 keeps counting Wk 3 → Wk 11 through
+> the cut. The phase increments **after HK**, not at the deficit. Do not increment before
+> 20 Oct.
+>
+> **Sections 1–5 below are the original 2026-07-24 diagnosis, kept for history.
+> Live prescription = "Phase 4 Week 3–4 — prescribed loads" further down.**
 
 ---
 
@@ -120,3 +138,218 @@ Rule going forward for Saturday's push work specifically: light weight, stop wel
 - Legs Strength (Wednesday) was already efficient and is left mostly untouched.
 
 Track it for 3-4 weeks and re-check the body scan — if load is progressing on the main lifts and the scan shows fat trending down, this is working. If not, that's the point to loop back in on nutrition and/or the Ipamorelin question with your doctor.
+
+---
+---
+
+# REVISION 2026-08-09 — Week 2 benchmark & the build-block rewrite
+
+## What Phase 4 Week 2 actually showed
+
+Week 2 (Aug 3–8) was the first complete week on the new split, benchmarked against Week 1
+and the Phase 3 logs.
+
+**1. Zero conditioning was logged in Phase 4 Week 1 or Week 2.** The Saturday finisher — the
+one item the original plan labelled "your calorie-deficit lever" — has never been done.
+Saturday core was skipped too.
+
+**2. Volume crept back onto exactly what Phase 4 cut.**
+- Monday: added Machine Hybrid Pectoral Fly — a 3rd chest movement (10 chest sets vs 7 planned)
+- Thursday: three chest movements (Incline + Fly + Decline = 9 sets), plus a **9-set lateral
+  raise ladder** down to 4.5 kg
+- Friday: Rear Delt Row/Fly *and* Rear Delt Fly — two movements for the same muscle
+
+Weekly chest landed ~22 sets against the ~15 targeted. Side delts ~15, mostly junk-light.
+
+**3. Meanwhile prescribed work got dropped.** Tuesday Bayesian Curl (biceps = 3 sets all
+week), Wednesday Leg Extension, Friday + Saturday core, Saturday conditioning.
+
+**4. Strength days progressed, hypertrophy days regressed.**
+
+| Progressing | Regressing |
+|---|---|
+| V-Squat 110 kg × 7 → × 8 (all 4 sets) | DB Incline Press (Thu) 24 → 22 kg |
+| Leg Press 110 × 9 → × 10 | Hybrid Fly (Thu) 30 → 20 kg |
+| Machine Hip Thrust 90 × 9 → × 10 | Iso-lev Decline 25 → 22.5 kg |
+| Machine Shoulder Press 40 → 45 kg | Chest-Supported Low Row (Fri) 55 → 50 kg |
+| Lat Pulldown 45.4 → 70 kg | **Bayesian Curl 27.2 → 19.3 kg (−29%)** |
+| Cross-Body Pulldown 31.8 → 33 kg | Rope Pushdown 49.9 → 45.4 kg |
+| Cable Rear Delt 22.7 → 27.2 kg | Hip Thrust (Sat) 85 → 75 kg |
+
+Classic fatigue debt plus under-fuelling. **Wednesday — the one day run exactly as written —
+gave clean +1 rep progression at unchanged load on all three main lifts.**
+
+---
+
+## Block plan to December — SUPERSEDED, see header
+
+> The build-first table below was written before Stefanus confirmed 17 Oct is his birthday
+> on a yacht in HK. Kept for the reasoning; **the live plan is cut-first — see header.**
+>
+> Why the conflict dissolved: over a 9-week runway (not the 13 days originally briefed), a
+> **gentle ~275 kcal/day deficit** reaches ~11.2% by 11 Oct. No crash needed. The only cost
+> is that +1 kg/block muscle pauses until 20 Oct — deferred, not lost.
+
+### Original build-first table
+
+Baseline scan 2026-07-30: **69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603.**
+"Other" (bone + mineral) held at 3.2 kg.
+
+| Block | Date | Posture | Muscle | Fat | Weight | BF% |
+|---|---|---|---|---|---|---|
+| Phase 4 Wk 4 | 22 Aug | build | 57.2 | 9.9 | 70.3 | 14.1% |
+| Phase 4 Wk 8 | 19 Sep | build | 58.2 | 10.1 | 71.5 | 14.1% |
+| Phase 4 Wk 12 | 17 Oct | build | 59.2 | 10.3 | 72.7 | 14.2% |
+| Cut block 1 | 14 Nov | cut | 59.7 | 8.9 | 71.8 | 12.4% |
+| Cut block 2 | 12 Dec | cut | 60.2 | 8.5 | 71.9 | **11.8%** |
+
+Three build blocks, two cut blocks. Scale weight goes **up** to ~72 kg through the build —
+expect it. BMI will read ~26.4 and the scan will flag it; ignore it, BIA BMI can't tell
+muscle from fat.
+
+**Honest ceiling:** +4 kg over 18 weeks is 0.22 kg/week, the optimistic end for a 39-year-old
+intermediate. +2 to +3 kg is the likelier real outcome. Chase +1/block; treat +0.6 as a pass.
+
+**RESOLVED 2026-08-09:** 17 Oct is his birthday on a yacht in HK (in HK 12–19 Oct). Plan
+pivoted to cut-first. See header for the live sequence.
+
+### Live plan — cut first
+
+| Block | Date | Posture | Muscle | Fat | Weight | BF% |
+|---|---|---|---|---|---|---|
+| Phase 4 Wk 4 | 22 Aug | cut | 56.3 | 9.3 | 68.7 | 13.5% |
+| Phase 4 Wk 8 | 19 Sep | cut | 56.5 | 8.3 | 67.9 | 12.2% |
+| Phase 4 Wk 11 ✈ | 11 Oct | cut | 56.6 | 7.6 | 67.4 | **11.2%** |
+| HK — yacht 🛥 | 17 Oct | hold | 56.6 | 7.6 | ~68 | ~11.2% |
+| Phase 5 Wk 4 | 14 Nov | build | 57.6 | 7.9 | 68.7 | 11.5% |
+| Phase 5 Wk 8 | 12 Dec | build | 58.6 | 8.2 | 70.0 | **11.7%** |
+
+Muscle is flat-to-+0.4 through the cut. That is the honest trade for abs on the 17th;
++1 kg/block resumes 20 Oct.
+
+### Cut macros (Phase 4 Wk 3–11)
+
+| | Training days (Mon–Sat) | Rest (Sun) |
+|---|---|---|
+| Calories | **2,100** | 1,900 |
+| Protein | **170 g** (2.45 g/kg — UP in a deficit) | 170 g |
+| Carbs | 220 g | 165 g |
+| Fat | 60 g | 55 g |
+
+Conditioning back up to ~75 min/wk: 25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri.
+10,000 steps daily floor. Scans at Wk 4 (22 Aug) and Wk 8 (19 Sep) — only tighten by 150 kcal
+if fat loss is under 0.2 kg/wk across **two** scans.
+
+### Peak & HK week
+
+- **No dehydration, no diuretics, no salt-cutting.** Dangerous, counterproductive, and not
+  something to stack with a prescribed peptide.
+- Last heavy leg session **Wed 8 Oct** (he flies the 12th), so water retention settles.
+- Peak is banked by Sat 11 Oct. Five days of HK eating before the 17th will not undo it —
+  after a 9-week cut, higher carbs will likely make him look *fuller and better* on the day.
+- The two levers that matter on the 16th: go easy on alcohol and very high sodium.
+- Training in HK: 2–3 short full-body sessions if the hotel has a gym, otherwise walk.
+  Maintenance needs far less than people assume. Don't try to run the split.
+
+---
+
+## Phase 4 Week 3–4 — prescribed loads
+
+Derived from Week 2 by double progression. These are mirrored exactly in the tracker's
+`SUGGESTED_WORKOUTS` (per-week `wk: {3: …, 4: …}`), so the app is the source of truth for
+day-to-day use. Weeks 5+ carry Week 4 forward and prompt for double progression rather than
+inventing numbers.
+
+**Weekly set totals, before → after:** chest 22 → 15 · back 20 · biceps **3 → 9** ·
+hamstrings **3 → 6** · quads **7 → 10** · core 8 → 12 · conditioning **0 → ~40 min**.
+
+### Structural changes
+- **Kept cut:** 3rd chest movement (both push days), 9-set lateral ladder, duplicate rear delt.
+  Junk volume is junk volume in a surplus too.
+- **Restored:** Tue Bayesian Curl, Wed Leg Extension, Fri + Sat core, Sat conditioning.
+- **Added at the two real gaps:** a 2nd biceps slot Tue (arms are the laggard segment —
+  3.5/3.4 kg against a 27 kg torso) and a 2nd hamstring slot Sat (hams 3 sets vs 7–10 quads).
+- **Conditioning cut 65 → ~40 min/wk.** No longer the primary lever; retained for
+  visceral fat 5 and WHR 0.93, both in the red band.
+
+---
+
+## Nutrition — build block
+
+TDEE ≈ **2,400 kcal**.
+
+| | Training days (Mon–Sat) | Rest (Sun) |
+|---|---|---|
+| Calories | **2,550** | 2,300 |
+| Protein | 160 g | 160 g |
+| Carbs | 300 g | 250 g |
+| Fat | 70 g | 65 g |
+
+- Keep the surplus small — +150 supports ~0.25 kg/wk of tissue; bigger just adds fat.
+- If scale weight climbs faster than ~0.3 kg/week, pull carbs back by 40 g.
+- Carbs are what fix the Week 2 load regressions. Do not cut them during a build block.
+- 60–80 g carbs 90 min pre-session on Mon and Wed.
+- 9,000 steps daily floor, 2.5–3 L water.
+
+### Protein audit (diet as reported 2026-08-09)
+
+Reported: 200 g egg white + 1 yolk / 200 g lean minced beef / 1 scoop whey post-workout /
+3 air-fried chicken breast (~110 g meat) / 1 scoop whey at 8 pm ≈ **~138 g protein, ~825 kcal**
+— roughly **22 g short** of the 160 g target.
+
+*Open question:* "3 chicken breast, ~100–110 g" — total or each? If each (~330 g), he's at
+~200 g protein and the fix is different.
+
+| Time | Prescribed | Protein | Change |
+|---|---|---|---|
+| Morning | 200 g egg white + **2 whole eggs** | ~38 g | 25 g is below the MPS threshold after an overnight fast |
+| Afternoon | 200 g lean minced beef | ~42 g | unchanged — best-dosed meal he has |
+| Post-workout | 1 scoop whey **+ 50 g carbs** | 20 g | add the carbs |
+| Dinner | chicken breast, up to ~180 g meat | ~50 g | was ~110 g |
+| Pre-bed | **250 g Greek yogurt / cottage cheese / casein** | ~30 g | was whey |
+
+**Sources are all complete and high-leucine — the problem is dosing, not selection.**
+
+**The bigger risk is total calories, not protein.** Only ~825 kcal of the 2,550 target comes
+from these foods. Week 2's load regressions look like under-fuelling. Track TOTAL intake for
+a week, not just protein.
+
+### On casein and Ipamorelin (asked 2026-08-09)
+
+Factual nutrition physiology only — **protocol and timing are for his prescribing physician.**
+
+- Elevated glucose and insulin blunt GH release (via somatostatin), so GH secretagogues are
+  conventionally dosed away from food. That much is real.
+- **But whey is markedly *more* insulinotropic than casein**, not less. Whey produces a fast,
+  high insulin spike (its insulin index rivals white bread despite negligible carbs);
+  casein clots in the stomach and gives a slower, flatter curve.
+- So swapping the 8 pm whey → casein **lowers** the insulin excursion near a bedtime dose
+  while also extending overnight amino acid availability. It improves both sides, not one
+  at the other's expense.
+- **Timing is the lever, not the protein type.** Keep the last meal ~2 h before the dose —
+  his existing 8 pm meal already fits a late-evening dose.
+- Don't trade a well-evidenced nutrition intervention (pre-sleep casein) for a smaller,
+  less certain GH-pulse effect. GH at secretagogue-elevated levels is more lipolytic than
+  directly hypertrophic in adult skeletal muscle.
+
+---
+
+## Scan-day protocol
+
+BIA muscle mass swings ±1 kg on glycogen and hydration alone.
+
+- Same time of day as the 30 Jul scan, same fasted/fed state
+- Carb-load the 24 h before (+150 g above target)
+- 3 L water the day prior; normal intake scan morning — do not go in dehydrated
+- No training that morning; no alcohol 48 h out
+- **Judge a block on the trend across three scans, not one reading.**
+
+---
+
+## Open flags
+
+1. **Thumb** — last logged mention 2026-07-28: "Thumb is still healing." Lat Pulldown has
+   since jumped to 70 kg and Week 4 prescribes 75. Confirm before loading, or use straps.
+2. **Oct 17 abs goal** — incompatible with the build-first sequencing above. Unresolved.
+3. **Body age 46 vs actual 39, WHR 0.93 (red), visceral fat 5** — these respond to the cut
+   blocks and the conditioning, not to more lifting.
