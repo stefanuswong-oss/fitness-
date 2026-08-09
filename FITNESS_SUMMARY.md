@@ -10,26 +10,27 @@
 - Injury: thumb pain from a pull-up fall (noted 2026-07-03), last logged as still healing 2026-07-28. Lat Pulldown has since jumped to 70kg and Wk4 prescribes 75 — check before assuming resolved.
 - Ipamorelin: Week 6 as of 2026-07-24.
 
-### Goal (pivoted 2026-08-09) — read this before advising
+### Goal (final as of 2026-08-09) — read this before advising
 
-- **Abs on the yacht 17 Oct (HK birthday), then 12% body fat by December.** Both are now
-  achievable — see `PHASE_4_TRAINING_PLAN.md` header for the live sequence.
-- **He is in HK 12–19 Oct.** Birthday + yacht on the 17th. Diet off-plan and training
-  intermittent that week **by design** — that is planned for, not a lapse. Peak condition is
-  banked by Sat 11 Oct.
-- **Calorie posture: moderate CUT (~2,100 kcal training days, ~275/day deficit), protein UP
-  to 170 g.** He chose the moderate rate over the aggressive one. Do not push harder unless
-  two consecutive scans show under 0.2 kg/wk of fat loss.
-- **Block naming (his rule, as updated 2026-08-09):** **Phase 4 keeps counting Wk 3 → Wk 11**
-  through the cut (10 Aug – 11 Oct). The phase increments **after HK** — **Phase 5 Wk 1 starts
-  Mon 20 Oct** as the post-HK build block. Do NOT increment the phase before 20 Oct, and do
-  not increment it at the start of the deficit.
-- Muscle is expected flat-to-+0.4 kg through the cut. The +1 kg/4-week-block target resumes
-  in Phase 5 from 20 Oct. Don't promise both at once.
-- Tracker's "Suggested Workout" card carries **per-week weight + rep prescriptions**
-  (`wk: {3:…, 4:…}`); the "Phase 4 Plan — Targets & Nutrition" card holds the checkpoint
-  table, cut macros, protein schedule, scan-day protocol and the peak/HK-week guidance.
-  Weeks 5+ carry Week 4 forward and prompt for double progression instead of inventing numbers.
+- **The target is DECEMBER, not October.** 10 Dec (Tomorrowland, Bangkok) and 31 Dec
+  (White Party) are his "album unveiling". **17 Oct (HK birthday, yacht) is a nice-to-have
+  waypoint** that arrives free on the way — do not treat it as the goal.
+- **Live plan: cut straight through, peak 10 Dec at ~9.4% / 66.8 kg.** ~300 kcal/day deficit
+  (2,100 training days), protein 170 g, held from 10 Aug to 30 Nov.
+- **He is in HK 12–19 Oct** — that is a planned **diet break at maintenance**, not a lapse.
+  Peak for the yacht (~11%) is banked by Sat 11 Oct.
+- **10–31 Dec: HOLD at maintenance.** Do not diet between the two events — arriving flat on
+  the 31st is the bigger risk.
+- **Block naming (his rule):** Phase 4 keeps counting **Wk 3 → Wk 11** through the cut.
+  Phase increments **after HK** — **Phase 5 Wk 1 = Mon 20 Oct**, and Phase 5 is a
+  **continued cut**, not a build block.
+- **Muscle stays roughly flat (+0.5 kg over 17 weeks). This was an explicit, informed trade**
+  — he chose cut-through over build-then-cut after seeing both sets of numbers. The
+  +1 kg/4-week build target is deferred to **January**, from a ~9.5% base. Don't re-litigate.
+- Tracker's "Suggested Workout" card carries per-week weight + rep prescriptions
+  (`wk: {3:…, 4:…}`); the "Phase 4 Plan" card holds checkpoints, cut macros, protein
+  schedule, scan protocol and the event protocol for 17 Oct / 10 Dec / 31 Dec. Weeks 5+
+  carry Week 4 forward and prompt for double progression rather than inventing numbers.
 
 ### Peptides — factual notes only, never advise on protocol
 
@@ -37,8 +38,20 @@
   which takes him to roughly mid/late September.
 - **He is considering switching to retatrutide ("Reta") after ~3 months of Ipamorelin.**
   Flagged 2026-08-09: a GLP-1/GIP/glucagon triple agonist works *against* a build block, and
-  starting it in the weeks before HK would be poorly timed. Sequencing discussed; the decision
-  and any dosing is for his prescribing physician, not for agents here.
+  starting it in the weeks before HK would be poorly timed (titration nausea). Natural window
+  if he wants it is January, after December is banked.
+- **Tesamorelin also asked about 2026-08-09.** Answered: wrong depot and wrong timeline for
+  his goal. Its evidence base is *visceral* fat (approved for HIV-associated lipodystrophy);
+  abs are hidden by *subcutaneous* fat. His visceral fat is already 5 — top of the healthy
+  1–5 zone, not a problem. The trial effect is measured over 26 weeks; he has 9 to 11 Oct.
+  Different receptor from Ipamorelin (GHRH analog vs ghrelin agonist) — complementary, not
+  a substitute.
+- **Standing position: none of these three is his limiting factor.** Week 2 showed the real
+  constraints were under-fuelling and program drift, both fixed 2026-08-09. Don't recommend
+  adding a compound to solve a programming problem. Revisit at the 11 Oct scan with three
+  readings of trend data (30 Jul / 22 Aug / 19 Sep), not before.
+- **Never advise on dosing, protocol, or whether to start/stop any of these.** Physician's
+  call. Agents here may only address how a compound interacts with the training plan.
 
 ---
 

@@ -1,23 +1,46 @@
 # Phase 4 Training Plan — Trimmed Split
-**Written:** 2026-07-24 | **Revised:** 2026-08-09 (twice — see below)
-**Goal:** Abs on the yacht 17 Oct (HK birthday) → then 12% body fat by December
+**Written:** 2026-07-24 | **Revised:** 2026-08-09 (three times — see below)
+**Goal:** Peak 10 Dec (Tomorrowland, Bangkok) + 31 Dec (White Party)
 
-> ⚠️ **PLAN PIVOTED 2026-08-09 (second revision). This supersedes the build-first version.**
+> ⚠️ **PLAN PIVOTED TWICE ON 2026-08-09. This header is the live plan — everything below it
+> is history.**
 >
-> Sequence is now **CUT first, build after HK**:
-> - **Phase 4 Wk 3 → Wk 11** (10 Aug – 11 Oct): moderate cut, ~275 kcal/day deficit,
->   2,100 kcal training days, protein **170 g**. Lands ~11.2% BF by 11 Oct.
-> - **12–19 Oct: HK.** Birthday, yacht on the 17th. Travel week — diet off-plan and training
->   intermittent by design. Not a block, not a failure. Peak condition is banked by 11 Oct.
-> - **Phase 5 Wk 1 starts Mon 20 Oct**: post-HK build block, +1 kg muscle per 4 weeks.
->   Lands ~11.7% BF and ~58.6 kg muscle by 12 Dec — both goals met.
+> **The real target is December, not October.** 10 Dec (Tomorrowland, Bangkok) and 31 Dec
+> (White Party) are Stefanus's "album unveiling". 17 Oct (HK birthday, yacht) is a
+> nice-to-have waypoint that arrives free on the way — it is NOT the summit.
 >
-> **Block naming (Stefanus's rule, updated):** Phase 4 keeps counting Wk 3 → Wk 11 through
-> the cut. The phase increments **after HK**, not at the deficit. Do not increment before
-> 20 Oct.
+> ### Live sequence — cut through, peak in December
 >
-> **Sections 1–5 below are the original 2026-07-24 diagnosis, kept for history.
-> Live prescription = "Phase 4 Week 3–4 — prescribed loads" further down.**
+> | Milestone | Date | Posture | Muscle | Fat | Weight | BF% |
+> |---|---|---|---|---|---|---|
+> | Phase 4 Wk 4 | 22 Aug | cut | 56.3 | 9.3 | 68.7 | 13.5% |
+> | Phase 4 Wk 8 | 19 Sep | cut | 56.4 | 8.3 | 67.9 | 12.2% |
+> | Phase 4 Wk 11 ✈ | 11 Oct | cut | 56.5 | 7.4 | 67.1 | **11.0%** 🛥 |
+> | HK — diet break | 12–19 Oct | hold | 56.5 | 7.8 | 67.7 | 11.5% |
+> | Phase 5 Wk 6 | 30 Nov | cut | 56.7 | 6.2 | 66.1 | 9.4% |
+> | **TOMORROWLAND** | **10 Dec** | peak | 56.7 | 6.2 | 66.8 | **~9.4%** |
+> | **WHITE PARTY** | **31 Dec** | hold | 56.7 | 6.5 | 67.0 | ~9.8% |
+>
+> ### Why cut-through beat build-then-cut
+>
+> Over 17 weeks, fat loss returns roughly **3–4× more visible change per kg** than muscle
+> gain: ~4 kg of fat can come off and all of it shows, against +2–3 kg of muscle of which a
+> good fraction sits under fat. Building from 14.2% also partitions poorly — leaner lifters
+> put more of a surplus into muscle. The build-then-cut alternative needed a **~650 kcal/day
+> deficit for 7 straight weeks** post-HK with no buffer, which is precisely the deficit depth
+> that produced his Week 2 load regressions. Chosen by Stefanus 2026-08-09 over the
+> build-first and split-the-difference options.
+>
+> **Accepted cost: muscle stays roughly flat (+0.5 kg across 17 weeks).** The +1 kg/4-week
+> build target is deferred to **January**, from a ~9.5% base where partitioning is far better.
+> Do not re-litigate this — it was an explicit, informed trade.
+>
+> ### Block naming (Stefanus's rule)
+> **Phase 4 keeps counting Wk 3 → Wk 11** through the cut. Phase increments **after HK**:
+> **Phase 5 Wk 1 = Mon 20 Oct**, and Phase 5 is a *continued cut*, not a build block.
+>
+> **Sections below are the original 2026-07-24 diagnosis and the superseded 2026-08-09
+> revisions, kept for history. Live prescription = "Phase 4 Week 3–4 — prescribed loads".**
 
 ---
 
@@ -211,7 +234,8 @@ muscle from fat.
 intermediate. +2 to +3 kg is the likelier real outcome. Chase +1/block; treat +0.6 as a pass.
 
 **RESOLVED 2026-08-09:** 17 Oct is his birthday on a yacht in HK (in HK 12–19 Oct). Plan
-pivoted to cut-first. See header for the live sequence.
+pivoted to cut-first. **Then superseded again the same day** — Oct 17 is only a nice-to-have;
+the real targets are 10 Dec (Tomorrowland) and 31 Dec (White Party). See header.
 
 ### Live plan — cut first
 
@@ -270,7 +294,8 @@ hamstrings **3 → 6** · quads **7 → 10** · core 8 → 12 · conditioning **
 - **Added at the two real gaps:** a 2nd biceps slot Tue (arms are the laggard segment —
   3.5/3.4 kg against a 27 kg torso) and a 2nd hamstring slot Sat (hams 3 sets vs 7–10 quads).
 - **Conditioning cut 65 → ~40 min/wk.** No longer the primary lever; retained for
-  visceral fat 5 and WHR 0.93, both in the red band.
+  WHR 0.93, which is in the red band. (Correction: visceral fat 5 is at the top of the
+  healthy 1-5 zone, NOT red — an earlier draft mis-stated this.)
 
 ---
 
@@ -351,5 +376,6 @@ BIA muscle mass swings ±1 kg on glycogen and hydration alone.
 1. **Thumb** — last logged mention 2026-07-28: "Thumb is still healing." Lat Pulldown has
    since jumped to 70 kg and Week 4 prescribes 75. Confirm before loading, or use straps.
 2. **Oct 17 abs goal** — incompatible with the build-first sequencing above. Unresolved.
-3. **Body age 46 vs actual 39, WHR 0.93 (red), visceral fat 5** — these respond to the cut
+3. **Body age 46 vs actual 39, WHR 0.93 (red); visceral fat 5 is healthy (top of the 1-5
+   zone), not a problem** — these respond to the cut
    blocks and the conditioning, not to more lifting.

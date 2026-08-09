@@ -8317,7 +8317,8 @@ function deleteSession(id) {
 //    3.5/3.4 kg against a 27 kg torso) and a 2nd hamstring slot on Sat (hams were 3 sets
 //    against 7-10 for quads).
 //  - Conditioning cut from 65 to ~40 min/wk. It is no longer the primary lever; it stays
-//    for visceral fat 5 / WHR 0.93, both of which sit in the red band.
+//    for WHR 0.93, which sits in the red band. (Visceral fat 5 is at the TOP of the
+//    healthy 1-5 zone, not in the red — the app's own Insights scores <=5 as 'good'.)
 //  - Every exercise now carries an explicit per-week WEIGHT and REP prescription, derived
 //    from the Week 2 numbers by double progression.
 // See PHASE_4_TRAINING_PLAN.md for the full write-up.
@@ -8325,65 +8326,63 @@ function deleteSession(id) {
 // Block targets. Baseline scan 2026-07-30: 69.2kg / 14.2% fat (9.8kg) / 56.2kg muscle.
 // "other" (bone+mineral) held at 3.2kg throughout.
 const PHASE_PLAN = {
-  posture: 'CUT — moderate deficit',
-  goal: 'Abs on the yacht 17 Oct (HK birthday) → then 12% body fat by December',
+  posture: 'CUT — hold through to December',
+  goal: 'Peak 10 Dec (Tomorrowland, Bangkok) + 31 Dec (White Party) · yacht 17 Oct is a waypoint, not the summit',
   baseline: '30 Jul 2026 · 69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603',
-  note: 'Phase 4 keeps counting Wk 3 → Wk 11 (10 Aug – 11 Oct) through the CUT. HK 12–19 Oct is a travel week, not a block. Phase 5 Wk 1 starts Mon 20 Oct as the post-HK build block.',
+  note: 'Phase 4 Wk 3 → Wk 11 = cut (10 Aug – 11 Oct). HK 12–19 Oct = diet break at maintenance. Phase 5 Wk 1 starts Mon 20 Oct and CONTINUES the cut — it is not a build block. Build phase is deferred to January, from a lean base.',
   checkpoints: [
     { label: 'Phase 4 Wk 4',      date: '22 Aug', posture: 'cut',   muscle: '56.3', fat: '9.3', weight: '68.7', bf: '13.5%' },
-    { label: 'Phase 4 Wk 8',      date: '19 Sep', posture: 'cut',   muscle: '56.5', fat: '8.3', weight: '67.9', bf: '12.2%' },
-    { label: 'Phase 4 Wk 11 ✈',   date: '11 Oct', posture: 'cut',   muscle: '56.6', fat: '7.6', weight: '67.4', bf: '11.2%' },
-    { label: 'HK — yacht 🛥',      date: '17 Oct', posture: 'hold',  muscle: '56.6', fat: '7.6', weight: '~68',  bf: '~11.2%' },
-    { label: 'Phase 5 Wk 4',      date: '14 Nov', posture: 'build', muscle: '57.6', fat: '7.9', weight: '68.7', bf: '11.5%' },
-    { label: 'Phase 5 Wk 8',      date: '12 Dec', posture: 'build', muscle: '58.6', fat: '8.2', weight: '70.0', bf: '11.7%' }
+    { label: 'Phase 4 Wk 8',      date: '19 Sep', posture: 'cut',   muscle: '56.4', fat: '8.3', weight: '67.9', bf: '12.2%' },
+    { label: 'Phase 4 Wk 11 ✈',   date: '11 Oct', posture: 'cut',   muscle: '56.5', fat: '7.4', weight: '67.1', bf: '11.0%' },
+    { label: 'HK — diet break 🛥', date: '12–19 Oct', posture: 'hold', muscle: '56.5', fat: '7.8', weight: '67.7', bf: '11.5%' },
+    { label: 'Phase 5 Wk 6',      date: '30 Nov', posture: 'cut',   muscle: '56.7', fat: '6.2', weight: '66.1', bf: '9.4%' },
+    { label: 'TOMORROWLAND 🎧',    date: '10 Dec', posture: 'peak',  muscle: '56.7', fat: '6.2', weight: '66.8', bf: '~9.4%' },
+    { label: 'WHITE PARTY 🤍',     date: '31 Dec', posture: 'hold',  muscle: '56.7', fat: '6.5', weight: '67.0', bf: '~9.8%' }
   ],
   nutrition: {
     tdee: '~2,400 kcal',
     training: { kcal: '2,100', protein: '170 g', carbs: '220 g', fat: '60 g' },
     rest:     { kcal: '1,900', protein: '170 g', carbs: '165 g', fat: '55 g' },
     rules: [
-      'Moderate deficit (~275 kcal/day) → ~0.25 kg fat/week. Do NOT go harder — strength holds at this rate, and it is enough to land ~11.2% by 11 Oct.',
-      'Protein goes UP in a deficit, not down: 170 g (2.45 g/kg) protects muscle while fat comes off.',
-      'Keep carbs around training. The Week 2 load regressions were under-fuelling — a cut is not licence to repeat them.',
-      '60–80 g carbs 90 min pre-session on Mon and Wed, your two heaviest days.',
-      'Conditioning is back up: ~25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri.',
-      '10,000 steps daily floor, 2.5–3 L water.',
-      'Scan at Wk 4 (22 Aug) and Wk 8 (19 Sep). If fat loss is under 0.2 kg/wk across two scans, tighten by 150 kcal — not before.'
+      'Moderate deficit (~300 kcal/day) → ~0.27 kg fat/week, held from 10 Aug to 30 Nov. Do NOT go harder — this rate is what protects strength across a 15-week cut.',
+      'Protein goes UP in a deficit, not down: 170 g (2.45 g/kg).',
+      'HK 12–19 Oct is a planned DIET BREAK at maintenance (~2,400). Eat. After 9 weeks of deficit it restores training performance and makes the second half of the cut work better. It is part of the plan, not a lapse.',
+      '1–9 Dec: back to maintenance, then carb-load the final 4 days. Arrive full, not flat.',
+      '10–31 Dec: HOLD at maintenance. Do not try to get leaner between the two events — arriving flat on the 31st is the bigger risk.',
+      'Conditioning: ~25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri. 10,000 steps daily floor.',
+      'Scan at Wk 4 (22 Aug), Wk 8 (19 Sep), Wk 11 (11 Oct). Only tighten by 150 kcal if fat loss is under 0.2 kg/wk across TWO consecutive scans.'
     ]
   },
-  // Diet as reported 2026-08-09 came to ~138 g protein against a now-170 g cut target.
-  // Chicken confirmed as ~110 g TOTAL across 3 breasts (~10 g protein each), so dinner is
-  // the biggest single gap. Sources are all complete and high-leucine — dosing, not selection.
+  // Diet as reported 2026-08-09: ~138 g protein against a 170 g cut target. Chicken confirmed
+  // ~110 g TOTAL across 3 breasts (~10 g protein each), so dinner is the biggest single gap.
   proteinPlan: {
-    target: '170 g/day (cut target, up from 160) · currently ~138 g',
+    target: '170 g/day (cut target) · currently ~138 g',
     meals: [
       { time: 'Morning',      food: '200 g egg white + 2 whole eggs',               protein: '~38 g', change: '+2 whole eggs. 25 g was below the MPS threshold after an overnight fast — highest-value single fix.' },
       { time: 'Afternoon',    food: '200 g lean minced beef',                       protein: '~42 g', change: 'unchanged — best-dosed meal you have' },
       { time: 'Post-workout', food: '1 scoop whey + 40 g carbs',                    protein: '20 g',  change: 'keep the carbs here even in a deficit — this slot refills glycogen' },
-      { time: 'Dinner',       food: 'Chicken breast — 5 breasts / ~185 g meat',     protein: '~52 g', change: 'confirmed ~110 g total for 3, so ~10 g protein each. +2 breasts, not +1. Cheap protein in a cut (~110 kcal each).' },
-      { time: 'Pre-bed',      food: '250 g Greek yogurt / cottage cheese / casein', protein: '~30 g', change: 'was whey — whey clears in ~2 h before a ~10 h fast. Casein also spikes insulin LESS than whey, which suits a bedtime Ipamorelin dose.' }
+      { time: 'Dinner',       food: 'Chicken breast — 5 breasts / ~185 g meat',     protein: '~52 g', change: 'confirmed ~110 g total for 3, so ~10 g protein each. +2 breasts, not +1. Cheap in a cut (~110 kcal each).' },
+      { time: 'Pre-bed',      food: '250 g Greek yogurt / cottage cheese / casein', protein: '~30 g', change: 'was whey — whey clears in ~2 h before a ~10 h fast, and spikes insulin MORE than casein, which also suits a bedtime Ipamorelin dose.' }
     ],
-    warning: 'That lands ~182 g — comfortably over the 170 g target, which is fine. The real discipline in this block is total calories: 2,100 on training days. Track TOTAL intake for one week to confirm, not just protein.'
+    warning: 'Lands ~182 g — over the 170 g target, which is fine. The discipline in this block is TOTAL calories: 2,100 on training days. Muscle stays roughly flat (+0.5 kg over 17 weeks) — that is the accepted cost of peaking in December. The build phase is January, from ~9.5%, where partitioning is far better.'
   },
   scanProtocol: [
     'Same time of day as the 30 Jul scan, same fasted/fed state.',
     'Carb-load the 24 h before (+150 g above target).',
     '3 L water the day prior; normal intake scan morning. Do not go in dehydrated.',
     'No training that morning. No alcohol 48 h out.',
-    'BIA muscle mass swings ±1 kg on glycogen and hydration alone — judge a block on the trend across three scans, not one reading.'
+    'BIA muscle mass swings ±1 kg on glycogen and hydration alone — judge on the trend across three scans, not one reading.'
   ],
-  // 12–19 Oct: HK, birthday, yacht on the 17th. Diet will be all over the place and training
-  // intermittent — that is planned for, not a failure. Peak condition is banked by 11 Oct.
   peakWeek: {
-    title: 'Peak & HK week — 5 Oct → 19 Oct',
+    title: 'Event protocol — 17 Oct waypoint · 10 Dec + 31 Dec peak',
     items: [
-      'NO dehydration, NO diuretics, NO salt-cutting. Genuinely dangerous, they backfire visually, and you do not stack that with a prescribed peptide.',
-      'Last heavy leg session Tue 13 Oct is too late — you fly on the 12th. Make it Wed 8 Oct, so water retention has settled before you land.',
-      'Peak condition is banked by Sat 11 Oct (~11.2%). The 5 days in HK before the 17th will not undo it.',
-      'A few days of higher carbs in HK will likely make you look BETTER on the 17th — fuller muscles after a 9-week cut. Do not try to keep dieting there.',
-      'The two levers that do matter on the 16th: go easy on alcohol and very high sodium. Those cause the puffiness people blame on the food.',
-      'Training in HK: 2–3 short full-body sessions if the hotel has a gym, otherwise walk. Do not try to run the split. Maintenance needs far less than you think.',
-      'Eat protein-forward at the first meal each day in HK and the rest takes care of itself.'
+      'NEVER dehydrate, use diuretics, or cut salt before an event. Dangerous, counterproductive, and not something to stack with a prescribed peptide.',
+      '17 OCT (yacht): waypoint, not the summit — ~11% arrives free on the way to December. Last heavy legs Wed 8 Oct (you fly the 12th). After 9 weeks of cutting, HK carbs will make you look FULLER, not worse. Easy on alcohol and heavy sodium on the 16th.',
+      '1–9 DEC: calories back to maintenance. Carb-load the final 4 days (+100–150 g/day). A depleted muscle looks flat — this is what makes the difference in photos.',
+      '10 DEC (Tomorrowland): last heavy legs Fri 5 Dec so leg water settles. Light pump work the morning of. Sleep matters more than anything you do in the gym that week.',
+      '10–31 DEC: HOLD at maintenance. Do not diet between the events. Three weeks is easy to hold and very easy to ruin by trying to get leaner.',
+      'Tomorrowland is multi-day — sleep loss, alcohol and dancing will deplete you. Between the 10th and the 31st prioritise sleep, protein and normal sodium/water to refill for White Party.',
+      'Colour reads as definition in photos. Gradual sun or self-tanner — not tanning beds.'
     ]
   }
 };
@@ -8703,20 +8702,27 @@ function renderPhasePlanCard() {
     <div style="overflow-x:auto">
     <table class="ex-table" style="margin-bottom:14px">
       <thead><tr><th>Block</th><th>Date</th><th>Muscle</th><th>Fat</th><th>Weight</th><th>BF%</th></tr></thead>
-      <tbody>${p.checkpoints.map(c => `
-        <tr${c.posture === 'cut' ? ' style="opacity:.72"' : ''}>
-          <td>${escapeHtml(c.label)}${c.posture === 'cut' ? ' <span style="font-size:10px;color:var(--accent)">cut</span>' : ''}</td>
+      <tbody>${p.checkpoints.map(c => {
+        // Event rows are the point of the table — highlight those, mute the waypoints.
+        const isEvent = c.posture === 'peak' || c.posture === 'hold';
+        // '' for cut (it's the default posture, no badge needed) — use ?? so it isn't
+        // swallowed by falsy-coalescing back into the raw posture string.
+        const badge = ({ cut: '', hold: 'hold', peak: 'PEAK' })[c.posture] ?? c.posture;
+        return `
+        <tr${isEvent ? ' style="background:rgba(255,255,255,.06)"' : ''}>
+          <td${isEvent ? ' style="font-weight:600"' : ''}>${escapeHtml(c.label)}${badge ? ` <span style="font-size:10px;color:var(--accent);white-space:nowrap">${escapeHtml(badge)}</span>` : ''}</td>
           <td style="white-space:nowrap">${escapeHtml(c.date)}</td>
           <td>${escapeHtml(c.muscle)}</td>
           <td>${escapeHtml(c.fat)}</td>
           <td>${escapeHtml(c.weight)}</td>
           <td><strong>${escapeHtml(c.bf)}</strong></td>
-        </tr>`).join('')}
+        </tr>`;
+      }).join('')}
       </tbody>
     </table>
     </div>
 
-    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Daily macros — build block</div>
+    <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Daily macros — cut</div>
     <div style="overflow-x:auto">
     <table class="ex-table" style="margin-bottom:10px">
       <thead><tr><th>Day</th><th>kcal</th><th>Protein</th><th>Carbs</th><th>Fat</th></tr></thead>
