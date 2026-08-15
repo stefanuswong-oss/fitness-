@@ -1,14 +1,16 @@
 # Fitness Summary — Stefanus Wong
-**Last updated:** 2026-08-09
+**Last updated:** 2026-08-15
 
 ---
 
 ## Current Status
 
-- **Phase 4, Week 2 complete** (Aug 3–8, all 6 sessions logged). **Week 3 begins Mon 2026-08-10** — first week of the cut, and he is in Bali 11–20/21 Aug for most of Wk 3–4.
+- **Phase 4, Week 3 complete** (Aug 10–15, all 6 sessions logged, first week actually run from Bali). **Week 4 begins Mon 2026-08-17.** Wk4 prescriptions in the tracker were just recomputed from real Wk3 data (previously they were a pre-Wk3 forecast) — see `SUGGESTED_WORKOUTS` in `index.html`.
+- **Bali extended, resolved 2026-08-16.** He's now in Bali through **27 Aug** (was 20/21 Aug) — a friend visits **21–27 Aug** for a wellness-focused trip (yoga/breathwork). Confirmed posture: **21–27 Aug is a planned diet break at maintenance**, same treatment as SG/HK — budget it as ~2 flexible days, not all 7, same "halves the cost" rule already used for SG. 11–20 Aug (solo) stays cut, run as written. **Scan moved Sat 22 Aug → Sat 29 Aug** (was blocked — he's still in Bali with a guest through the 27th). The Wk4 checkpoint numbers below (13.5% bf / 68.8 kg) haven't been re-modeled for the extra maintenance days; expect them to land a touch softer at the delayed scan, on the same order as the ~0.2–0.3 pt cost the SG break added — ask if a full re-projection is wanted.
 - Historical note: sessions 07-24 → 07-29 were once mislabeled "Phase 3 Week 4" by a tracker bug (Log Workout Phase/Week never auto-updated). Fixed 2026-07-30 — inputs now default to the last logged session's phase/week, and a data correction relabels the affected sessions. No data was lost.
 - Body scan 2026-07-30: 69.2kg, 14.2% fat, 81.2% muscle, BCM 6318 (down from 68.6kg/15% fat/80.5% muscle/BCM 6402 on 2026-07-04). Fat down, muscle up, weight roughly flat — still recomping in the right direction. BCM drop and WHR uptick (0.93, into "bad" band) are most likely bioimpedance/hydration noise rather than real muscle loss, since they moved opposite to the muscle%/fat% trend in the same reading — watch the next scan before reacting. Raw scan images in `Body Scan Log/`.
-- Injury: thumb pain from a pull-up fall (noted 2026-07-03), last logged as still healing 2026-07-28. Lat Pulldown has since jumped to 70kg and Wk4 prescribes 75 — check before assuming resolved.
+- Injury: thumb pain from a pull-up fall (noted 2026-07-03). **New 2026-08-11: left forearm pain, self-reported as overcompensating for the thumb**, logged on the same Pull Strength session where Lat Pulldown sits at 70kg. Neither is confirmed healed — Wk4 explicitly holds Lat Pulldown at 70kg rather than the previously-planned 75kg jump. Don't progress pulling loads until both are pain-free.
+- Wk3 also surfaced: a Leg Press load jump that failed badly (110→115→115kg, reps collapsed to 6 vs a 120kg/9-rep target) — pulled back for Wk4 rather than pushed through; and Thursday's Cable Lateral Raise ran a 7-stage drop-set ladder instead of one single drop. That was **the plan's instruction being unclear, not drift** — "one drop set" means one weight change at the end, not a chain. Clarified explicitly in the tracker's Wk4 note.
 
 ### Goal (final as of 2026-08-09) — read this before advising
 
@@ -33,19 +35,25 @@
 
 | Trip | Dates | Block | Posture |
 |---|---|---|---|
-| **Bali** | 11–20/21 Aug | Phase 4 Wk 3–4 | **cut — NOT a break** |
+| **Bali** | 11–20 Aug | Phase 4 Wk 3–4 | **cut — NOT a break** |
+| **Bali — friend visiting** | 21–27 Aug | Phase 4 Wk 4–5 | **break (maintenance)** |
 | **Singapore** (real birthday) | 17–21 Sep | Phase 4 Wk 8 | break |
 | **Hong Kong** (yacht 17 Oct) | 12–19 Oct | Phase 4 Wk 12 | break |
 | **Bangkok** (Tomorrowland) | ~10 Dec | Phase 5 Wk 7 | peak |
 
 - **Bali = same FTL gym brand**, identical machines, so prescribed loads transfer exactly.
-  No alcohol there. It is a normal cut block that happens to be abroad.
+  No alcohol there. 11–20 Aug is a normal cut block that happens to be abroad.
+- **21–27 Aug (friend visiting) is now a planned diet break at maintenance**, added
+  2026-08-16 — same treatment as SG/HK. Budget ~2 flexible days out of the visit, not all 7,
+  same halving rule used for SG. Yoga/breathwork stacks fine alongside the lifting split;
+  keep training sessions in place where the schedule allows rather than swapping them out.
 - **SG and HK are planned diet breaks at MAINTENANCE (~2,400), not surplus.** Breaks every
   ~5–6 weeks on a 15-week cut are good practice, not a concession. He doesn't normally drink;
   may in SG and HK — that's budgeted.
 - **Three birthday celebrations**: Sep (SG, the real one), Oct (HK), Dec (BKK).
-- **Scans: Sat 22 Aug · Tue 16 Sep · Sat 11 Oct · Mon 1 Dec.** The Sep scan was moved off
-  19 Sep because he is in Singapore — scan pre-flight for a clean read. Same FTL branch each
+- **Scans: Sat 29 Aug · Tue 16 Sep · Sat 11 Oct · Mon 1 Dec.** The Aug scan moved from
+  22→29 Aug (he's in Bali with a guest through the 27th); the Sep scan was moved off 19 Sep
+  because he is in Singapore — scan pre-flight for a clean read. Same FTL branch each
   time where possible; different units calibrate differently.
 - Tracker's "Suggested Workout" card carries per-week weight + rep prescriptions
   (`wk: {3:…, 4:…}`); the "Phase 4 Plan" card holds checkpoints, cut macros, protein
@@ -106,6 +114,7 @@ Live tracker: `fitness_tracker.html` / `index.html` (identical, both deployed vi
 - `SUGGESTED_WORKOUTS` = the Phase 4 plan, with per-week `wk: { 3: {reps, weight}, 4: {…} }` prescriptions. Add a `5:` key to each exercise when Week 5 is prescribed; until then Week 5+ carries Week 4 forward and shows a double-progression prompt.
 - `PHASE_PLAN` = block checkpoints, macros, protein schedule, scan-day protocol. Rendered by `renderPhasePlanCard()` into the collapsible "Phase 4 Plan" card on the Log page.
 - `reps`/`weight` must use the log parser's format: `"1 x 8, 1 x 8, 1 x 7"` and `"26-26-24"` (dash = per set, comma = drop stage). `compactReps()`/`compactWeight()` render these as `8 · 8 · 7` / `26 · 26 · 24` for the phone-width table — display only, the stored strings stay parseable.
+- **Notes moved from per-day to per-exercise (2026-08-15).** The Log page no longer has a day-level Notes textarea; each exercise row in "Current Exercise" has its own optional note input, saved as `exercises[i].note`. Old sessions logged before this change still carry a day-level `session.note` — both are still read (History, Today's Session, "Last Time" reference, and the Session Notes card all display exercise-level notes now, falling back to the legacy day-level note where present).
 
 ---
 

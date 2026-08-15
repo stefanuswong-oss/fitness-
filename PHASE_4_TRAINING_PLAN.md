@@ -1,9 +1,16 @@
 # Phase 4 Training Plan — Trimmed Split
-**Written:** 2026-07-24 | **Revised:** 2026-08-09 (three times — see below)
+**Written:** 2026-07-24 | **Revised:** 2026-08-09 (three times), 2026-08-16 (Bali extension)
 **Goal:** Peak 10 Dec (Tomorrowland, Bangkok) + 31 Dec (White Party)
 
-> ⚠️ **PLAN PIVOTED TWICE ON 2026-08-09. This header is the live plan — everything below it
-> is history.**
+> ⚠️ **PLAN PIVOTED TWICE ON 2026-08-09, ADJUSTED 2026-08-16. This header is the live
+> plan — everything below it is history.**
+>
+> **2026-08-16 update:** Bali extended — a friend visits 21–27 Aug (wellness-tour framing:
+> yoga/breathwork), pushing his return from 20/21 Aug to 27 Aug. 21–27 Aug is now logged as
+> a diet break at maintenance, same treatment as SG/HK (budget ~2 flexible days, not all 7).
+> The Wk4 scan moved **22 Aug → 29 Aug** since he's still in Bali with a guest on the 22nd.
+> Wk3 also flagged: left forearm pain (overcompensating for the still-not-confirmed-healed
+> thumb) — Tuesday's pulling loads are held flat, not progressed, until both are pain-free.
 >
 > **The real target is December, not October.** 10 Dec (Tomorrowland, Bangkok) and 31 Dec
 > (White Party) are Stefanus's "album unveiling". 17 Oct (HK birthday, yacht) is a
@@ -13,7 +20,7 @@
 >
 > | Milestone | Date | Posture | Muscle | Fat | Weight | BF% |
 > |---|---|---|---|---|---|---|
-> | Phase 4 Wk 4 | 22 Aug | cut | 56.3 | 9.3 | 68.8 | 13.5% |
+> | Phase 4 Wk 4 (scan 29 Aug*) | 22 Aug | cut→break 21–27 Aug | 56.3 | 9.3 | 68.8 | 13.5% |
 > | Pre-Singapore | 16 Sep | cut | 56.4 | 8.3 | 67.9 | 12.2% |
 > | SG — birthday | 17–21 Sep | break | 56.4 | 8.5 | 68.1 | 12.5% |
 > | Phase 4 Wk 11 ✈ | 11 Oct | cut | 56.5 | 7.6 | 67.3 | **11.3%** 🛥 |
@@ -22,25 +29,36 @@
 > | **TOMORROWLAND** | **10 Dec** | peak | 56.7 | 6.4 | 66.9 | **~9.7%** |
 > | **WHITE PARTY** | **31 Dec** | hold | 56.7 | 6.7 | 67.1 | ~10.0% |
 >
-> ### Travel — 3 trips, 3 birthdays (confirmed 2026-08-09)
+> \* Wk4 row not re-modeled for the extra maintenance days added 2026-08-16 — expect it to
+> land a touch softer at the delayed 29 Aug scan, on the order of the ~0.2–0.3 pt cost the
+> SG break added. Ask if a full re-projection is wanted.
+>
+> ### Travel — 3 trips, 3 birthdays (confirmed 2026-08-09, Bali extended 2026-08-16)
 >
 > | Trip | Dates | Block | Posture |
 > |---|---|---|---|
-> | **Bali** | 11–20/21 Aug | Phase 4 Wk 3–4 | **cut — not a break** |
+> | **Bali** | 11–20 Aug | Phase 4 Wk 3–4 | **cut — not a break** |
+> | **Bali — friend visiting** | 21–27 Aug | Phase 4 Wk 4–5 | **break (maintenance)** |
 > | **Singapore** (real birthday) | 17–21 Sep | Phase 4 Wk 8 | break |
 > | **Hong Kong** (yacht 17 Oct) | 12–19 Oct | Phase 4 Wk 12 | break |
 > | **Bangkok** (Tomorrowland) | ~10 Dec | Phase 5 Wk 7 | peak |
 >
 > - **Bali is the same FTL branch** — identical machines, so the prescribed loads transfer
->   exactly. No alcohol there. Run the block as written; it is not a diet break.
+>   exactly. No alcohol. 11–20 Aug runs as written; it is not a diet break.
+> - **21–27 Aug is now a planned diet break at maintenance** (added 2026-08-16, same
+>   treatment as SG/HK) — a friend visits for a wellness-focused trip (yoga/breathwork).
+>   Budget ~2 flexible days out of the visit, not all 7 — same halving rule as SG. Keep
+>   lifting sessions in place where the schedule allows; the wellness activities stack on
+>   top rather than replace training.
 > - **SG and HK are planned diet breaks at maintenance (~2,400), not surplus.** A break every
 >   ~5–6 weeks on a 15-week cut restores training performance and adherence. Alcohol only on
 >   break days — he doesn't normally drink, but may in SG and HK.
 > - Budgeting SG as **2 free days rather than 5** halves its cost (0.2 kg vs 0.4 kg fat).
 >
-> ### Scan schedule (revised 2026-08-09)
+> ### Scan schedule (revised 2026-08-16)
 >
-> - **Sat 22 Aug** — Phase 4 Wk 4 (back from Bali the 20th/21st)
+> - **Sat 29 Aug** — Phase 4 Wk 4/5 checkpoint. Moved from 22 Aug: he's still in Bali with a
+>   guest through the 27th, so 22 Aug no longer reads as "back from Bali."
 > - **Tue 16 Sep** — moved OFF 19 Sep, he is in Singapore. Scan pre-flight for a clean read.
 > - **Sat 11 Oct** — pre-HK, the yacht checkpoint
 > - **Mon 1 Dec** — final trajectory check before the 10 Dec peak
