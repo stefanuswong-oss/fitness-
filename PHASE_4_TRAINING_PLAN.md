@@ -330,9 +330,11 @@ if fat loss is under 0.2 kg/wk across **two** scans.
 ## Phase 4 Week 3–4 — prescribed loads
 
 Derived from Week 2 by double progression. These are mirrored exactly in the tracker's
-`SUGGESTED_WORKOUTS` (per-week `wk: {3: …, 4: …}`), so the app is the source of truth for
-day-to-day use. Weeks 5+ carry Week 4 forward and prompt for double progression rather than
-inventing numbers.
+`SUGGESTED_WORKOUTS` (per-week `wk: {3: …, 4: …, 5: …}`), so the app is the source of truth for
+day-to-day use. Week 5 was added 2026-08-22, computed from real Week 4 data (weekday sessions
+only — Sat Wk4 was skipped entirely for lack of time, so Sat's Wk5 carries the Wk4 targets
+forward unchanged). Weeks 6+ carry Week 5 forward and prompt for double progression rather
+than inventing numbers.
 
 **Weekly set totals, before → after:** chest 22 → 15 · back 20 · biceps **3 → 9** ·
 hamstrings **3 → 6** · quads **7 → 10** · core 8 → 12 · conditioning **0 → ~40 min**.

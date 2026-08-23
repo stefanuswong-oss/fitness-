@@ -7276,6 +7276,48 @@ function applyDataCorrections(sessions) {
     }
   });
 
+  // Fix: the first two Wk4 sessions (Push Strength 2026-08-17, Pull Strength 2026-08-18)
+  // were logged before he switched the Log page's week selector over from 3 — flagged
+  // 2026-08-22. Relabel to the week they were actually run.
+  sessions.forEach(s => {
+    if (s.id === 'custom_1786953785708' || s.id === 'custom_1787048849680') {
+      s.week = 4;
+    }
+  });
+
+  // Fix: three Wk4 sessions in the 2026-08-22 export each had one exercise logged twice
+  // (Log Workout has no way to delete a row once a session is saved) — dedupe, keeping
+  // whichever logged occurrence performed better. Flagged 2026-08-22.
+  sessions.forEach(s => {
+    if (!Array.isArray(s.exercises)) return;
+    if (s.id === 'custom_1787048849680') {
+      // Pull Strength 08-18: "Machine Lat Pulldown or Assisted Pull-up" logged twice —
+      // keep the 8,8,8,7 entry, drop the later 8,8,7,7 duplicate.
+      const dupIdx = s.exercises.findIndex((ex, i) =>
+        ex.name === 'Machine Lat Pulldown or Assisted Pull-up' && ex.reps === '1 x 8, 1 x 8, 1 x 7, 1 x 7' &&
+        s.exercises.some((e2, j) => j < i && e2.name === ex.name)
+      );
+      if (dupIdx !== -1) s.exercises.splice(dupIdx, 1);
+    }
+    if (s.id === 'custom_1787196020146') {
+      // Push Hypertrophy 08-20: "Cable Overhead Extension" logged twice — keep the
+      // 15,15,13 entry, drop the earlier 15,14,13 duplicate.
+      const dupIdx = s.exercises.findIndex(ex => ex.name === 'Cable Overhead Extension' && ex.reps === '1 x 15, 1 x 14, 1 x 13');
+      if (dupIdx !== -1) s.exercises.splice(dupIdx, 1);
+    }
+    if (s.id === 'custom_1787280507887') {
+      // Pull Hypertrophy 08-21: "Machine Lat Pulldown" logged twice, identical — drop the 2nd.
+      let seen = false;
+      s.exercises = s.exercises.filter(ex => {
+        if (ex.name === 'Machine Lat Pulldown') {
+          if (seen) return false;
+          seen = true;
+        }
+        return true;
+      });
+    }
+  });
+
   return sessions;
 }
 
@@ -8414,141 +8456,173 @@ const PHASE_PLAN = {
 const SUGGESTED_WORKOUTS = {
   push_strength: {
     label: 'Push Strength',
-    focus: 'Wk3 mostly matched plan — presses and shoulder press are 1-2 reps from a full top-of-range week, so hold load and close the gap. Rope Pushdown flagged a form breakdown (elbow flare) at 49.9kg — fix that before chasing more weight.',
+    focus: '⚠️ Session got cut short by a meeting and Chest Press got pushed to dead last (machine was occupied all session) — most lifts came in flat versus their own Wk3 numbers rather than closing the Wk4 gap. That reads as circumstantial, not a strength dip. Hold the Wk4 asks into Wk5 and prioritize a full, unrushed session.',
     exercises: [
-      { name: 'DB or Machine Incline Press', note: 'Wk3: 8,8,7,7 @ 26kg flat — 2 of 4 sets already at the top of the 6-8 range. Hold 26kg, close the gap to a clean 4x8 before adding load.',
+      { name: 'DB or Machine Incline Press', note: 'Wk4 repeated Wk3 exactly (8,8,7,7 @ 26kg flat) instead of closing the gap to the ask (8,8,8,7) — likely the rushed session. Hold 26kg, same target.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '26-26-26-26' },
-              4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' } } },
-      { name: 'Machine Chest Press', note: 'Wk3 landed exactly on script (10,9,8 @ 60-65-65) — one set still short of the 8-10 top. Hold weight, push for 10s across the board.',
+              4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' },
+              5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' } } },
+      { name: 'Machine Chest Press', note: '⚠️ Pushed to the very last exercise (machine was occupied) and the session got cut short for a meeting — landed at 10,8,7 on a lighter 55-65-65 instead of the 60-65-65 ask. Circumstantial, not a regression — repeat the Wk4 target rather than downgrading.',
         wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '60-65-65' },
-              4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' } } },
-      { name: 'Machine Shoulder Press', note: 'Wk3 came in a rep light on set 2 (10,8,8 vs a 10,9,8 target). Hold weight, rebuild the reps before adding load again.',
+              4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' },
+              5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' } } },
+      { name: 'Machine Shoulder Press', note: 'Wk4 matched the ask exactly (10,9,8 @ 40-45-45) — one set off a full clean top-of-range week. Hold weight, close the gap.',
         wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
-              4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' } } },
-      { name: 'Cable Lateral Raise', note: 'Wk3 dipped a rep under target on every set (13,12,11 vs 14,13,12) at the same weight. Hold, reclaim the reps.',
+              4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
+              5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' } } },
+      { name: 'Cable Lateral Raise', note: 'Wk4 repeated Wk3 exactly again (14,13,12) — 2 weeks flat at this weight. Hold, keep pushing for the top of the 12-15 range before adding load.',
         wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
-              4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' } } },
-      { name: 'Rope Tricep Pushdown', note: "⚠️ Wk3 session note: couldn't complete 49.9kg without flaring the elbows on the last 3 reps — that's momentum/traps taking over, not triceps. Hold this weight, keep elbows pinned, and don't add load until 12,12,11 comes out clean.",
+              4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
+              5: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' } } },
+      { name: 'Rope Tricep Pushdown', note: 'Wk4 fixed the Wk3 elbow-flare issue — hit 12,12,11 clean at 49.9kg, matching the ask exactly. Hold weight, close the gap on set 3 before adding more.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' } } },
-      { name: 'Cable Abs Crunch', note: 'Wk3 hit 15,15,15 clean, top set already at 49.9kg — add load.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45.4-49.9-49.9' } } },
+      { name: 'Cable Abs Crunch', note: "Skipped in Wk4 — session got cut short for a meeting. Same ask repeats since it wasn't attempted.",
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-49.9' },
-              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' } } },
-      { name: 'Incline walk (finisher)', note: 'Wk3: logged 20 min @ 3.5 km/h — fine to keep logging it, still nothing required.',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
+              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
+              5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' } } },
+      { name: 'Incline walk (finisher)', note: 'Not logged in Wk4 (cut short) — still nothing required.',
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' } } }
     ]
   },
   pull_strength: {
     label: 'Pull Strength',
-    focus: '⚠️ Wk3 note: left forearm pain from overcompensating for the thumb. Nothing progresses on the pulling lifts this week — hold every load, consider straps to take grip out of the equation, and revisit once both are pain-free. Biceps work is fully rebuilt.',
+    focus: '⚠️ Forearm pain still active — Hammer Curl was skipped entirely (still hurts), while Bayesian Curl is now confirmed pain-free (08-22 note) though its reps haven\'t moved yet. Cross-Body/Straight-Arm and Rear Delt both repeated Wk3 numbers flat instead of taking the prescribed load add. Treat this as a rebuilding week for the arm — hold everything.',
     exercises: [
-      { name: 'Machine Lat Pulldown or Assisted Pull-up', note: '⚠️ Do NOT jump to 75kg as previously planned — the forearm/thumb note landed on this exact session. Repeat 60-65-70-70 unchanged; don’t chase more reps either. Consider lifting straps to offload grip.',
+      { name: 'Machine Lat Pulldown or Assisted Pull-up', note: 'Wk4 beat the ask (8,8,8,7 vs a target of 8,8,7,7, after removing a duplicate log entry) — best performer of the session. Still holding load per the forearm/thumb caution; close the gap to a clean 4x8 before considering more weight.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-70' },
-              4: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '60-65-70-70' } } },
-      { name: 'Chest-Supported / Low Row', note: 'Wk3 matched exactly (10,10,8 @ 60-60-65) — last set still short of 10. Hold weight, push set 3.',
+              4: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '60-65-70-70' },
+              5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-70' } } },
+      { name: 'Chest-Supported / Low Row', note: 'Wk4 dipped on set 3 (10,10,7 vs an ask of 10,10,9, and down from Wk3\'s 10,10,8) — likely the same forearm/grip issue bleeding into rowing. Hold weight, rebuild toward 10,10,8 before chasing 9.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '60-60-65' },
-              4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-60-65' } } },
-      { name: 'Straight-Arm Pulldown', note: 'Wk3 matched exactly (12,12,11 @ 29.5-31.8-34) — essentially maxed the 10-12 range. Add load.',
+              4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-60-65' },
+              5: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '60-60-65' } } },
+      { name: 'Straight-Arm Pulldown', note: '⚠️ The Wk4 load add (to 31.8-34-36.3) didn\'t happen — repeated Wk3\'s exact weight and reps (12,12,11 @ 29.5-31.8-34) instead. With the forearm still active, don\'t chase that jump yet — hold here and get one full clean 12,12,12 week first.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '29.5-31.8-34' },
-              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '31.8-34-36.3' } } },
-      { name: 'Cable Rear Delt / Face Pull', note: 'Wk3 matched exactly (15,14,13 @ 22.7-27.2-27.2) — only set 1 at the top of 12-15. Hold weight, push sets 2-3.',
+              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '31.8-34-36.3' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '29.5-31.8-34' } } },
+      { name: 'Cable Rear Delt / Face Pull', note: 'Wk4 repeated Wk3 exactly (15,14,13) — 2 weeks flat, the set-2 gap hasn\'t closed. Hold, keep pushing.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
-              4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' } } },
-      { name: 'Bayesian Cable Curl', note: 'Wk3 matched exactly (12,11,10) — fully rebuilt from the Wk2 regression. Set 1 at the top of 10-12; hold weight, push sets 2-3.',
+              4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' },
+              5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' } } },
+      { name: 'Bayesian Cable Curl', note: 'Wk4 also repeated Wk3 exactly (12,11,10) despite being pain-free per his 08-22 note — probably general session fatigue (forearm-affected day), not the elbow itself. Now that it\'s confirmed pain-free, push for the ask (12,12,11) before adding load.',
         wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '18.1-22.7-27.2' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' } } },
-      { name: 'Hammer or Incline DB Curl', note: 'Wk3: all 3 sets cleared 12 reps at a flat 10kg, no drop-off — there’s room to add load, but this is a grip exercise on the same day the forearm flared. Only bump to 12kg if it feels pain-free; otherwise repeat at 10kg.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' } } },
+      { name: 'Hammer or Incline DB Curl', note: '⚠️ Skipped entirely in Wk4 (forearm pain), confirmed still painful as of 08-22 — even though Bayesian Curl in the same session is now pain-free. The neutral hammer grip loads the forearm specifically, not the elbow/bicep. Keep this skipped rather than guessing at a weight; if it\'s still painful after another week, worth a physio look instead of continuing to test it in the gym.',
         wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '10-12-12' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '10-10-10' } } },
+              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '10-10-10' },
+              5: { reps: '', weight: '' } } },
       { name: 'Hanging or Lying Leg Raise', note: 'bodyweight, quick finisher',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' } } },
+              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' } } }
     ]
   },
   legs_strength: {
     label: 'Legs Strength',
-    focus: '⚠️ Wk3: V-Squat basically nailed the prescribed load jump, but Leg Press missed badly — couldn’t load the planned 120kg, reps collapsed to 6. Pulling that one back. Abductor/Adductor and Cable Crunch got swapped for an incline walk (first Bali/FTL session) — restore them on a normal week.',
+    focus: 'Cleanest session of the week — matched the Wk4 ask almost exactly on all 5 lifts attempted. Abductor/Adductor and Standing Cable Crunch skipped for the 2nd week running now — worth checking whether that\'s a deliberate time-saver or just falling off the end of the session.',
     exercises: [
-      { name: 'V-Squat', note: 'Wk3 hit 8,8,8,6 exactly as prescribed on a new 115kg top set — 3 of 4 sets at the top of 6-8, only the heaviest set dipped, which is the expected pattern after a load add. Hold at 115kg top, close the gap on set 4 before adding more.',
+      { name: 'V-Squat', note: 'Wk4 matched the ask exactly (8,8,8,7) — 3 of 4 sets at the top of 6-8, only the heaviest set short. Hold 115kg top, close the gap on set 4.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 6', weight: '100-105-110-115' },
-              4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-115' } } },
-      { name: 'Leg Press (low/narrow)', note: '⚠️ Wk3 missed badly: couldn’t load the prescribed 120kg on set 3, substituted 115kg and reps collapsed to 6 (from a 9-rep target) — likely V-Squat fatigue plus a new gym in Bali. Pull back to what you actually lifted and rebuild the reps before trying 120 again.',
+              4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-115' },
+              5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-115' } } },
+      { name: 'Leg Press (low/narrow)', note: 'Wk4 matched the pulled-back ask exactly (10,9,8 @ 110-115-115) — clean rebuild after Wk3\'s failed 120kg jump. Hold here, close the gap to 10,10,9 before trying 120kg again.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-120' },
-              4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '110-115-115' } } },
-      { name: 'Machine Hip Thrust', note: 'Wk3 came in a rep short on set 3 (10,10,8 @ 80-90-95 vs a 10,10,9 target). Hold weight, close the gap.',
+              4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '110-115-115' },
+              5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-115' } } },
+      { name: 'Machine Hip Thrust', note: 'Wk4 matched the ask exactly (10,10,9) — one set off a full clean top-of-range week. Hold weight, close the gap.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
-              4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' } } },
-      { name: 'Leg Curl', note: 'Wk3 hit 12,12,10 @ 50-55-60 — one rep short on set 3. Hold weight, push it to 11.',
+              4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
+              5: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-95' } } },
+      { name: 'Leg Curl', note: 'Wk4 repeated Wk3 exactly (12,12,10) — flat 2 weeks running on set 3. Hold, keep pushing for 11.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' } } },
-      { name: 'Leg Extension', note: 'Wk3 matched the restored prescription exactly (12,12,10). Hold weight, push set 3 toward 11 — it’s only in its 2nd week back.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' } } },
+      { name: 'Leg Extension', note: 'Wk4 matched the ask exactly (12,12,11) — one rep off a full clean top-of-range week. Hold, close the gap.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-60' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' } } },
-      { name: 'Abductor or Adductor', note: 'Skipped in Wk3 (swapped for an incline walk on the first Bali session) — same prescription repeats since it wasn’t attempted.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' } } },
+      { name: 'Abductor or Adductor', note: '⚠️ Skipped for the 2nd week running now (also missing Wk3). Same prescription repeats since it hasn\'t been attempted.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' } } },
-      { name: 'Standing Cable Crunch', note: 'Skipped in Wk3 (swapped for an incline walk) — same prescription repeats since it wasn’t attempted.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' } } },
+      { name: 'Standing Cable Crunch', note: '⚠️ Skipped for the 2nd week running now (also missing Wk3). Same prescription repeats since it hasn\'t been attempted.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
-              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' } } }
+              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
+              5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' } } }
     ]
   },
   push_hypertrophy: {
     label: 'Push Hypertrophy',
-    focus: 'Cable Lateral Raise ran a 7-stage drop ladder in Wk3 — that was the instruction reading unclear, not drift: "one drop set" means ONE weight drop at the end, not a chain. Clarified below. DB Incline Press and Overhead Extension both maxed their rep ranges — add load on both.',
+    focus: 'Best hypertrophy session of the week — Shoulder Press and the Lateral Raise\'s 3 main sets both fully maxed their rep range. Two things to fix: Cable Overhead Extension got logged twice (same no-delete-button issue as the pull side — deduped in the data), and the lateral raise drop set ran multi-stage again despite the Wk4 clarification — re-reading that note below before Thursday.',
     exercises: [
-      { name: 'DB Incline Press', note: 'Wk3 hit 12,12,12 @ 20-22-22 — full top of the 10-12 range on every set. Add load.',
+      { name: 'DB Incline Press', note: 'Wk4 beat the ask (12,12,10 vs a target of 12,11,10) — 2 of 3 sets already at the top of 10-12. Hold weight, close the gap on set 3 to a full 12,12,12 before adding load.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22-22' },
-              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '22-24-24' } } },
-      { name: 'Iso-leverage Decline', note: 'Wk3 matched exactly (12,12,10) — one set short of the 10-12 top. Wk4 alternates to the fly per the rotation; last time Hybrid Fly ran (Wk2) it hit 12,12,12 @ 15-15-20, full top of range on every set, so that one gets a load add.',
+              4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '22-24-24' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-24' } } },
+      { name: 'Iso-leverage Decline', note: 'Wk4 ran the Hybrid Fly turn in the alternation and matched the ask exactly (12,11,10 @ 20-20-25). Rotates back to Iso-leverage Decline for Wk5 — last time Decline ran (Wk3) it also matched exactly (12,12,10 @ 20-22.5-25), one set off the top of 10-12. Hold that weight, close the gap.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '20-22.5-25' },
-              4: { name: 'Hybrid Pectoral Fly', reps: '1 x 12, 1 x 11, 1 x 10', weight: '20-20-25' } } },
-      { name: 'Machine Shoulder Press', note: 'Wk3 matched exactly (12,12,11) — one rep under the top of 10-12 on the last set. Hold weight, close the gap.',
+              4: { name: 'Hybrid Pectoral Fly', reps: '1 x 12, 1 x 11, 1 x 10', weight: '20-20-25' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22.5-25' } } },
+      { name: 'Machine Shoulder Press', note: 'Wk4 fully cleared the range (12,12,12 @ 30-35-35) — clean top-of-range week on all 3 sets, same as the last time this happened (Wk2, which also got a +5kg add). Add load again.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '30-35-35' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '30-35-35' } } },
-      { name: 'Cable Lateral Raise', note: 'How ONE drop set works: finish set 3\'s working reps (12-13 reps), then immediately drop the weight ONCE — no rest — and keep going to near failure (e.g. 14.8kg → 9.1kg for a few more reps). That\'s the whole thing, one weight change. Wk3 chained 7 drops in a row instead (13.6→14.8→14.8→13.6→13.6→13.6→9.1→9.1→9.1) — that\'s a different, much longer technique; the note wasn\'t clear enough about the mechanics, not a discipline issue. The 3 main sets themselves matched target (15,14,12) exactly.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '30-35-35' },
+              5: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-40' } } },
+      { name: 'Cable Lateral Raise', note: '⚠️ The 3 main sets fully cleared (15,15,15 @ 13.6-14.8-14.8) — add load there. But the drop-set portion ran long again (14.8→9.1→9.1→9.1, four stages) instead of the ONE drop clarified after Wk3\'s 7-stage version. Reiterating once more: finish the 3rd main set, then ONE weight drop, no rest, to near failure — that\'s the whole move, nothing after it.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12,12', weight: '13.6-14.8-14.8,9.1' },
-              4: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '13.6-14.8-14.8,9.1' } } },
-      { name: 'Cable Overhead Extension', note: 'Wk3 hit 15,15,15 @ 22.7-22.7-27.2 — full top of the 12-15 range on every set. Add load.',
+              4: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '13.6-14.8-14.8,9.1' },
+              5: { reps: '1 x 15, 1 x 14, 1 x 13,12', weight: '14.8-16.1-16.1,9.1' } } },
+      { name: 'Cable Overhead Extension', note: 'Wk4 nearly cleared the range (15,15,13 @ 27.2-27.2-29.5, after removing a duplicate log entry) — 2 of 3 sets already at the top of 12-15. Hold weight, close the gap on set 3.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
-              4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-27.2-29.5' } } },
-      { name: 'Ab Wheel or Lying Leg Raise', note: 'Wk3: swapped in Standing Cable Crunch instead and hit 15,15,15 @ 49.9kg on all 3 — that variant can go heavier if you keep using it. Ab Wheel/Leg Raise stays the bodyweight default.',
+              4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-27.2-29.5' },
+              5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-27.2-29.5' } } },
+      { name: 'Ab Wheel or Lying Leg Raise', note: '⚠️ Wk4 swapped in Standing Cable Crunch again but at a notably lighter weight (22.7kg vs 49.9kg the last time this slot ran the same swap, in Wk3) — worth confirming whether that\'s a deliberate lighter/higher-rep variation or a loading mix-up. Ab Wheel/Leg Raise stays the bodyweight default until then.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' } } },
+              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' } } }
     ]
   },
   pull_hypertrophy: {
     label: 'Pull Hypertrophy',
-    focus: '⚠️ Core finisher skipped for the 2nd week running (also missing in Wk2) — a Friday pattern, not a one-off. Lat Pulldown, Low Row and Bayesian Curl all landed almost exactly on target; Cross-Body Pulldown came in under the ambitious Wk3 ask, recalibrating down.',
+    focus: 'Strong session — Chest-Supported Low Row fully cleared its range (load-add trigger). The Cross-Body Pulldown miss traced to a visibility issue, not strength: his own note says he didn\'t see the updated 14-rep target and defaulted to 12. Core finisher skipped for the 3rd Friday running now. Also fixed: Machine Lat Pulldown was logged twice — deduped in the data.',
     exercises: [
-      { name: 'Machine Lat Pulldown', note: 'Wk3 matched almost exactly (12,12,12,10) — 3 of 4 sets at the top of 10-12. Hold weight, close the gap on set 4.',
+      { name: 'Machine Lat Pulldown', note: 'Wk4 matched the ask exactly (12,12,12,11, after removing a duplicate log entry) — 3 of 4 sets at the top of 10-12. Hold weight, close the gap on set 4.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '50-55-60-60' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-60' } } },
-      { name: 'Chest-Supported Low Row', note: 'Wk3 matched exactly (12,12,11) — one rep short of a full top-of-range week. Hold weight, close it out.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-60' },
+              5: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '50-55-60-60' } } },
+      { name: 'Chest-Supported Low Row', note: 'Wk4 fully cleared the range (12,12,12 @ 45-50-55) — clean top-of-range week on all 3 sets. Add load.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
-              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' } } },
-      { name: 'Jeff Nippard-style Cross-Body Lat Pulldown', note: 'Wk3 came in under the ambitious 15,14,12 ask — landed at 12,12,12, the bottom of the 12-15 range on every set. Hold weight, rebuild reps gradually instead of jumping straight back to 15.',
+              4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
+              5: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '50-55-60' } } },
+      { name: 'Jeff Nippard-style Cross-Body Lat Pulldown', note: '⚠️ His own note: "I didn\'t see 14 x 27.2. Only did 12" — landed at 12,13,12 instead of the 14,13,12 ask because the updated target wasn\'t checked before starting, not a strength miss. Repeating the same ask for Wk5 — check the Suggested Workout card before the first set this time.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '27.2-31.8-34' },
-              4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '27.2-31.8-34' } } },
-      { name: 'Rear Delt Row/Fly', note: 'Wk3 came in at 15,14,12 — set 1 at the top of 12-15, set 3 a rep short. Hold weight, close the gap.',
+              4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '27.2-31.8-34' },
+              5: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '27.2-31.8-34' } } },
+      { name: 'Rear Delt Row/Fly', note: 'Wk4 matched the ask exactly (15,15,13) — 2 of 3 sets at the top of 12-15. Hold weight, close the gap on set 3.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-29.5' },
-              4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-29.5' } } },
-      { name: 'Bayesian Cable Curl', note: 'Wk3 hit 15,13,12 — set 1 at the top of 12-15. Hold weight, push sets 2-3.',
+              4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-29.5' },
+              5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-29.5' } } },
+      { name: 'Bayesian Cable Curl', note: 'Wk4 matched the ask exactly (15,14,13) and — per his 08-22 note — this one is now pain-free (unlike Hammer Curl on Tuesday). Hold weight, push to close the gap on sets 2-3 before adding load.',
         wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '18.1-22.7-24' },
-              4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '18.1-22.7-24' } } },
-      { name: 'Lying or Hanging Leg Raise', note: '⚠️ Skipped for the 2nd week running (also missing in Wk2, when it was flagged as “restored”). This is a Friday pattern specifically — worth checking whether the session is running long before this slot.',
+              4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '18.1-22.7-24' },
+              5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-24' } } },
+      { name: 'Lying or Hanging Leg Raise', note: '⚠️ Skipped for the 3rd Friday running now (also missing Wk2 and Wk3) — this is a standing Friday pattern, not a one-off. Worth moving it earlier in the session rather than leaving it as the last slot.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
-              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
+              4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' } } }
     ]
   },
   sat: {
     label: 'Legs + Core + Light Push Finisher',
-    focus: 'Wk3: Hip Thrust hit your old Phase 3 peak of 85kg exactly on script — great. This was the first FTL-Bali session; Core and the push finisher both got dropped, most likely travel logistics rather than drift, but protect them on a normal week. The Lateral Raise swap (Machine, 9kg, 15→18→20) is a good example of "light means light."',
+    focus: '⚠️ Wk4 Saturday was skipped entirely (no time) — no data to progress from, so these are still the Wk4 targets carried forward unchanged. Wk3 recap below is still the most recent real Saturday session: Hip Thrust hit your old Phase 3 peak of 85kg exactly on script — great. Core and the push finisher both got dropped that week too, most likely travel logistics rather than drift, but protect them next time. The Lateral Raise swap (Machine, 9kg, 15→18→20) is a good example of "light means light."',
     exercises: [
       { name: 'Hip Thrust or Deficit Sumo Squat', note: 'Wk3 hit 12,12,12,10 @ 65-75-80-85 exactly on script — 85kg matches your old Phase 3 peak. 3 of 4 sets at the top of 10-12; hold weight, close the gap on set 4 before pushing past 85.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '65-75-80-85' },
