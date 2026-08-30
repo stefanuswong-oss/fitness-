@@ -431,12 +431,21 @@ Factual nutrition physiology only — **protocol and timing are for his prescrib
 
 ## Scan-day protocol
 
+> **Revised 2026-08-30.** Earlier draft said "fasted, no training that morning" — that was
+> the textbook ideal but never his actual practice, and switching now would break trend
+> continuity. He can only scan at the gym (~2 PM, post-lunch), and his standing habit is
+> post-workout. The tracker's `PHASE_PLAN.scanProtocol` is the rendered source of truth.
+
 BIA muscle mass swings ±1 kg on glycogen and hydration alone.
 
-- Same time of day as the 30 Jul scan, same fasted/fed state
-- Carb-load the 24 h before (+150 g above target)
-- 3 L water the day prior; normal intake scan morning — do not go in dehydrated
-- No training that morning; no alcohol 48 h out
+- Scan at the gym ~2 PM, **after** the session and after lunch — his established pattern, and
+  what every prior scan (3 Jun / 4 Jul / 30 Jul) was. Do NOT switch to fasted/AM.
+- Prefer an **upper-body** session on scan day (Mon/Tue) so leg readings aren't distorted by
+  a fresh leg pump.
+- Rehydrate normally during and after the workout — don't scan sweaty and dehydrated, and
+  don't chug extra beyond the usual.
+- Carb-load the 24 h before (+150 g above target). No alcohol 48 h out.
+- Same FTL branch and same unit each time — different machines calibrate differently.
 - **Judge a block on the trend across three scans, not one reading.**
 
 ---
