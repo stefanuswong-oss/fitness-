@@ -20,7 +20,7 @@
 >
 > | Milestone | Date | Posture | Muscle | Fat | Weight | BF% |
 > |---|---|---|---|---|---|---|
-> | Phase 4 Wk 4 (scan 29 Aug*) | 22 Aug | cut→break 21–27 Aug | 56.3 | 9.3 | 68.8 | 13.5% |
+> | Phase 4 Wk 5 (scan 31 Aug*) | 31 Aug | cut→break 21–27 Aug | 56.3 | 9.3 | 68.8 | 13.5% |
 > | Pre-Singapore | 16 Sep | cut | 56.4 | 8.3 | 67.9 | 12.2% |
 > | SG — birthday | 17–21 Sep | break | 56.4 | 8.5 | 68.1 | 12.5% |
 > | Phase 4 Wk 11 ✈ | 11 Oct | cut | 56.5 | 7.6 | 67.3 | **11.3%** 🛥 |
@@ -57,9 +57,14 @@
 >
 > ### Scan schedule (revised 2026-08-16)
 >
-> - **Sat 29 Aug** — Phase 4 Wk 4/5 checkpoint. Moved from 22 Aug: he's still in Bali with a
->   guest through the 27th, so 22 Aug no longer reads as "back from Bali."
-> - **Tue 16 Sep** — moved OFF 19 Sep, he is in Singapore. Scan pre-flight for a clean read.
+> - **Mon 31 Aug** — Phase 4 Wk 4/5 checkpoint. Moved 22 → 29 → 31 Aug (2026-08-30): each
+>   weekend he was still travelling. **He can only scan at the gym (~2 PM, post-lunch); his
+>   habit is post-workout — keep it there, don't switch to fasted/AM (breaks trend
+>   continuity).** Monday = Push Strength = upper day, so leg readings stay comparable.
+>   Expect the read to land softer than the 13.5% / 68.8 kg row above — it now captures the
+>   full 21–27 Aug diet break. Re-project once the numbers are in.
+> - **Tue 16 Sep** — moved OFF 19 Sep, he is in Singapore. Scan pre-flight for a clean read
+>   (also an upper day — Pull Strength).
 > - **Sat 11 Oct** — pre-HK, the yacht checkpoint
 > - **Mon 1 Dec** — final trajectory check before the 10 Dec peak
 >
@@ -330,11 +335,19 @@ if fat loss is under 0.2 kg/wk across **two** scans.
 ## Phase 4 Week 3–4 — prescribed loads
 
 Derived from Week 2 by double progression. These are mirrored exactly in the tracker's
-`SUGGESTED_WORKOUTS` (per-week `wk: {3: …, 4: …, 5: …}`), so the app is the source of truth for
-day-to-day use. Week 5 was added 2026-08-22, computed from real Week 4 data (weekday sessions
-only — Sat Wk4 was skipped entirely for lack of time, so Sat's Wk5 carries the Wk4 targets
-forward unchanged). Weeks 6+ carry Week 5 forward and prompt for double progression rather
-than inventing numbers.
+`SUGGESTED_WORKOUTS` (per-week `wk: {3: …, 4: …, 5: …, 6: …}`), so the app is the source of truth for
+day-to-day use. Week 5 was added 2026-08-22 from real Week 4 data.
+**Week 6 was added 2026-08-30** and does NOT progress uniformly off Week 5: Wk5 (Aug 24–29)
+was a travel week — Mon–Wed ran at the Bali resort as improvised DB/cable work (the
+strength asks were never attempted), Thu was a flight, and only Push Hyper (Fri) + Pull
+Hyper (Sat) ran to plan. So **Wk6 Mon–Tue–Wed repeat the un-attempted Wk5 strength asks
+unchanged** (they progress off Wk4 real data, not the light resort logs); **Wk6 Thu–Fri are
+double progression off the real Wk5 hypertrophy sessions**; **Wk6 Sat still carries the
+Wk3-derived targets** (no real Saturday since Wk3 — Wk4 and Wk5 both skipped). One
+deliberate exception to the "hold pulling loads" rule: Friday's hypertrophy Machine Lat
+Pulldown cleared 12×4 at 60 kg twice, so Wk6 offers +2.5 kg on the top set only, contingent
+on the forearm feeling clean. Weeks 7+ carry Week 6 forward and prompt for double
+progression rather than inventing numbers.
 
 **Weekly set totals, before → after:** chest 22 → 15 · back 20 · biceps **3 → 9** ·
 hamstrings **3 → 6** · quads **7 → 10** · core 8 → 12 · conditioning **0 → ~40 min**.
