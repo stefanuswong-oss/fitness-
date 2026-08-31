@@ -349,6 +349,21 @@ Pulldown cleared 12×4 at 60 kg twice, so Wk6 offers +2.5 kg on the top set only
 on the forearm feeling clean. Weeks 7+ carry Week 6 forward and prompt for double
 progression rather than inventing numbers.
 
+**Second deliberate Wk6 change (2026-08-31, chest-priority):** Thursday's 2nd press
+(Iso-leverage Decline) is **swapped — not added to** — for a deep, stretch-focused Cable
+Chest Fly, 3×15 @ ~6–8 kg/side. Stefanus flagged pecs as his stated lagging/priority
+muscle and asked about adding a fly to both Mon and Thu. A same-slot swap on the
+hypertrophy day gives the lengthened-position stimulus the two presses miss **without**
+re-adding the 3rd chest movement Phase 4 cut, and **without** adding volume/fatigue during
+the cut (the Week 2 regression pattern). Monday is untouched — both presses stay; it's the
+heavy overload day that drives chest size long-term. Only Wk6 has an explicit `wk.6`
+entry for this slot, so the app carries the fly forward into Wk7+ (like every other
+exercise past its last prescribed week) — the keep-fly-vs-restore-press call is made when
+Wk7 is actually prescribed. The real chest-emphasis window is the deferred January build
+block, from a lean base. Note the 31 Aug scan read 15.2% fat / 69.1 kg (softer than the
+13.5% checkpoint row, as expected post-break) — leanness, not chest volume, is what's
+between him and a "full" chest look before December.
+
 **Weekly set totals, before → after:** chest 22 → 15 · back 20 · biceps **3 → 9** ·
 hamstrings **3 → 6** · quads **7 → 10** · core 8 → 12 · conditioning **0 → ~40 min**.
 
