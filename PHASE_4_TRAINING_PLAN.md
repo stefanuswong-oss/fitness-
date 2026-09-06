@@ -364,6 +364,30 @@ block, from a lean base. Note the 31 Aug scan read 15.2% fat / 69.1 kg (softer t
 13.5% checkpoint row, as expected post-break) — leanness, not chest volume, is what's
 between him and a "full" chest look before December.
 
+**Week 7 prescribed 2026-09-06** (`wk.7` added to every exercise, from real Wk6 data —
+Wk6 was a clean full home week, first since the travel block). Key calls:
+- **Thursday fly KEPT for Wk7.** Wk6 ran the stretch-focused Cable Chest Fly 3×15 @ 5-10-10
+  (home gym only has 5 kg steps) and cleared it clean. Kept because chest is
+  still the priority, it's a swap not an add, session fatigue stays flat on the cut, and the
+  Iso-Decline restore genuinely belongs in the January build block. Wk7 holds the load and
+  adds a stretch-pause / slow-negative rep-quality progression instead of weight.
+- **Forearm-contingent load bumps extended.** The Wk6 "Friday Machine Lat Pulldown +2.5 only
+  if the forearm is 100% clean on set 1" carve-out is now also applied to **Tue Straight-Arm
+  Pulldown** (set 1 29.5→31.8 — lowest-risk pull, no elbow/grip load) and **Fri Chest-Supported
+  Low Row** (top set 60→62.5). All three are explicitly "take it only if set 1 feels clean,
+  drop straight back if not." Tuesday's Lat Pulldown itself still held flat at 70.
+- **Legs fully recovered** — Wk6 was the first complete leg day in weeks and everything moved,
+  so Wk7 takes the earned adds: V-Squat top 115→117.5, Machine Hip Thrust top 95→100,
+  Standing Cable Crunch top 49.9→54.4. Sat Glute Kickback top → 29.5.
+- **Hammer Curl NOT tested in Wk6** (~4 weeks parked now). Wk7 note escalated: one light
+  neutral-grip set this week or book the physio — no more open-ended deferral, no working
+  weight prescribed.
+- **Duplicate-logging bug recurred in Wk6** — Rope Tricep Pushdown (Mon), Abductor (Wed) each
+  saved twice, and the Thu Cable Lateral Raise drop saved 3 identical stages again (4th week;
+  Stefanus flagged it himself, believes he did one). Root cause still not found — Wk7 exercise
+  notes tell him to delete the extra rows before saving. Worth a proper look at the Log
+  Workout add-exercise / drop-stage flow.
+
 **Weekly set totals, before → after:** chest 22 → 15 · back 20 · biceps **3 → 9** ·
 hamstrings **3 → 6** · quads **7 → 10** · core 8 → 12 · conditioning **0 → ~40 min**.
 
