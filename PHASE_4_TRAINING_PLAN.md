@@ -335,7 +335,7 @@ if fat loss is under 0.2 kg/wk across **two** scans.
 ## Phase 4 Week 3–4 — prescribed loads
 
 Derived from Week 2 by double progression. These are mirrored exactly in the tracker's
-`SUGGESTED_WORKOUTS` (per-week `wk: {3: …, 4: …, 5: …, 6: …}`), so the app is the source of truth for
+`SUGGESTED_WORKOUTS` (per-week `wk: {3: …, 4: …, …, 7: …}`), so the app is the source of truth for
 day-to-day use. Week 5 was added 2026-08-22 from real Week 4 data.
 **Week 6 was added 2026-08-30** and does NOT progress uniformly off Week 5: Wk5 (Aug 24–29)
 was a travel week — Mon–Wed ran at the Bali resort as improvised DB/cable work (the
@@ -346,7 +346,8 @@ double progression off the real Wk5 hypertrophy sessions**; **Wk6 Sat still carr
 Wk3-derived targets** (no real Saturday since Wk3 — Wk4 and Wk5 both skipped). One
 deliberate exception to the "hold pulling loads" rule: Friday's hypertrophy Machine Lat
 Pulldown cleared 12×4 at 60 kg twice, so Wk6 offers +2.5 kg on the top set only, contingent
-on the forearm feeling clean. Weeks 7+ carry Week 6 forward and prompt for double
+on the forearm feeling clean. **Week 7 was added 2026-09-06** from real Week 6 data (see the
+dedicated block below). Weeks 8+ carry the last prescribed week forward and prompt for double
 progression rather than inventing numbers.
 
 **Second deliberate Wk6 change (2026-08-31, chest-priority):** Thursday's 2nd press
