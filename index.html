@@ -7354,6 +7354,28 @@ function applyDataCorrections(sessions) {
     if (worseShoulderIdx !== -1) s.exercises.splice(worseShoulderIdx, 1);
   });
 
+  // Fix: Thursday Cable Lateral Raise (Push Hypertrophy) kept saving 3 identical drop
+  // stages instead of the 1 actually performed — root cause found 2026-09-12:
+  // initSuggestedWorkoutClicks() called prefillExercise() without stripDrops:false, so
+  // tapping the exercise from the Suggested Workout card (rather than "Load all") dropped
+  // the prescribed single-drop structure entirely, leaving no on-screen reference for what
+  // the drop set should look like — Stefanus rebuilt it from scratch each time and ended up
+  // with extra rows. Fixed at the source (see initSuggestedWorkoutClicks). Collapsing the
+  // 3 identical stages down to the 1 he actually did for the two most recent affected weeks.
+  sessions.forEach(s => {
+    if (!Array.isArray(s.exercises)) return;
+    if (s.id === 'custom_1788406212673') {
+      // Wk6 09-03: "1 x 15,12,12,12" / "...,9.1,9.1,9.1" -> single drop of 12 @ 9.1
+      const ex = s.exercises.find(e => e.name === 'Cable Lateral Raise' && e.reps === '1 x 15, 1 x 15, 1 x 15,12,12,12');
+      if (ex) { ex.reps = '1 x 15, 1 x 15, 1 x 15,12'; ex.weight = '14.8-16.1-16.1,9.1'; }
+    }
+    if (s.id === 'custom_1789013979049') {
+      // Wk7 09-10: "1 x 13,20,20,20" / "...,9.1,9.1,9.1" -> single drop of 20 @ 9.1
+      const ex = s.exercises.find(e => e.name === 'Cable Lateral Raise' && e.reps === '1 x 15, 1 x 15, 1 x 13,20,20,20');
+      if (ex) { ex.reps = '1 x 15, 1 x 15, 1 x 13,20'; ex.weight = '16.1-18.1-18.1,9.1'; }
+    }
+  });
+
   return sessions;
 }
 
@@ -8678,7 +8700,7 @@ const SUGGESTED_WORKOUTS = {
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '35-40-40' },
               7: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-45' },
               8: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-45' } } },
-      { name: 'Cable Lateral Raise', note: 'To answer your question directly: no, the drop set is not per-set — it’s ONE drop, done ONCE, after the 3rd main set only. Sets 1 and 2 have no drop attached. So the whole exercise is: set 1, set 2, set 3, then one drop to failure at 9.1. That’s 4 total efforts, not 6. Also fixed the weight below — there’s no 17.4 notch on this stack, so main sets now ask for 16.1-18.1-18.1 (what you actually hit, cleanly). Held flat for the Singapore week.',
+      { name: 'Cable Lateral Raise', note: 'Found the actual bug behind the repeated 3-stage saves (2026-09-12): tapping this exercise from the Suggested Workout card was dropping the prescribed drop-set info entirely — you were rebuilding the drop from scratch each time with no on-screen reference for what it should look like, which is exactly how extra rows crept in. Fixed at the source. You did have this right all along: ONE drop, done ONCE, after set 3 only — set 1, set 2, set 3, then one drop to failure at 9.1. Wk6 and Wk7’s saved data corrected to match what you actually did. Also fixed the weight below — there’s no 17.4 notch on this stack, so main sets now ask for 16.1-18.1-18.1 (what you actually hit, cleanly). Held flat for the Singapore week.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12,12', weight: '13.6-14.8-14.8,9.1' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '13.6-14.8-14.8,9.1' },
               5: { reps: '1 x 15, 1 x 14, 1 x 13,12', weight: '14.8-16.1-16.1,9.1' },
@@ -8898,7 +8920,12 @@ function initSuggestedWorkoutClicks() {
     if (!e) return;
     const rx = resolveRx(e, currentPlanWeek());
     if (!rx || !rx.reps) return; // conditioning rows have no reps — nothing to load
-    prefillExercise(rx.name || e.name, rx.reps, rx.weight || '');
+    // stripDrops:false — this is a prescription tap, not a history reference; a prescribed
+    // drop stage (e.g. Cable Lateral Raise's single trailing drop) must carry over, or the
+    // user has to rebuild the drop set from scratch with no on-screen indication of what it
+    // should look like. Bug flagged 2026-09-12 after Cable Lateral Raise repeatedly saved
+    // 3 identical drop stages instead of 1 — traced to this call defaulting to stripDrops:true.
+    prefillExercise(rx.name || e.name, rx.reps, rx.weight || '', undefined, false);
   });
 }
 
@@ -9362,16 +9389,18 @@ function initLogReferenceClicks() {
   });
 }
 
-function prefillExercise(name, reps, weight, note) {
+function prefillExercise(name, reps, weight, note, stripDrops = true) {
   // If there's exactly one exercise row and it's empty, replace it (avoid duplicate blank row)
   const rows = document.querySelectorAll('.ex-row');
   if (rows.length === 1) {
     const existId = rows[0].id.replace('ex-row-', '');
     if (!document.getElementById('ex-name-' + existId)?.value?.trim()) rows[0].remove();
   }
-  // stripDrops: true — reference prefill fills name + sets but drops start fresh
-  // so user isn't accidentally saddled with last session's drop structure
-  const newRow = addExerciseRow({ name, reps, weight, note, stripDrops: true });
+  // stripDrops defaults to true for the Log Reference "Use" case — a past logged
+  // session's drops are performance, not prescription, so they should start fresh
+  // rather than auto-carrying forward. The Suggested Workout tap (initSuggestedWorkoutClicks)
+  // explicitly passes false, since a prescribed drop stage needs to survive the load.
+  const newRow = addExerciseRow({ name, reps, weight, note, stripDrops });
   // Make it obvious the tap worked even if the new row lands off-screen below the fold
   if (newRow) {
     newRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
