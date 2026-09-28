@@ -7376,6 +7376,73 @@ function applyDataCorrections(sessions) {
     }
   });
 
+  // Fix: Thu 09-24 / Fri 09-25 / Sat 09-26 were saved as Week 8 — they were run in Week 9
+  // (Mon 21 Sep was the SG travel day, Tue/Wed he was sick, so the selector never got
+  // bumped). Thu 09-24 also saved "Cable Chest Fly (deep, stretch-focused)" twice,
+  // identical — drop the 2nd. And the Bayesian Cable Curl re-log for Fri 09-18 (after he
+  // deleted the 215 kg typo row) landed as its own session dated 09-20 instead of inside
+  // the 09-18 session — fold it back in. Flagged 2026-09-28.
+  sessions.forEach(s => {
+    if (['custom_1790236785231', 'custom_1790322741117', 'custom_1790408646128'].includes(s.id)) {
+      s.week = 9;
+    }
+    if (s.id === 'custom_1790236785231' && Array.isArray(s.exercises)) {
+      let seenFly = false;
+      s.exercises = s.exercises.filter(ex => {
+        if (ex.name === 'Cable Chest Fly (deep, stretch-focused)') {
+          if (seenFly) return false;
+          seenFly = true;
+        }
+        return true;
+      });
+    }
+  });
+  // Fix: until 2026-09-28 buildRepsWeightFromUI() saved every drop stage 3× (see the
+  // comment there). Collapse each run of 3 identical drop stages back to the 1 actually
+  // done — e.g. Thu 09-24 "1 x 15,15,15,15" @ "18.1,9.1,9.1,9.1" was one drop of 15 @ 9.1
+  // (he confirmed one drop). Also means the Wk2/Wk3 "7-stage ladders" were really 2 drops.
+  sessions.forEach(s => {
+    if (!Array.isArray(s.exercises) || !s.logged_at || s.logged_at > '2026-09-28') return;
+    s.exercises.forEach(ex => {
+      if (typeof ex.reps !== 'string' || typeof ex.weight !== 'string') return;
+      const repSets = ex.reps.split(', ');
+      const wSets = ex.weight.split('-');
+      if (repSets.length !== wSets.length) return;
+      let changed = false;
+      const collapse = (repStages, wStages) => {
+        // stage 0 is the main set; stages 1..n are drops
+        const rd = repStages.slice(1), wd = wStages.slice(1);
+        if (rd.length < 3 || rd.length % 3 || rd.length !== wd.length) return null;
+        const outR = [], outW = [];
+        for (let i = 0; i < rd.length; i += 3) {
+          if (rd[i] !== rd[i+1] || rd[i] !== rd[i+2] || wd[i] !== wd[i+1] || wd[i] !== wd[i+2]) return null;
+          outR.push(rd[i]); outW.push(wd[i]);
+        }
+        return [[repStages[0], ...outR], [wStages[0], ...outW]];
+      };
+      repSets.forEach((rs, i) => {
+        const m = rs.match(/^1 x (.+)$/);
+        if (!m) return;
+        const res = collapse(m[1].split(','), wSets[i].split(','));
+        if (!res) return;
+        repSets[i] = '1 x ' + res[0].join(',');
+        wSets[i] = res[1].join(',');
+        changed = true;
+      });
+      if (changed) { ex.reps = repSets.join(', '); ex.weight = wSets.join('-'); }
+    });
+  });
+
+  const bayesRelogIdx = sessions.findIndex(s => s.id === 'custom_1789910314076');
+  const sgFriday = sessions.find(s => s.id === 'custom_1789723119595');
+  if (bayesRelogIdx !== -1 && sgFriday && Array.isArray(sgFriday.exercises)) {
+    const relog = sessions[bayesRelogIdx];
+    (relog.exercises || []).forEach(ex => {
+      if (!sgFriday.exercises.some(e => e.name === ex.name && e.weight === ex.weight)) sgFriday.exercises.push(ex);
+    });
+    sessions.splice(bayesRelogIdx, 1);
+  }
+
   return sessions;
 }
 
@@ -7514,8 +7581,16 @@ function setDefaultPhaseWeek() {
   const logged = allSessions.filter(s => s.logged_at);
   if (!logged.length) return;
   const latest = logged.reduce((a, b) => (b.phase * 100 + b.week) > (a.phase * 100 + a.week) ? b : a);
-  document.getElementById('log-phase').value = latest.phase;
-  document.getElementById('log-week').value = latest.week;
+  // Advance by however many Mon–Sun weeks have passed since that session, so a new
+  // week doesn't silently inherit last week's number (missed 4 times: 08-17, 09-07,
+  // 09-24–26). Phase 4 ends at Wk12 (HK); Mon 19 Oct starts Phase 5 Wk1.
+  const mondayOf = d => { const t = Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); return t - ((d.getDay() + 6) % 7) * 864e5; };
+  const [y, m, dd] = latest.logged_at.split('-').map(Number);
+  const weeksPassed = Math.max(0, Math.round((mondayOf(new Date()) - mondayOf(new Date(y, m - 1, dd))) / (7 * 864e5)));
+  let phase = latest.phase, week = latest.week + weeksPassed;
+  if (phase === 4 && week > 12) { phase = 5; week -= 12; }
+  document.getElementById('log-phase').value = phase;
+  document.getElementById('log-week').value = week;
   pwIsAuto = true;
 }
 
@@ -8456,9 +8531,11 @@ const PHASE_PLAN = {
   goal: 'Peak 10 Dec (Tomorrowland, BKK) + 31 Dec (White Party) · 3 birthdays en route: SG Sep, HK Oct, BKK Dec',
   baseline: '30 Jul 2026 · 69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603',
   note: 'Phase 4 Wk 3 → Wk 11 = cut. Phase 5 Wk 1 starts Mon 20 Oct and CONTINUES the cut. Singapore and HK are PLANNED diet breaks at maintenance — a break every ~5-6 weeks on a 15-week cut restores training performance and adherence. Build phase deferred to January.',
+  // 2026-09-28: rows after 16 Sep are the ORIGINAL projections and are now out of reach —
+  // actual fat is 2.5 kg behind plan. Re-projection pending his call on the options.
   checkpoints: [
-    { label: 'Phase 4 Wk 5 (scan 31 Aug*)', date: '31 Aug', posture: 'cut→break 21-27 Aug', muscle: '56.3', fat: '9.3', weight: '68.8', bf: '13.5%' },
-    { label: 'Pre-Singapore',     date: '16 Sep',    posture: 'cut',   muscle: '56.4', fat: '8.3', weight: '67.9', bf: '12.2%' },
+    { label: 'Scan 31 Aug — ACTUAL', date: '31 Aug', posture: 'cut→break 21-27 Aug', muscle: '55.4', fat: '10.5', weight: '69.1', bf: '15.2% (plan 13.5%)' },
+    { label: 'Scan 16 Sep — ACTUAL', date: '16 Sep', posture: 'cut',   muscle: '55.8', fat: '10.8', weight: '69.8', bf: '15.5% (plan 12.2%)' },
     { label: 'SG — birthday 🇸🇬',  date: '17–21 Sep', posture: 'hold',  muscle: '56.4', fat: '8.5', weight: '68.1', bf: '12.5%' },
     { label: 'Phase 4 Wk 11 ✈',   date: '11 Oct',    posture: 'cut',   muscle: '56.5', fat: '7.6', weight: '67.3', bf: '11.3%' },
     { label: 'HK — yacht 🛥',      date: '12–19 Oct', posture: 'hold',  muscle: '56.5', fat: '8.0', weight: '67.7', bf: '11.8%' },
@@ -8482,7 +8559,7 @@ const PHASE_PLAN = {
   ],
   scans: [
     'Mon 31 Aug — Phase 4 Wk 5/6 checkpoint. Moved 22→29→31 Aug (travel weekends). Scan at the gym after Push Strength (his usual post-session / post-lunch pattern — keep it consistent, do not switch to fasted).',
-    'Tue 16 Sep — moved OFF 19 Sep: you are in Singapore. Scan before you fly, for a clean read.',
+    'Wed 16 Sep — moved OFF 19 Sep: you are in Singapore. Scan before you fly, for a clean read.',
     'Sat 11 Oct — pre-HK, the yacht checkpoint',
     'Mon 1 Dec — final trajectory check before the 10 Dec peak'
   ],
@@ -8502,15 +8579,15 @@ const PHASE_PLAN = {
     ]
   },
   proteinPlan: {
-    target: '170 g/day (140 g floor when travelling) · currently ~138 g',
+    target: '170 g/day (140 g floor when travelling) · currently ~160 g',
     meals: [
       { time: 'Morning',      food: '200 g egg white + 2 whole eggs',               protein: '~38 g', change: '+2 whole eggs. 25 g was below the MPS threshold after an overnight fast — highest-value single fix.' },
-      { time: 'Afternoon',    food: '200 g lean minced beef',                       protein: '~42 g', change: 'unchanged — best-dosed meal you have' },
+      { time: 'Afternoon',    food: '150 g lean minced chicken',                    protein: '~30 g', change: '28 Sep: was 200 g lean beef (~42 g). About 12 g less, which puts the day at ~170 g with no margin. Check the pack: if it’s under 20 g protein per 100 g raw, go back to 200 g.' },
       { time: 'Post-workout', food: '1 scoop whey + 40 g carbs',                    protein: '20 g',  change: 'keep the carbs here even in a deficit' },
-      { time: 'Dinner',       food: 'Chicken breast — 5 breasts / ~185 g meat',     protein: '~52 g', change: 'confirmed ~110 g total for 3, so ~10 g each. +2 breasts, not +1.' },
+      { time: 'Dinner',       food: 'Chicken breast — 150 g meat',                  protein: '~42 g', change: '28 Sep: down from ~185 g (~52 g). Together with the lunch cut, the day is ~10 g under target. Go back to ~185 g here, or add 1 scoop whey.' },
       { time: 'Pre-bed',      food: '250 g Greek yogurt / cottage cheese / casein', protein: '~30 g', change: 'was whey — clears in ~2 h before a ~10 h fast, and spikes insulin MORE than casein.' }
     ],
-    warning: 'Lands ~182 g, over target — fine. The discipline is TOTAL calories: 2,100 on training days. Muscle stays roughly flat (+0.5 kg over 17 weeks) — the accepted cost of peaking in December. Build phase is January, from ~9.7%, where partitioning is far better.'
+    warning: 'Currently ~160 g, about 10 g UNDER target, since lunch and dinner both dropped to 150 g on 28 Sep (was ~182 g). In a deficit that gap costs muscle: restore dinner to ~185 g, or add a scoop of whey. The discipline is TOTAL calories: 2,100 on training days. Muscle stays roughly flat (+0.5 kg over 17 weeks) — the accepted cost of peaking in December. Build phase is January, from ~9.7%, where partitioning is far better.'
   },
   scanProtocol: [
     'Consistency beats the textbook ideal. Scan at the gym ~2 PM, AFTER your session and after lunch — that is your established pattern, so keep it. Do NOT switch to fasted/AM: a one-time change of state reads as a body-comp shift that is not real.',
@@ -8545,314 +8622,390 @@ const PHASE_PLAN = {
 const SUGGESTED_WORKOUTS = {
   push_strength: {
     label: 'Push Strength',
-    focus: 'Wk8 — last home Monday before Singapore (fly out Thu 17 Sep; scan Wed 16 Sep after Legs Strength, pre-flight). Wk7 was a mixed bag: most lifts still one rep short of a clean sweep (3rd week running on Incline Press and Chest Press), and this session had the duplicate-logging bug again (Incline Press, Chest Press, Cable Lateral Raise each saved twice; Shoulder Press saved twice with a 1-rep difference) — corrected in the tracker 2026-09-12, no action needed from you. You also added a light Cable Kickback finisher this week, logged but not part of the formal plan.',
+    focus: 'Wk10 (Mon 28 Sep) — first Push Strength since 14 Sep: 21 Sep was the SG travel day, then you were sick. The Wk9 targets written on 20 Sep never reached your phone (they weren’t pushed), so they run for the first time now. Last Thu–Sat show your strength held through the illness, so the earned adds stay. Cough rule for this week: leave 1 rep in the tank on every set — no grinders, no breath-holding reps. If set 1 of a bumped lift feels off, drop back to last time’s load and log it as-is.',
     exercises: [
-      { name: 'DB or Machine Incline Press', note: 'Third week running at 8,8,8,7 @ 26 — hold, get all four sets to 8 before the 27.5 add.',
+      { name: 'DB or Machine Incline Press', note: 'Last Monday was 8,8,7,8 @ 26 on 14 Sep. Thursday you landed 26 kg on the hypertrophy day too (12,12,10). Same ask: all four sets to 8.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '26-26-26-26' },
               4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' },
               5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' },
               6: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' },
               7: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' },
-              8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' } } },
-      { name: 'Machine Chest Press', note: 'Second week stuck at 10,10,9 @ 60-65-65 — hold, close set 3 out.',
+              8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' },
+              9: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' },
+              10: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' } } },
+      { name: 'Machine Chest Press', note: 'Earned 14 Sep (clean 10,10,10 @ 60-65-65). This is the first attempt at the 70 top set, so 9 reps is a good result.',
         wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '60-65-65' },
               4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' },
               5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' },
               6: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' },
               7: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-65' },
-              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-65' } } },
-      { name: 'Machine Shoulder Press', note: 'Wk7 real result was 10,10,9 @ 40-45-45 (a duplicate row this week logged 10,10,8 for the same set — dropped, this is the better one) — same as Wk6. Two weeks stuck one rep off; hold, close set 3 to 10 before the 47.5 top set.',
+              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-65' },
+              9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-70' },
+              10: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-70' } } },
+      { name: 'Machine Shoulder Press', note: 'Slipped to 10,10,8 on 14 Sep. Hold load and chase the clean 10,10,10.',
         wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
               4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
               5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' },
               6: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' },
               7: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
-              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' } } },
-      { name: 'Cable Lateral Raise', note: 'Flat at this load since Wk3; Wk7 was still 14,13,12. Not a mid-cut priority — just chase 15,15,15 across, no rush to add.',
+              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
+              9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
+              10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' } } },
+      { name: 'Cable Lateral Raise', note: 'Beat the ask on 14 Sep (clean 15,15,15). Set 1 goes up to 18.1 to match the other two sets.',
         wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
               4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
               5: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
               6: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
               7: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '16.1-18.1-18.1' },
-              8: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '16.1-18.1-18.1' } } },
-      { name: 'Rope Tricep Pushdown', note: 'Reps matched (12,12,11) but set 1 was still 45.4, not the 49.9 the app asked for — probably just missed it. Same ask again this week: check the app before you start.',
+              8: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '16.1-18.1-18.1' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '18.1-18.1-18.1' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '18.1-18.1-18.1' } } },
+      { name: 'Rope Tricep Pushdown', note: '12,12,11 @ 49.9 flat on 14 Sep. Hold, and chase set 3 to 12.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45.4-49.9-49.9' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45.4-49.9-49.9' },
               7: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '49.9-49.9-49.9' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '49.9-49.9-49.9' } } },
-      { name: 'Cable Abs Crunch', note: 'First clean 15,15,15 sweep @ 49.9-49.9-54.4. Earned: top set → 59.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '49.9-49.9-49.9' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '49.9-49.9-49.9' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '49.9-49.9-49.9' } } },
+      { name: 'Cable Abs Crunch', note: 'You keep running this at a clean 54.4 flat (14 Sep, and again on Fri 25 Sep), so the ask now matches that: sets 1–2 at 54.4, with the top set testing 59.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-49.9' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
               7: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-59' } } },
+              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-59' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-59' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min after the session — nothing to log.',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' } } }
     ]
   },
   pull_strength: {
     label: 'Pull Strength',
-    focus: 'Wk8 — last home Tuesday before Singapore. Wk7 was the best pulling week in a while: Lat Pulldown cleared a full clean 4×8 @ 70 for the THIRD week running (Wk5-7), forearm quiet throughout — earned the top-set add. Straight-Arm Pulldown’s contingent bump landed too (12,12,12 @ 31.8-31.8-34), but form broke down on the 34 top set — holding there, not adding further, until that’s clean. Hammer Curl was finally tested after ~4 weeks parked (switched DB→cable, pain-free, 15,15,12 @ 9.1-13.4-18.1) — real progress, worth watching over the next couple of weeks before trusting it fully.',
+    focus: 'Wk10 (Tue 29 Sep) — first Pull Strength since 15 Sep; these are the Wk9 asks that never reached your phone. Your forearm flared again on Friday’s neutral-grip curl, so every curl stays at its pain-free load this week and anything that hurts gets dropped, not pushed through. Same cough rule: 1 rep in the tank on every set.',
     exercises: [
-      { name: 'Machine Lat Pulldown or Assisted Pull-up', note: 'Clean 4×8 @ 70 for three weeks running now (Wk5, Wk6, Wk7), forearm quiet the whole time. Earned: top set → 72.5.',
+      { name: 'Machine Lat Pulldown or Assisted Pull-up', note: '72.5 top set went 8,8,8,7 on 15 Sep, and the forearm was quiet. Hold, chase a clean 4×8.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-70' },
               4: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '60-65-70-70' },
               5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-70' },
               6: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-70' },
               7: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-70' },
-              8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-72.5' } } },
-      { name: 'Chest-Supported / Low Row', note: 'Wk7 matched Wk6: 10,10,9 @ 60-60-65. Still one rep off on set 3 — hold, chase the clean sweep.',
+              8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-72.5' },
+              9: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-72.5' },
+              10: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-72.5' } } },
+      { name: 'Chest-Supported / Low Row', note: 'Earned 15 Sep (clean 10,10,10 @ 65). First try at 67.5 on the top set. Take it only if set 1 feels 100% in the forearm; otherwise stay at 65.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '60-60-65' },
               4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-60-65' },
               5: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '60-60-65' },
               6: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '60-60-65' },
               7: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-60-65' },
-              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-65' } } },
-      { name: 'Straight-Arm Pulldown', note: 'Contingent bump landed clean (12,12,12 @ 31.8-31.8-34) — but the note flagged form deforming at the 34 top set. Hold right there this week, no further add, until 34 moves clean with good form.',
+              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-65' },
+              9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-67.5' },
+              10: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-60-67.5' } } },
+      { name: 'Straight-Arm Pulldown', note: 'Clean 12,12,12 @ 34 two weeks running. First try at 36.3 on the top set. End the set as soon as your elbows bend or your torso rocks (form broke at 34 once before).',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '29.5-31.8-34' },
               4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '31.8-34-36.3' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '29.5-31.8-34' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '29.5-31.8-34' },
               7: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '31.8-31.8-34' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '31.8-31.8-34' } } },
-      { name: 'Cable Rear Delt / Face Pull', note: 'Set-3 gap (14) still open after 4 weeks. Chase 15,15,15, then add.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '31.8-31.8-34' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '31.8-31.8-36.3' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '31.8-31.8-36.3' } } },
+      { name: 'Cable Rear Delt / Face Pull', note: 'Earned 15 Sep (first clean 15,15,15). First try at 29.5 on the top set.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' },
               5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' },
               6: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' },
               7: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-27.2' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-27.2' } } },
-      { name: 'Bayesian Cable Curl', note: 'Pain-free. Wk7 slipped slightly to 12,12,10 (from Wk6’s 12,12,11). Hold load, chase 12,12,11 back before the 29.5 top set.',
+              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-27.2' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-29.5' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-29.5' } } },
+      { name: 'Bayesian Cable Curl', note: '12,12,11 on 15 Sep, pain-free. The palms-up grip has stayed pain-free throughout. Hold load and chase 12,12,12. Stop the exercise if the forearm talks.',
         wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '18.1-22.7-27.2' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
               6: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
               7: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' } } },
-      { name: 'Hammer Cable Curl', note: '✅ First test in ~4 weeks — switched from DB to cable, pain-free: 15,15,12 @ 9.1-13.4-18.1. Real progress. Hold these loads, chase 15,15,13 this week — you said you’d climb slowly on this one, no need to rush week one back.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '18.1-22.7-27.2' } } },
+      { name: 'Hammer Cable Curl', note: '⚠ Forearm flared again Fri 25 Sep when all 3 sets went at 18.1. Go back to the ramp that was pain-free (rope, 9.1-13.4-18.1) and DON’T chase reps this week. If set 1 hurts, skip the exercise. If it flares even at these loads, book the physio (that call has been parked since August).',
         wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '10-12-12' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '10-10-10' },
               5: { reps: '', weight: '' },
               6: { reps: '', weight: '' },
               7: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '9.1-13.4-18.1' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '9.1-13.4-18.1' } } },
-      { name: 'Hanging or Lying Leg Raise', note: 'Wk7 cleared 15,15,12 bodyweight — one set off a clean sweep. Push for 15,15,15.',
+              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '9.1-13.4-18.1' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '9.1-13.4-18.1' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '9.1-13.4-18.1' } } },
+      { name: 'Hanging or Lying Leg Raise', note: 'Clean 15×3 on Thursday. Same ask.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               7: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
+              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' } } }
     ]
   },
   legs_strength: {
     label: 'Legs Strength',
-    focus: 'Wk8 — scan day (post-workout/post-lunch, do this session first, scan after). Also the last home Wednesday before Singapore. Wk7 was a chaotic session — arrived early to a packed gym, order fell apart, V-Squat never got to its top set at all (only 3 sets done). Everything else that WAS run went clean: Leg Press, Hip Thrust, Abductor, Leg Extension all matched or cleared target. Leg Curl and Standing Cable Crunch got skipped entirely — carrying both forward untested.',
+    focus: 'Wk10 (Wed 30 Sep) — first Legs Strength since 16 Sep; these are the Wk9 asks that never reached your phone. With the cough still around, brace for heavy V-Squat and Leg Press sets but don’t hold your breath through a grinder — if a rep needs a long Valsalva to finish, that’s the last rep. Log Machine Hip Thrust as ONE row (it has split into two rows two weeks running).',
     exercises: [
-      { name: 'V-Squat', note: 'Gym was packed and chaotic — you only got 3 sets in, never reached the 117.5 top set at all. Retry the same ask this week: it’s still earned, just needs a clean run at it.',
+      { name: 'V-Squat', note: '8,8,8,7 @ 117.5 on 16 Sep, the first time at this top set. Hold and chase a clean 4×8. With the cough, stop a rep early rather than grind.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 6', weight: '100-105-110-115' },
               4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-115' },
               5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-115' },
               6: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-115' },
               7: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-117.5' },
-              8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-117.5' } } },
-      { name: 'Leg Press (low/narrow)', note: 'First full clean 10,10,10 @ 110-115-115 in a while. Careful retry of the top-set add: 120 for whatever you get (expect ~8-9, not a clean 10) — the Wk3 jump to 120 collapsed to 6 reps, so back off immediately if that happens again.',
+              8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-117.5' },
+              9: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-117.5' },
+              10: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-117.5' } } },
+      { name: 'Leg Press (low/narrow)', note: 'The 120 retry landed clean on 16 Sep (10,10,9). Hold, chase the top set to 10.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-120' },
               4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '110-115-115' },
               5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-115' },
               6: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-115' },
               7: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '110-115-115' },
-              8: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-120' } } },
-      { name: 'Machine Hip Thrust', note: 'Matched Wk6: 10,10,9 @ 80-90-100. Still one rep off — hold, close set 3 to 10 before the next add.',
+              8: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-120' },
+              9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '110-115-120' },
+              10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '110-115-120' } } },
+      { name: 'Machine Hip Thrust', note: '10,10,9 @ 80-90-100 on 16 Sep (it saved as two rows, so log it as ONE row this time). Hold, chase set 3 to 10.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
               4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
               5: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-95' },
               6: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-95' },
               7: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-100' },
-              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' } } },
-      { name: 'Leg Curl', note: 'Skipped entirely this week (gym chaos, ran out of time). Carrying Wk7’s ask forward untested — same target.',
+              8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
+              9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
+              10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' } } },
+      { name: 'Leg Curl', note: 'Set 3 fails every week here (12,12,8 on 16 Sep), even though Saturday’s curl just went clean. Try 90 s rest before set 3 instead of rushing it.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               6: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               7: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' } } },
-      { name: 'Leg Extension', note: 'Matched Wk7’s ask: 12,12,11 @ 50-55-60. Still chasing set 3 to 12.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' } } },
+      { name: 'Leg Extension', note: 'Earned 16 Sep (first clean 12,12,12 @ 60). First try at 65 on the top set.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-60' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' },
               7: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' } } },
-      { name: 'Abductor or Adductor', note: '✅ First full clean 12×3 @ 55-60-65 (no duplicate row this time, either). Earned: top set → 70.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-65' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-65' } } },
+      { name: 'Abductor or Adductor', note: 'Earned (clean 12×3 @ 70 two weeks running). First try at 75 on the top set.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
               6: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
               7: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-65' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-70' } } },
-      { name: 'Standing Cable Crunch', note: 'Skipped entirely this week (gym chaos). Carrying Wk7’s earned target forward untested.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-70' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-75' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-75' } } },
+      { name: 'Standing Cable Crunch', note: 'Skipped the last two Wednesdays, but you’ve been running 54.4 clean on other days. Do it FIRST if the gym is packed so it doesn’t get cut.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
               7: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '45.4-49.9-54.4' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '45.4-49.9-54.4' } } }
+              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '45.4-49.9-54.4' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '45.4-49.9-54.4' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-54.4' } } }
     ]
   },
   push_hypertrophy: {
     label: 'Push Hypertrophy',
-    focus: '✈️ Wk8 — this slot lands on the Singapore trip (fly Thu 17 Sep). Same treatment as Wk5’s resort days: numbers below just hold Wk7’s asks, nothing added. If there’s no proper gym, skip or improvise guilt-free — this is a diet-break window, not a test. Wk7 itself went well at home: Shoulder Press and OH Ext both cleared their top-set adds clean; Incline Press missed its top-set bump (you didn’t see the app update, stayed at 24 instead of 26 — same ask repeated below); the stretch-focused Cable Fly found a way past the 5kg-step ceiling (added a 2.5kg plate → 12.5 on the top set, nice fix). Laterals: same 1-drop confusion for the 4th+ week running — see the note on that row, it’s now spelled out explicitly.',
+    focus: 'Wk10 (Thu 1 Oct) — built off last Thursday’s real session (24 Sep, run while sick; it saved as Wk8, now corrected to Wk9). You held or beat every number, and the 26 kg incline top set landed at home for the first time. Earned: Cable Fly set 2 and Lateral Raise set 1 move up. Shoulder Press and OH Extension repeated their Wk7 numbers exactly, so they hold.',
     exercises: [
-      { name: 'DB Incline Press', note: 'You didn’t see the app’s top-set update last week (stayed at 24, not 26) — same ask again. Held flat for the Singapore week regardless; not chasing this mid-trip.',
+      { name: 'DB Incline Press', note: '✅ 26 kg top set landed at home for the first time (12,12,10), while sick. Hold, chase 11.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22-22' },
               4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '22-24-24' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-24' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '22-24-24' },
               7: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '22-24-26' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '22-24-26' } } },
-      { name: 'Iso-leverage Decline', note: '✅ Wk7 you found a way around the 5kg-step ceiling — added a 2.5kg plate for 10-10-12.5, better than the 5-10-10 asked for. Held flat for the Singapore week (hotel gym likely won’t have this cable setup anyway) — pick it back up properly in Wk9.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '22-24-26' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '22-24-26' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-26' } } },
+      { name: 'Iso-leverage Decline', note: '✅ Clean 15×3 @ 10-10-12.5 twice now (Wk7, and last Thursday; it saved twice, which has been cleaned up). Set 2 moves up to 12.5 with the plate trick. Keep the 1-count stretch pause.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '20-22.5-25' },
               4: { name: 'Hybrid Pectoral Fly', reps: '1 x 12, 1 x 11, 1 x 10', weight: '20-20-25' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22.5-25' },
               6: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '6-8-8' },
               7: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '5-10-10' },
-              8: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '10-10-12.5' } } },
-      { name: 'Machine Shoulder Press', note: '✅ Clean 3×12 @ 35-40-45, top-set add landed. Held flat for the Singapore week — the next add waits for a proper gym in Wk9.',
+              8: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '10-10-12.5' },
+              9: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '10-12.5-15' },
+              10: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '10-12.5-12.5' } } },
+      { name: 'Machine Shoulder Press', note: '12,11,10 @ 35-40-45, identical to Wk7. Hold, chase 12,12,11.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '30-35-35' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '30-35-35' },
               5: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-40' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '35-40-40' },
               7: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-45' },
-              8: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-45' } } },
-      { name: 'Cable Lateral Raise', note: 'Found the actual bug behind the repeated 3-stage saves (2026-09-12): tapping this exercise from the Suggested Workout card was dropping the prescribed drop-set info entirely — you were rebuilding the drop from scratch each time with no on-screen reference for what it should look like, which is exactly how extra rows crept in. Fixed at the source. You did have this right all along: ONE drop, done ONCE, after set 3 only — set 1, set 2, set 3, then one drop to failure at 9.1. Wk6 and Wk7’s saved data corrected to match what you actually did. Also fixed the weight below — there’s no 17.4 notch on this stack, so main sets now ask for 16.1-18.1-18.1 (what you actually hit, cleanly). Held flat for the Singapore week.',
+              8: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-45' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '35-40-50' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '35-40-45' } } },
+      { name: 'Cable Lateral Raise', note: 'Beat the ask (15,15,15 plus the drop). Set 1 goes up to 18.1 to match Monday. ONE drop at 9.1 after set 3 only. Your log shows three drop rows again, so if you’re doing a drop after every set, tell me.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12,12', weight: '13.6-14.8-14.8,9.1' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '13.6-14.8-14.8,9.1' },
               5: { reps: '1 x 15, 1 x 14, 1 x 13,12', weight: '14.8-16.1-16.1,9.1' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15,12', weight: '14.8-16.1-16.1,9.1' },
               7: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '16.1-18.1-18.1,9.1' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '16.1-18.1-18.1,9.1' } } },
-      { name: 'Cable Overhead Extension', note: '✅ Clean 3×15 @ 27.2-29.5-31.8, top-set add landed. Held flat for the Singapore week.',
+              8: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '16.1-18.1-18.1,9.1' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '16.1-18.1-18.1,9.1' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 14,12', weight: '18.1-18.1-18.1,9.1' } } },
+      { name: 'Cable Overhead Extension', note: '15,14,13 @ 27.2-29.5-31.8, same as Wk7. Hold, chase 15,15,14.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
               4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-27.2-29.5' },
               5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-27.2-29.5' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-27.2-29.5' },
               7: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-29.5-31.8' },
-              8: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-29.5-31.8' } } },
-      { name: 'Lying Leg Raise', note: 'Skipped in Wk7 (ran out of time). Same target carried forward.',
+              8: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-29.5-31.8' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-29.5-34' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-29.5-31.8' } } },
+      { name: 'Lying Leg Raise', note: 'Clean 15×3. Keep the 15s and add a slow 3-second lowering on every rep.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               7: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
+              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' } } }
     ]
   },
   pull_hypertrophy: {
     label: 'Pull Hypertrophy',
-    focus: '✈️ Wk8 — lands on the Singapore trip. Numbers below hold Wk7’s asks, nothing added — same no-pressure treatment as the rest of the travel window; skip or improvise if there’s no proper gym. Wk7 itself was the best pulling-hypertrophy week yet at home: Lat Pulldown and Low Row both held/landed their contingent top-set bumps clean, Rear Delt and Bayesian both cleared their adds. Cross-Body Lat Pulldown’s numbers were messy (you misread set 1, then added reps elsewhere to compensate) — treating that one as unclear rather than a clean beat, holding its target. Core and the walk finisher got dropped this week for time.',
+    focus: 'Wk10 (Fri 2 Oct) — built off last Friday’s real session (25 Sep). Everything matched Wk7 or came within a rep, which is a good result for a sick week, but nothing cleared a full sweep, so loads hold. Cross-Body Pulldown finally gave a clean read (15,15,14). The Bayesian attachment was taken and the hammer-grip swap flared your forearm, so the swap rule has changed: see the Bayesian note.',
     exercises: [
-      { name: 'Machine Lat Pulldown', note: '✅ Held 62.5 clean: 12,12,12,11 — forearm still fine. Held flat for the Singapore week; the next bump waits for Wk9.',
+      { name: 'Machine Lat Pulldown', note: '12,12,12,11 @ 62.5 for the third time (Wk7, Wk9). Hold, get set 4 to 12.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '50-55-60-60' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-60' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '50-55-60-60' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '50-55-60-62.5' },
               7: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-62.5' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-62.5' } } },
-      { name: 'Chest-Supported Low Row', note: '✅ Contingent bump landed clean: 12,12,11 @ 50-55-62.5, forearm fine. Held flat for the Singapore week.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-62.5' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-65' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '50-55-60-62.5' } } },
+      { name: 'Chest-Supported Low Row', note: 'Dipped to 12,12,10 last week (sick week, Wk7 was 12,12,11). Hold, chase 11 back.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
               5: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '50-55-60' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' },
               7: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-62.5' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-62.5' } } },
-      { name: 'Jeff Nippard-style Cross-Body Lat Pulldown', note: 'Wk7’s numbers were messy — you misread set 1’s target, then added reps to sets 2-3 to compensate (logged 12,17,15). Too noisy to read as a clean beat, so holding the same target rather than progressing off it.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-62.5' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-65' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-62.5' } } },
+      { name: 'Jeff Nippard-style Cross-Body Lat Pulldown', note: 'A clean read at last: 15,15,14, matching the ask. Chase 15×3, then load goes up.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '27.2-31.8-34' },
               4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '27.2-31.8-34' },
               5: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '27.2-31.8-34' },
               6: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-31.8-34' },
               7: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-31.8-34' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-31.8-34' } } },
-      { name: 'Rear Delt Row/Fly', note: '✅ Clean 15,15,13 @ 22.7-27.2-31.8, top-set add landed. Held flat for the Singapore week.',
+              8: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-31.8-34' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-31.8-34' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-31.8-34' } } },
+      { name: 'Rear Delt Row/Fly', note: '15,15,13 @ 31.8, same as Wk7. Hold, chase set 3 to 14.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-29.5' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-29.5' },
               5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-29.5' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-29.5' },
               7: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-31.8' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-31.8' } } },
-      { name: 'Bayesian Cable Curl', note: '✅ Pain-free, clean 15,14,12 @ top 27.2, matches Tuesday’s Bayesian top now. Held flat for the Singapore week.',
+              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-31.8' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-34' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-31.8' } } },
+      { name: 'Bayesian Cable Curl', note: 'Last week the attachment was taken, you swapped to hammer, and the forearm flared. NEW SWAP RULE: if the Bayesian setup is taken, do a palms-up cable curl (straight bar or single D-handle), NOT hammer. The neutral grip is what aggravates the forearm; the palms-up grip has been pain-free for weeks.',
         wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '18.1-22.7-24' },
               4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '18.1-22.7-24' },
               5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-24' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-22.7-24' },
               7: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '18.1-22.7-27.2' },
-              8: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '18.1-22.7-27.2' } } },
-      { name: 'Core — standing cable crunch / leg raise', note: 'Dropped this week for time. Same target carried forward.',
+              8: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '18.1-22.7-27.2' },
+              9: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '18.1-22.7-27.2' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '18.1-22.7-27.2' } } },
+      { name: 'Core — standing cable crunch / leg raise', note: '✅ Beat the ask: clean 15×3 @ 54.4 flat. Top set → 59.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '27.5-27.5-27.5' },
               6: { reps: '1 x 13, 1 x 13, 1 x 13', weight: '27.5-27.5-27.5' },
               7: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' } } },
+              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' } } }
     ]
   },
   sat: {
     label: 'Legs + Core + Light Push Finisher',
-    focus: '✈️ Wk8 — lands on the Singapore trip. Numbers hold Wk7’s asks, nothing added — skip or improvise if there’s no proper gym. Wk7 was a great session: Hip Thrust finally cleared a full clean 4×12 @ 85 (first time — the 90 top-set add is earned but parked until Wk9, back home), Glute Kickback and the core crunch both hit or beat target. Leg Curl slipped a little (12,12,10). You also added Shrug for the first time in a while (12,12,12 @ 18-20-20, logged but not part of the formal plan) — worth folding in properly once back from Singapore if you want it to stick.',
+    focus: 'Wk10 (Sat 3 Oct) — built off last Saturday’s real session (26 Sep). Hip Thrust cleared a clean 4×12 @ 85 for the second time, so the 90 top set is on. Leg Curl hit its first clean 12×3. Glute Kickback steps back to 27.2 kg: at 29.5 you couldn’t hold the 2-second squeeze, and the squeeze is the point of the exercise.',
     exercises: [
-      { name: 'Hip Thrust or Deficit Sumo Squat', note: '✅ First clean 4×12 @ 85 — the 90 top-set add is earned. Holding flat through the Singapore week though; take the bump in Wk9 when you’re back on this exact setup.',
+      { name: 'Hip Thrust or Deficit Sumo Squat', note: '✅ Clean 4×12 @ 85 for the second time. The 90 top set is on, so 10 reps on the first try is fine.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '65-75-80-85' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-85' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-85' },
               6: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-85' },
               7: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '65-75-80-85' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '65-75-80-85' } } },
-      { name: 'Seated or Lying Leg Curl', note: 'Slipped to 12,12,10 (from 12,12,11 in Wk6). Held flat for the Singapore week.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '65-75-80-85' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '65-75-80-90' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '65-75-80-90' } } },
+      { name: 'Seated or Lying Leg Curl', note: '✅ First clean 12,12,12 @ 45-50-55. First try at 60 on the top set.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-55' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
               6: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
               7: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
-              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' } } },
-      { name: 'Glute Kickback or Hip Abductor', note: '✅ Clean 15,15,13 @ 18.1-22.7-29.5, top-set add landed. Held flat for the Singapore week.',
+              8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
+              9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
+              10: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-60' } } },
+      { name: 'Glute Kickback or Hip Abductor', note: 'Your question: no, reps without the 2-second squeeze don’t count here. A kickback works through the squeeze at the top; without it, momentum and your lower back take over. Drop the top set to 27.2 and get 15 reps with a full hold on every one. Go back to 29.5 once 27.2 gives you 15 held reps.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '19-24-27' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '19-24-27' },
               5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '19-24-27' },
               6: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '19-24-27' },
               7: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-29.5' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-29.5' } } },
-      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', note: '✅ Beat target — 15,18,15 @ 49.9-54.4-54.4. Held flat for the Singapore week (crunch is the one to protect if time is short there too).',
+              8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-29.5' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-22.7-31.8' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-22.7-27.2' } } },
+      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', note: 'You did leg raises instead last Saturday (clean 15×3). Cable crunch target carries forward: top set 59.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
               6: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
               7: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
-              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' } } },
-      { name: 'Machine Chest Press or Pec Fly (light)', note: 'Matched Wk7 exactly — 15,18 @ 15, capped correctly. Held flat, don’t chase load.',
+              8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
+              9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-59' },
+              10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-59' } } },
+      { name: 'Machine Chest Press or Pec Fly (light)', note: '40 kg on the Machine Chest Press for 15,18 is about 60% of your Monday top set, which is still light. Keep it there and don’t chase load. On the pec fly instead, use ~15.',
         wk: { 3: { reps: '1 x 15, 1 x 15', weight: '20-20' },
               4: { reps: '1 x 15, 1 x 15', weight: '20-20' },
               5: { reps: '1 x 15, 1 x 15', weight: '20-20' },
               6: { reps: '1 x 15, 1 x 15', weight: '20-20' },
               7: { reps: '1 x 15, 1 x 18', weight: '15-15' },
-              8: { reps: '1 x 15, 1 x 18', weight: '15-15' } } },
-      { name: 'Cable Lateral Raise (light)', note: 'Light exercise, ascending reps — held flat.',
+              8: { reps: '1 x 15, 1 x 18', weight: '15-15' },
+              9: { reps: '1 x 15, 1 x 18', weight: '15-15' },
+              10: { reps: '1 x 15, 1 x 18', weight: '40-40' } } },
+      { name: 'Cable Lateral Raise (light)', note: 'Light work with ascending reps. Held flat by design.',
         wk: { 3: { reps: '1 x 18, 1 x 18', weight: '10.25-10.25' },
               4: { reps: '1 x 15, 1 x 18, 1 x 22', weight: '9-9-9' },
               5: { reps: '1 x 15, 1 x 18, 1 x 22', weight: '9-9-9' },
               6: { reps: '1 x 15, 1 x 18, 1 x 22', weight: '9-9-9' },
               7: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
-              8: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' } } },
-      { name: 'Conditioning — incline walk or Hyrox circuit', note: '25 min, 14% incline @ 5.0 km/h, HR 125-140. In Singapore, a brisk walk/hotel treadmill covers this — don’t skip conditioning even if the lifting is improvised. Nothing to log.',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' } } }
+              8: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
+              9: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
+              10: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' } } },
+      { name: 'Conditioning — incline walk or Hyrox circuit', note: '25 min, 14% incline @ 5.0 km/h, HR 125-140. Nothing to log.',
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' } } }
     ]
   }
 };
@@ -9307,7 +9460,11 @@ function buildRepsWeightFromUI(exId) {
     const kg   = kgEl?.value.trim() || '';
     const dropContainer = document.getElementById(`drop-rows-${exId}-${sid}`);
     const dropEls = dropContainer
-      ? Array.from(dropContainer.querySelectorAll('[id^="drop-"]')) : [];
+      ? Array.from(dropContainer.children) : [];
+    // Direct children only: each stage is a div#drop-{ex}-{set}-{n}, but its inputs
+    // (#drop-reps-…, #drop-kg-…) also start with "drop-", so the old
+    // querySelectorAll('[id^="drop-"]') matched 3 elements per stage and saved every
+    // drop 3× — the real cause of the "3 identical drop stages" rows (found 2026-09-28).
 
     if (dropEls.length) {
       const allReps = [reps], allKgs = [kg];
@@ -10005,6 +10162,27 @@ const BODY_BASELINE = [
       torso: { m: 27, f: 5.4 },
       rLeg: { m: 8.4, f: 1.4 }, lLeg: { m: 8.6, f: 1.5 }
     }
+  },
+  {
+    // Added 2026-09-28 from the summary numbers he pasted 2026-08-31 (scan image not kept,
+    // so no segment breakdown).
+    id: 'scan_2026_08_31',
+    date: '2026-08-31',
+    label: 'Phase 4 Wk 6 check-in (post Bali break)',
+    weight: 69.1, fat: 15.2, muscle: 80.2, bodyAge: 46,
+    visceral: 5, bmi: 25.4, whr: 0.98, bmr: 1579, bcm: 6385
+  },
+  {
+    id: 'scan_2026_09_16',
+    date: '2026-09-16',
+    label: 'Phase 4 Wk 8 — pre-Singapore',
+    weight: 69.8, fat: 15.5, muscle: 79.9, bodyAge: 46,
+    visceral: 5, bmi: 25.6, whr: 0.95, bmr: 1584, bcm: 6371,
+    segments: {
+      rArm: { m: 3.3, f: 0.6 }, lArm: { m: 3.3, f: 0.6 },
+      torso: { m: 26.4, f: 5.8 },
+      rLeg: { m: 8.4, f: 1.6 }, lLeg: { m: 8.5, f: 1.7 }
+    }
   }
 ];
 
@@ -10013,7 +10191,9 @@ let bodyChartMetric = 'fat';
 
 function getAllBodyScans() {
   const saved = JSON.parse(localStorage.getItem('body_scans') || '[]');
-  return [...BODY_BASELINE, ...saved].sort((a, b) => a.date.localeCompare(b.date));
+  // Skip any scan he also typed in by hand for a date that's already hardcoded above.
+  const baseDates = new Set(BODY_BASELINE.map(b => b.date));
+  return [...BODY_BASELINE, ...saved.filter(s => !baseDates.has(s.date))].sort((a, b) => a.date.localeCompare(b.date));
 }
 
 function saveBodyScan() {
