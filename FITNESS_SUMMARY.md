@@ -1,10 +1,18 @@
 # Fitness Summary — Stefanus Wong
-**Last updated:** 2026-09-28
+**Last updated:** 2026-10-04
 
 ---
 
 ## Current Status
 
+- **2026-10-04: Wk10 reviewed, Wk11 (5–10 Oct, last week before HK) prescribed and pushed.** Read all six program PDFs first. Log export backed up to `Fitness Log/stefanus-fitness-logs-2026-10-04.json`.
+  - **Wk10 was strong.** It was the first full week after the illness, and every lift matched or beat its ask except DB Incline Thu (12,12,10 vs 11), Cross-Body Pulldown (15,15,14) and Wed Leg Curl. **He loved Wed Legs Strength** ("couldn't walk the day after"). He went past the V-Squat ask to 120 (8,8,8,7) and swept Leg Press 10,10,10 @ 120. Wk11 Wed keeps the same session.
+  - **Earned adds in Wk11 (8):** Incline Press Mon (top set 28, after the first clean 4×8 @ 26), Rope Pushdown (set 3 → 52.4 via the 2.5 plate), Lat Pulldown Tue (→75), Bayesian Tue (→29.7, as he requested, pain-free), Leg Press (→125), Cable Chest Fly Thu (→15), Lat Pulldown Fri (→65, first 12×4 @ 62.5 on the 4th try), Sat core (54.4-59-59). Glute Kickback goes back to 29.5 **only if** the 2-s squeeze held at 27.2 (15,15,15 logged; the squeeze wasn't confirmed). Everything else holds and chases the missing rep.
+  - **Hammer Cable Curl:** slight pang on the left forearm on set 3 (18.1). He chose to keep it as is, so it's held. Rule: pang on set 3 → do set 3 at 13.4; pang on set 1–2 → skip and book the physio.
+  - **Shrug added to `pull_hypertrophy`** (Wk11 only: 15,15,12 @ 22-24-28). He has logged it on his own twice. Pull Hypertrophy PDF shows Smith shrugs as a Fri staple (Wk5–10, 3×15 @ 50–60). For weeks < 11, `resolveRx` shows it carried from Wk11, which is harmless.
+  - **Leg Curl (Wed) set 3 keeps collapsing** (12,12,8) even at 55, so load isn't the cause. Wk11 ask: 12,12,10 @ 50-55-55 with 2 min rest before set 3.
+  - **Open questions for him:** (1) Mon 09-28 Machine Shoulder Press saved as two rows (10,10,10 and 10,9,8). Which is real? If 10,10,10, it's earned. Not corrected yet. (2) Wed 09-30 has no Machine Hip Thrust or Standing Cable Crunch. Skipped or not saved? (3) Thu OH Extension logged 15,12,15, likely a typo. (4) His Sat Leg Extension note is cut off at "If…". (5) The 28 Sep nutrition questions (does he track intake; why the protein cut) are still unanswered.
+  - **Scan moved to Fri 9 Oct**, after Pull Hypertrophy. The plan said "Sat 11 Oct", but 11 Oct 2026 is a **Sunday**, and Saturday is a legs day (the protocol says upper-body day). Also fixed in `PHASE_PLAN`: "last heavy legs Wed 8 Oct" → **Wed 7 Oct** (8 Oct is a Thursday), and "Phase 5 Wk 1 starts Mon 20 Oct" → **Mon 19 Oct**. Calendar this week: Mon 5 · Tue 6 · Wed 7 · Thu 8 · Fri 9 (scan) · Sat 10 · Mon 12 fly HK. Wk12 (12–18 Oct, HK) is not prescribed yet.
 - **2026-09-28: sick week after SG, Wk10 prescribed, and the Wk9 batch turned out never to have shipped.**
   - **Wk9 was never deployed.** The 2026-09-20 session wrote `wk.9` into `index.html` but never committed or pushed it, so his phone kept serving Wk8 targets via `resolveRx()` carry-forward all week. His Thu–Sat 09-24/25/26 numbers match the Wk8 asks exactly, which explains it. **Always check `git status` for unpushed prescription work at session start, and push at session end.** Also, several Wk9 hypertrophy-day notes misread Wk7 data: they claimed clean 3×12 Shoulder Press and clean 3×15 OH Extension, but the logs show 12,11,10 and 15,14,13. So the Wk9 50 kg / 34 kg adds were unearned. Wk10 replaces them, built from the real 09-24/25/26 data.
   - **Illness:** sick from his return from SG (~21 Sep). Mon 21 = travel day; Tue 22 and Wed 23 not trained. He trained Thu–Sat while still unwell and held or matched every number, including the first 26 kg DB Incline top set at home (12,12,10). **Cough still lingering as of 28 Sep.** Wk10 Mon–Wed run the (never-seen) Wk9 strength asks with a "1 rep in the tank, no breath-hold grinders" rule, and fall back to the last load if set 1 of a bumped lift feels off.
@@ -57,12 +65,12 @@
 - **Live plan: cut straight through, peak 10 Dec at ~9.7% / 66.9 kg.** ~300 kcal/day deficit
   (2,100 training days), protein 170 g, across ~14 cut weeks from 10 Aug to 30 Nov.
 - **He is in HK 12–19 Oct** — a planned **diet break at maintenance**, not a lapse.
-  Yacht condition (~11.3%) is banked by Sat 11 Oct.
+  Yacht condition (~11.3%) is banked by Sat 11 Oct. *(Superseded: 11 Oct is a Sunday; the pre-HK scan is Fri 9 Oct. The 11.3% target became unreachable on 2026-09-28.)*
   *(Adding the Singapore break cost ~0.3 pts vs the pre-SG model: 9.4% → 9.7%, 11.0% → 11.3%.)*
 - **10–31 Dec: HOLD at maintenance.** Do not diet between the two events — arriving flat on
   the 31st is the bigger risk.
 - **Block naming (his rule):** Phase 4 keeps counting **Wk 3 → Wk 11** through the cut.
-  Phase increments **after HK** — **Phase 5 Wk 1 = Mon 20 Oct**, and Phase 5 is a
+  Phase increments **after HK** — **Phase 5 Wk 1 = Mon 19 Oct** *(corrected 2026-10-04 from "Mon 20 Oct")*, and Phase 5 is a
   **continued cut**, not a build block.
 - **Muscle stays roughly flat (+0.5 kg over 17 weeks). This was an explicit, informed trade**
   — he chose cut-through over build-then-cut after seeing both sets of numbers. The
@@ -88,7 +96,7 @@
   ~5–6 weeks on a 15-week cut are good practice, not a concession. He doesn't normally drink;
   may in SG and HK — that's budgeted.
 - **Three birthday celebrations**: Sep (SG, the real one), Oct (HK), Dec (BKK).
-- **Scans: Mon 31 Aug · Wed 16 Sep · Sat 11 Oct · Mon 1 Dec.** (Corrected 2026-09-12 —
+- **Scans: Mon 31 Aug · Wed 16 Sep · Fri 9 Oct · Mon 1 Dec.** *(2026-10-04: "Sat 11 Oct" → Fri 9 Oct; 11 Oct is a Sunday.)* (Corrected 2026-09-12 —
   16 Sep is actually a Wednesday, not the "Tue 16 Sep" this used to say; the date itself was
   always right.) The Aug scan moved 22→29→31 Aug (still travelling each weekend) — scan at
   the gym after that day's session (his usual post-workout / post-lunch state; do NOT switch
@@ -152,7 +160,7 @@
 Live tracker: `fitness_tracker.html` / `index.html` (identical, both deployed via GitHub Pages — see Hosting section)
 **Keep the two files byte-identical** — edit `index.html`, then `cp index.html fitness_tracker.html`.
 
-- `SUGGESTED_WORKOUTS` = the Phase 4 plan, with per-week `wk: { 3: {reps, weight}, 4: {…}, … }` prescriptions. **All six categories (Mon–Fri + `sat`) have Wk3–Wk10 filled in as of 2026-09-28.** A prescription only reaches his phone once it's pushed to GitHub Pages. Wk9 sat unpushed for a week. Add an `N:` key to each exercise when Week N is prescribed (from that week's real logged data); until then Week N carries the last defined week forward via `resolveRx()` and shows a double-progression prompt banner.
+- `SUGGESTED_WORKOUTS` = the Phase 4 plan, with per-week `wk: { 3: {reps, weight}, 4: {…}, … }` prescriptions. **All six categories (Mon–Fri + `sat`) have Wk3–Wk11 filled in as of 2026-10-04.** A prescription only reaches his phone once it's pushed to GitHub Pages. Wk9 sat unpushed for a week. Add an `N:` key to each exercise when Week N is prescribed (from that week's real logged data); until then Week N carries the last defined week forward via `resolveRx()` and shows a double-progression prompt banner.
 - `PHASE_PLAN` = block checkpoints, macros, protein schedule, scan-day protocol. Rendered by `renderPhasePlanCard()` into the collapsible "Phase 4 Plan" card on the Log page.
 - `reps`/`weight` must use the log parser's format: `"1 x 8, 1 x 8, 1 x 7"` and `"26-26-24"` (dash = per set, comma = drop stage). `compactReps()`/`compactWeight()` render these as `8 · 8 · 7` / `26 · 26 · 24` for the phone-width table — display only, the stored strings stay parseable.
 - **Notes moved from per-day to per-exercise (2026-08-15).** The Log page no longer has a day-level Notes textarea; each exercise row in "Current Exercise" has its own optional note input, saved as `exercises[i].note`. Old sessions logged before this change still carry a day-level `session.note` — both are still read (History, Today's Session, "Last Time" reference, and the Session Notes card all display exercise-level notes now, falling back to the legacy day-level note where present).
