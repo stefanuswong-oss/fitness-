@@ -7443,6 +7443,23 @@ function applyDataCorrections(sessions) {
     sessions.splice(bayesRelogIdx, 1);
   }
 
+  // Fix: Mon 09-28 Push Strength saved Machine Shoulder Press twice (10,10,10 and 10,9,8);
+  // he confirmed 10,9,8 is the real one. And Wed 09-30 Legs Strength lost its Machine Hip
+  // Thrust row entirely — he says it didn't save but he hit the Wk10 ask (10,10,10 @
+  // 80-90-100), so restore it after Leg Press. Confirmed 2026-10-04.
+  sessions.forEach(s => {
+    if (s.id === 'custom_1790586157015' && Array.isArray(s.exercises)) {
+      s.exercises = s.exercises.filter(ex => !(ex.name === 'Machine Shoulder Press' && ex.reps === '1 x 10, 1 x 10, 1 x 10'));
+    }
+    if (s.id === 'custom_1790751991219' && Array.isArray(s.exercises) && !s.exercises.some(ex => ex.name === 'Machine Hip Thrust')) {
+      const at = s.exercises.findIndex(ex => ex.name === 'Leg Press (low/narrow)') + 1;
+      s.exercises.splice(at || s.exercises.length, 0, {
+        name: 'Machine Hip Thrust', reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100', maxKg: 100,
+        note: 'Restored 4 Oct: the row didn’t save, but he confirmed he hit the ask.'
+      });
+    }
+  });
+
   return sessions;
 }
 
@@ -8644,7 +8661,7 @@ const SUGGESTED_WORKOUTS = {
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-70' },
               10: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-70' },
               11: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-70' } } },
-      { name: 'Machine Shoulder Press', note: 'Last Monday this saved as TWO rows (10,10,10 and 10,9,8), so I can’t tell which one you did. Hold and chase a clean 10,10,10. If the 10,10,10 was real, tell me and it moves up next time.',
+      { name: 'Machine Shoulder Press', note: '10,9,8 @ 40-45-45 (the duplicate 10,10,10 row is cleaned up). That’s a rep under 14 Sep. Hold, get set 2 back to 10.',
         wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
               4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
               5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' },
@@ -8653,7 +8670,7 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
               10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
-              11: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' } } },
+              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' } } },
       { name: 'Cable Lateral Raise', note: '15,15,14 @ 18.1 flat, matching the ask. Hold, get set 3 to 15.',
         wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
               4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
@@ -8768,7 +8785,7 @@ const SUGGESTED_WORKOUTS = {
   },
   legs_strength: {
     label: 'Legs Strength',
-    focus: 'Wk11 (Wed 7 Oct) — last heavy legs before HK (you fly Mon 12). Same session as last Wednesday, the one that wrecked you. You went past the V-Squat ask (120 instead of 117.5), so it holds at 120. Leg Press swept 10,10,10 @ 120 and moves up. Hip Thrust, Leg Extension and the crunch weren’t done last week, so their asks carry over.',
+    focus: 'Wk11 (Wed 7 Oct) — last heavy legs before HK (you fly Mon 12). Same session as last Wednesday, the one that wrecked you. You went past the V-Squat ask (120 instead of 117.5), so it holds at 120. Leg Press (10,10,10 @ 120) and Hip Thrust (10,10,10 @ 100) both swept and move up. Leg Extension and the crunch weren’t done on Wednesday, so their asks carry over.',
     exercises: [
       { name: 'V-Squat', note: '8,8,8,7 @ 120. You took 120 instead of the 117.5 ask. Hold 120, chase the last set to 8.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 6', weight: '100-105-110-115' },
@@ -8790,7 +8807,7 @@ const SUGGESTED_WORKOUTS = {
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '110-115-120' },
               10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '110-115-120' },
               11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-125' } } },
-      { name: 'Machine Hip Thrust', note: 'Not in last Wednesday’s log. Did you skip it, or did it not save? Same ask as last week: set 3 to 10 @ 100, logged as ONE row.',
+      { name: 'Machine Hip Thrust', note: '✅ Clean 10,10,10 @ 100 last Wednesday (the row didn’t save, so it’s been added back). The top set goes to 105, and 9 reps is fine on the first try. Check it’s in Today’s Session after you save.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
               4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
               5: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-95' },
@@ -8799,7 +8816,7 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
               10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
-              11: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' } } },
+              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-105' } } },
       { name: 'Leg Curl', note: 'Set 3 dropped to 8 again, this time at 55 (it was 60 last time), so the load isn’t the problem. Rest a full 2 minutes before set 3. 10 reps there counts as a win.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
@@ -8886,7 +8903,7 @@ const SUGGESTED_WORKOUTS = {
               9: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '16.1-18.1-18.1,9.1' },
               10: { reps: '1 x 15, 1 x 15, 1 x 14,12', weight: '18.1-18.1-18.1,9.1' },
               11: { reps: '1 x 15, 1 x 15, 1 x 15,12', weight: '18.1-18.1-18.1,9.1' } } },
-      { name: 'Cable Overhead Extension', note: 'Logged 15,12,15 @ 27.2-29.5-31.8. A 12 between two 15s looks like a typo; if it was really 12, tell me. Hold, chase 15,15,14.',
+      { name: 'Cable Overhead Extension', note: '15,12,15: you misread set 2, then got 15 on the 31.8 top set, one past the ask. Hold, chase a clean 15,15,15, then the load goes up.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
               4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-27.2-29.5' },
               5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-27.2-29.5' },
@@ -8895,7 +8912,7 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-29.5-31.8' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-29.5-34' },
               10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-29.5-31.8' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-29.5-31.8' } } },
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-29.5-31.8' } } },
       { name: 'Lying Leg Raise', note: 'You did cable crunches instead (15×3 @ 54.4), which is fine. Either one works.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
