@@ -8547,18 +8547,20 @@ const PHASE_PLAN = {
   posture: 'CUT — with 3 planned travel breaks',
   goal: 'Peak 10 Dec (Tomorrowland, BKK) + 31 Dec (White Party) · 3 birthdays en route: SG Sep, HK Oct, BKK Dec',
   baseline: '30 Jul 2026 · 69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603',
-  note: 'Phase 4 Wk 3 → Wk 11 = cut. Phase 5 Wk 1 starts Mon 19 Oct and CONTINUES the cut. Singapore and HK are PLANNED diet breaks at maintenance — a break every ~5-6 weeks on a 15-week cut restores training performance and adherence. Build phase deferred to January.',
-  // 2026-09-28: rows after 16 Sep are the ORIGINAL projections and are now out of reach —
-  // actual fat is 2.5 kg behind plan. Re-projection pending his call on the options.
+  note: 'Phase 4 Wk 3 → Wk 11 = cut. Phase 5 Wk 1 starts Mon 19 Oct (you are in HK until Wed 21) and the cut RESUMES Thu 22 Oct on the fixed weighed menu, running through Sat 5 Dec. Singapore and HK are PLANNED diet breaks at maintenance — a break every ~5-6 weeks on a 15-week cut restores training performance and adherence. Build phase deferred to January.',
+  // 2026-10-10: re-projected from the 10 Oct actual (11.0 kg fat, fat-free mass ~57.9 kg) at
+  // 0.45–0.5 kg fat/wk on the fixed post-HK menu. Muscle shown ~55: BIA dropped ~1 kg of water
+  // when Ipamorelin ended and carbs/glycogen will move it around — judge the fat column.
   checkpoints: [
     { label: 'Scan 31 Aug — ACTUAL', date: '31 Aug', posture: 'cut→break 21-27 Aug', muscle: '55.4', fat: '10.5', weight: '69.1', bf: '15.2% (plan 13.5%)' },
     { label: 'Scan 16 Sep — ACTUAL', date: '16 Sep', posture: 'cut',   muscle: '55.8', fat: '10.8', weight: '69.8', bf: '15.5% (plan 12.2%)' },
-    { label: 'SG — birthday 🇸🇬',  date: '17–21 Sep', posture: 'hold',  muscle: '56.4', fat: '8.5', weight: '68.1', bf: '12.5%' },
     { label: 'Scan 10 Oct — ACTUAL', date: '10 Oct', posture: 'cut',   muscle: '54.8', fat: '11.0', weight: '68.9', bf: '16.0% (plan 11.3%)' },
-    { label: 'HK — yacht 🛥',      date: '12–19 Oct', posture: 'hold',  muscle: '56.5', fat: '8.0', weight: '67.7', bf: '11.8%' },
-    { label: 'Phase 5 Wk 6',      date: '30 Nov',    posture: 'cut',   muscle: '56.7', fat: '6.4', weight: '66.3', bf: '9.7%' },
-    { label: 'TOMORROWLAND 🎧',    date: '10 Dec',    posture: 'peak',  muscle: '56.7', fat: '6.4', weight: '66.9', bf: '~9.7%' },
-    { label: 'WHITE PARTY 🤍',     date: '31 Dec',    posture: 'hold',  muscle: '56.7', fat: '6.7', weight: '67.1', bf: '~10.0%' }
+    { label: 'HK — yacht 🛥',      date: '13–21 Oct', posture: 'hold',  muscle: '~55', fat: '11.2', weight: '69.1', bf: '~16%' },
+    { label: 'Mid-cut scan (optional)', date: '9 Nov', posture: 'cut',  muscle: '~55', fat: '10.0', weight: '67.9', bf: '~14.7%' },
+    { label: 'Scan — Phase 5 Wk 7', date: '1 Dec',   posture: 'cut',   muscle: '~55', fat: '8.6', weight: '66.5', bf: '~13%' },
+    { label: 'Cut ends',          date: 'Sat 5 Dec', posture: 'cut',   muscle: '~55', fat: '8.3', weight: '66.2', bf: '12.3–12.7%' },
+    { label: 'TOMORROWLAND 🎧',    date: '10 Dec',    posture: 'peak',  muscle: '~55.5', fat: '8.3', weight: '66.9', bf: '~12–12.5%' },
+    { label: 'WHITE PARTY 🤍',     date: '31 Dec',    posture: 'hold',  muscle: '~55.5', fat: '8.5', weight: '67.1', bf: '~12.5%' }
   ],
   // Three trips, three birthdays. Spacing them as deliberate breaks is better practice on a
   // 15-week cut than white-knuckling through — and far more likely to actually be followed.
@@ -8569,42 +8571,49 @@ const PHASE_PLAN = {
       note: 'Added 2026-08-16 — wellness-focused visit (yoga/breathwork). Treated like SG/HK: maintenance ~2,400, budget ~2 flexible days not all 7. Keep lifting sessions in place where the schedule allows.' },
     { place: 'Singapore 🇸🇬', dates: '17–21 Sep', block: 'Phase 4 Wk 8', posture: 'break',
       note: 'Real birthday. Maintenance ~2,400, protein floor 140 g. Budget 2 free days, not 5 — that halves the cost (0.2 kg vs 0.4 kg fat). Alcohol fine on the free days.' },
-    { place: 'Hong Kong 🇭🇰', dates: '12–19 Oct', block: 'Phase 4 Wk 12', posture: 'break',
-      note: 'Yacht 17 Oct at ~11.3%. Full diet break at maintenance after 9 weeks of cutting — physiologically useful. Easy on alcohol + heavy sodium on the 16th only.' },
+    { place: 'Hong Kong 🇭🇰', dates: '13–21 Oct', block: 'Phase 4 Wk 12', posture: 'break',
+      note: 'Yacht 17 Oct. Maintenance (~2,400), NOT a free week: protein floor 140 g, ~2 relaxed days max (yacht day + one). Your fat trend cannot absorb a surplus week. Weigh in the morning after you land.' },
+    { place: 'Aunt visiting 🇺🇸', dates: '~22 Oct → mid-Nov', block: 'Phase 5 Wk 1–4', posture: 'cut',
+      note: 'NOT a break — the cut runs through it. Home meals stay on the fixed menu. Dinners out follow the family-meal template (protein first, one small bowl of rice, nothing fried/santan/sweet, one bite of dessert, skip lunch rice that day). One fully free meal every 2 weeks.' },
     { place: 'Bangkok 🇹🇭',   dates: '~10 Dec', block: 'Phase 5 Wk 7', posture: 'peak',
       note: 'Tomorrowland — the unveiling. Carb-load 6–9 Dec. Then HOLD at maintenance to White Party 31 Dec; do not diet between the two events.' }
   ],
   scans: [
     'Mon 31 Aug — Phase 4 Wk 5/6 checkpoint. Moved 22→29→31 Aug (travel weekends). Scan at the gym after Push Strength (his usual post-session / post-lunch pattern — keep it consistent, do not switch to fasted).',
     'Wed 16 Sep — moved OFF 19 Sep: you are in Singapore. Scan before you fly, for a clean read.',
-    'Fri 9 Oct — pre-HK checkpoint. Scan at the gym after Pull Hypertrophy, an upper-body day, per the protocol. Moved from “Sat 11 Oct”: 11 Oct is a Sunday, and Saturday is a legs day. This is the 4th reading (30 Jul · 31 Aug · 16 Sep · 9 Oct), so it gives a real trend.',
+    'DONE Sat 10 Oct (after Sat Legs+Core, not Fri after an upper day): 68.9 kg · 16.0% · 11.0 kg fat. Muscle −1 kg vs 16 Sep is mostly water (first scan after Ipamorelin ended; every main lift went up). Fat mass has risen 4 scans running.',
+    'Mon 9 Nov — OPTIONAL mid-cut check, after Push Strength. The daily weigh-in average is the main signal; this just confirms it.',
     'Mon 1 Dec — final trajectory check before the 10 Dec peak'
   ],
   nutrition: {
     tdee: '~2,400 kcal',
-    training: { kcal: '2,100', protein: '170 g', carbs: '220 g', fat: '60 g' },
-    rest:     { kcal: '1,900', protein: '170 g', carbs: '165 g', fat: '55 g' },
+    training: { kcal: '~1,850', protein: '~190 g', carbs: '~145 g', fat: '~45 g' },
+    rest:     { kcal: '~1,700', protein: '~185 g', carbs: '~115 g', fat: '~40 g' },
     rules: [
-      'Moderate deficit (~300 kcal/day) → ~0.27 kg fat/week across ~14 cut weeks. Do NOT go harder — this rate is what protects strength over a long cut.',
-      'Protein goes UP in a deficit, not down: 170 g (2.45 g/kg). Travel floor: 140 g.',
+      'From Thu 22 Oct: FIXED WEIGHED MENU (below). Kitchen scale for rice, meat and fruit; oil in measuring TEASPOONS. The menu is the tracking — same food, same grams, every day.',
+      'Why: 2,100 on paper produced +1.2 kg fat in 10 weeks (~+130 kcal/day over maintenance). The leaks were weekend meals, Pocky, unportioned protein desserts, tablespoons of oil and the extra lunch pieces — not the base meals.',
+      'Deficit ~500/day → ~0.45–0.5 kg fat/week. Weigh in every morning (after toilet, before food/water). Ignore the first 4 days after HK. From Mon 2 Nov: if the 7-day average is falling < 0.4 kg/wk, drop the dinner rice (−150 kcal).',
+      'NO Pocky in the house until 10 Dec. The protein ice cream and brownie are the sweets — single-serve containers only, never a big tub.',
+      'Family meals / aunt dinners: protein first (grilled/steamed fish or chicken, satay, tofu, clear soup, veg) · ONE small bowl of rice, no refill · nothing fried, santan or sweet-sauced · water/tea · one bite of dessert · no rice at lunch that day. One fully free meal every 2 weeks.',
+      'Protein ~190 g (2.75 g/kg) — floor 170 g. Travel floor: 140 g.',
       'Breaks are at MAINTENANCE (~2,400), not surplus. A break is not a write-off — the point is to stop the deficit, not reverse it.',
       'Alcohol only on break days. In a deficit it is dense empty calories, blunts protein synthesis, and wrecks the sleep your recovery runs on.',
-      '1–9 Dec: maintenance, then carb-load the final 4 days. Arrive full, not flat.',
+      'Cut runs THROUGH Sat 5 Dec (agreed 2026-10-10 — was maintenance from 1 Dec). Carb-load Sun 6 – Wed 9 Dec (+100–150 g/day). Arrive full, not flat.',
       '10–31 Dec: HOLD at maintenance. Do not diet between the two events — arriving flat on the 31st is the bigger risk.',
       'Conditioning ~25 min Sat + 10–15 min walk-out after Mon/Tue/Thu/Fri. 10,000 steps daily floor.',
-      'Only tighten by 150 kcal if fat loss is under 0.2 kg/wk across TWO consecutive scans.'
+      'Superseded rule (scan-based tightening) replaced by the daily weigh-in rule above — scans are too noisy and too far apart to steer by.'
     ]
   },
   proteinPlan: {
-    target: '170 g/day (140 g floor when travelling) · currently ~160 g',
+    target: '~190 g/day on the fixed menu from Thu 22 Oct (170 g floor · 140 g travelling)',
     meals: [
-      { time: 'Morning',      food: '200 g egg white + 2 whole eggs',               protein: '~38 g', change: '+2 whole eggs. 25 g was below the MPS threshold after an overnight fast — highest-value single fix.' },
-      { time: 'Afternoon',    food: '150 g lean minced chicken',                    protein: '~30 g', change: '28 Sep: was 200 g lean beef (~42 g). About 12 g less, which puts the day at ~170 g with no margin. Check the pack: if it’s under 20 g protein per 100 g raw, go back to 200 g.' },
-      { time: 'Post-workout', food: '1 scoop whey + 40 g carbs',                    protein: '20 g',  change: 'keep the carbs here even in a deficit' },
-      { time: 'Dinner',       food: 'Chicken breast — 150 g meat',                  protein: '~42 g', change: '28 Sep: down from ~185 g (~52 g). Together with the lunch cut, the day is ~10 g under target. Go back to ~185 g here, or add 1 scoop whey.' },
-      { time: 'Pre-bed',      food: '250 g Greek yogurt / cottage cheese / casein', protein: '~30 g', change: 'was whey — clears in ~2 h before a ~10 h fast, and spikes insulin MORE than casein.' }
+      { time: 'Breakfast',    food: '2 whole eggs + 200 g egg white (1 tsp oil) · 200 g fruit (mango max 100 g)', protein: '~35 g', change: '~400 kcal. Fruit is now WEIGHED — a free-poured bowl was the hidden part.' },
+      { time: 'Lunch',        food: '200 g chicken mince (raw) stir-fried in 1 tsp oil · 100 g cooked rice · ~200 g boiled veg', protein: '~47 g', change: '~530 kcal. NO extra pieces of the family lauk — that was 150–350 kcal a day.' },
+      { time: 'Post-workout', food: 'Protein ice cream, ONE serving: 1 banana + 1 scoop whey + 1 tbsp cocoa + stevia', protein: '~27 g', change: '~245 kcal. Replaces whey + 40 g carbs (same job). Single-serve container — never a tub.' },
+      { time: 'Dinner',       food: '200 g chicken breast (raw) boiled with serai/shallot/garlic/chili, 1 tsp oil · 100 g rice · veg', protein: '~52 g', change: '~470 kcal. TEASPOON of oil, not tablespoon (−80 kcal). Sunday: no rice.' },
+      { time: 'Evening',      food: 'Protein brownie — 2 of 4 pieces (pan = 2 scoops whey, 2 tbsp cocoa, 1 egg, 100 g plain yogurt)', protein: '~34 g', change: '~200 kcal. Replaces pre-bed yogurt. One pan = 2 days.' }
     ],
-    warning: 'Currently ~160 g, about 10 g UNDER target, since lunch and dinner both dropped to 150 g on 28 Sep (was ~182 g). In a deficit that gap costs muscle: restore dinner to ~185 g, or add a scoop of whey. The discipline is TOTAL calories: 2,100 on training days. Muscle stays roughly flat (+0.5 kg over 17 weeks) — the accepted cost of peaking in December. Build phase is January, from ~9.7%, where partitioning is far better.'
+    warning: 'Total ≈ 1,850 kcal / ~190 g protein on training days. The base meals were never the problem — Pocky, family meals "eating whatever", unportioned desserts and oil were. Maid sheet (Bahasa): Meal Plan/menu_harian_bapak.pdf.'
   },
   scanProtocol: [
     'Consistency beats the textbook ideal. Scan at the gym ~2 PM, AFTER your session and after lunch — that is your established pattern, so keep it. Do NOT switch to fasted/AM: a one-time change of state reads as a body-comp shift that is not real.',
@@ -8618,8 +8627,8 @@ const PHASE_PLAN = {
     title: 'Event protocol — 17 Oct waypoint · 10 Dec + 31 Dec peak',
     items: [
       'NEVER dehydrate, use diuretics, or cut salt before an event. Dangerous, counterproductive, and not something to stack with a prescribed peptide.',
-      '17 OCT (yacht): waypoint, not the summit — ~11.3% arrives free on the way to December. Last heavy legs Wed 7 Oct (you fly the 12th). After 9 weeks of cutting, HK carbs will make you look FULLER.',
-      '1–9 DEC: calories back to maintenance. Carb-load the final 4 days (+100–150 g/day). A depleted muscle looks flat — this is what shows up in photos.',
+      '17 OCT (yacht): a waypoint and a diet break, not a peak — enjoy it at maintenance. Fly Tue 13 Oct.',
+      '1–5 DEC: still cutting (fixed menu). 6–9 DEC: carb-load (+100–150 g/day). A depleted muscle looks flat — this is what shows up in photos.',
       '10 DEC (Tomorrowland): last heavy legs Fri 5 Dec so leg water settles. Light pump work the morning of. Sleep matters more than anything you do in the gym that week.',
       '10–31 DEC: HOLD at maintenance. Multi-day festival = sleep loss and dehydration; between the 10th and 31st prioritise sleep, protein and normal sodium/water to refill for White Party.',
       'Colour reads as definition in photos. Gradual sun or self-tanner — not tanning beds.'
