@@ -1,10 +1,16 @@
 # Fitness Summary — Stefanus Wong
-**Last updated:** 2026-10-04
+**Last updated:** 2026-10-10
 
 ---
 
 ## Current Status
 
+- **2026-10-10: pre-HK scan in (Sat 10 Oct, after Sat Legs+Core, not Fri 9 Oct after an upper day as planned).** Image is in `Body Scan Log/2026-10-10_fitscan.webp`, the export is backed up, and the scan was added to `BODY_BASELINE` plus an ACTUAL checkpoint row. `ACTUAL_AGE` 39 → 40 (scan says 40, after his Sep birthday).
+  - **Scan:** 68.9 kg · 16.0% fat (11.0 kg) · 79.5% muscle (~54.8 kg) · BCM 6271 · visceral 5 · WHR 0.98 · BMR 1561 · body age 46. Segments: arms 3.2/3.2 m, 0.6/0.6 f · torso 25.6 m / 5.7 f · legs 8.4/8.5 m, 1.7/1.7 f.
+  - **Read given to him:** fat mass rose only +0.2 kg vs 16 Sep. The % jumped mostly because weight fell 0.9 kg. **The muscle drop (−1.0 kg, nearly all torso) is most likely water, not tissue.** It's the first scan after Ipamorelin ended in late Sep. BIA muscle tracked the IPA window: 54.5 (3 Jun, pre) → 56.2 (30 Jul) → 54.8 now ≈ the pre-IPA baseline. Every main lift went UP Wk8 → Wk11 (V-Squat 117.5×7 → 120×8, Leg Press 120 → 125, Hip Thrust 100 → 105, Chest Press 65 → 70×10, Lat Pulldown 72.5 → 75, Incline 26×4×8 + 28). **The real problem is the fat trend: 9.8 → 10.5 → 10.8 → 11.0 kg since 30 Jul on a nominal 2,100 kcal "cut".**
+  - **He asked to plan meals carefully after HK.** He now flies **Tue 13 Oct** (was Mon 12), so **Mon 12 is a home training day** (tracker shows P4 Wk12 with Wk11 asks carried). Return date not confirmed. The calendar questions are open (return date, travel/events to 31 Dec, who cooks, eating out). Per memory, get the full calendar before modelling.
+  - **Post-HK nutrition frame proposed (not yet live in `PHASE_PLAN`):** a fixed, weighed menu (the menu itself is the tracking) at ~1,900 kcal training days, protein back to 170 g, daily fasted AM weigh-ins on a 7-day average, and a −150 kcal adjustment if the average isn't falling ~0.4–0.5 kg/wk after 2 weeks. **Realistic 10 Dec = ~12%**, not 9.7%. That needs ~3 kg of fat off across ~6 cut weeks (19 Oct–30 Nov). `PHASE_PLAN` rows from HK onward are still the stale original projections.
+  - **Wk11 log oddities to ask about:** Fri 9 Oct has no Rear Delt Row/Fly (skipped, or another lost row?). Mon has no Cable Abs Crunch. Mon Rope Pushdown was on the single pulley (18.1–22.7), so it isn't comparable. A 15-min incline walk was saved as its own "Legs Strength Wed" session dated 10-08.
 - **2026-10-04: Wk10 reviewed, Wk11 (5–10 Oct, last week before HK) prescribed and pushed.** Read all six program PDFs first. Log export backed up to `Fitness Log/stefanus-fitness-logs-2026-10-04.json`.
   - **Wk10 was strong.** It was the first full week after the illness, and every lift matched or beat its ask except DB Incline Thu (12,12,10 vs 11), Cross-Body Pulldown (15,15,14) and Wed Leg Curl. **He loved Wed Legs Strength** ("couldn't walk the day after"). He went past the V-Squat ask to 120 (8,8,8,7) and swept Leg Press 10,10,10 @ 120. Wk11 Wed keeps the same session.
   - **Earned adds in Wk11 (8):** Incline Press Mon (top set 28, after the first clean 4×8 @ 26), Rope Pushdown (set 3 → 52.4 via the 2.5 plate), Lat Pulldown Tue (→75), Bayesian Tue (→29.7, as he requested, pain-free), Leg Press (→125), Cable Chest Fly Thu (→15), Lat Pulldown Fri (→65, first 12×4 @ 62.5 on the 4th try), Sat core (54.4-59-59). Glute Kickback goes back to 29.5 **only if** the 2-s squeeze held at 27.2 (15,15,15 logged; the squeeze wasn't confirmed). Everything else holds and chases the missing rep.

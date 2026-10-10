@@ -8554,7 +8554,7 @@ const PHASE_PLAN = {
     { label: 'Scan 31 Aug — ACTUAL', date: '31 Aug', posture: 'cut→break 21-27 Aug', muscle: '55.4', fat: '10.5', weight: '69.1', bf: '15.2% (plan 13.5%)' },
     { label: 'Scan 16 Sep — ACTUAL', date: '16 Sep', posture: 'cut',   muscle: '55.8', fat: '10.8', weight: '69.8', bf: '15.5% (plan 12.2%)' },
     { label: 'SG — birthday 🇸🇬',  date: '17–21 Sep', posture: 'hold',  muscle: '56.4', fat: '8.5', weight: '68.1', bf: '12.5%' },
-    { label: 'Phase 4 Wk 11 ✈',   date: '9 Oct',    posture: 'cut',   muscle: '56.5', fat: '7.6', weight: '67.3', bf: '11.3%' },
+    { label: 'Scan 10 Oct — ACTUAL', date: '10 Oct', posture: 'cut',   muscle: '54.8', fat: '11.0', weight: '68.9', bf: '16.0% (plan 11.3%)' },
     { label: 'HK — yacht 🛥',      date: '12–19 Oct', posture: 'hold',  muscle: '56.5', fat: '8.0', weight: '67.7', bf: '11.8%' },
     { label: 'Phase 5 Wk 6',      date: '30 Nov',    posture: 'cut',   muscle: '56.7', fat: '6.4', weight: '66.3', bf: '9.7%' },
     { label: 'TOMORROWLAND 🎧',    date: '10 Dec',    posture: 'peak',  muscle: '56.7', fat: '6.4', weight: '66.9', bf: '~9.7%' },
@@ -10117,7 +10117,7 @@ function renderInsights(filter) {
   const scans = getAllBodyScans();
   const latest = scans[scans.length - 1];
   if (latest) {
-    const ACTUAL_AGE = 39;
+    const ACTUAL_AGE = 40;
     add(['body'], latest.fat <= 15 ? 'good' : 'warn',
       `Body Fat ${latest.fat}% — ${latest.fat < 12 ? 'Lean' : latest.fat < 15 ? 'Athletic' : latest.fat < 20 ? 'Fitness' : 'Above target'}`,
       `Your body fat of ${latest.fat}% is in the athletic range for men (target: under 15%). At your current weight of ${latest.weight}kg that's roughly ${(latest.weight * latest.fat / 100).toFixed(1)}kg of fat mass. To drop to 12% you'd need to lose about ${((latest.fat - 12) * latest.weight / 100).toFixed(1)}kg of fat while maintaining muscle. Diet consistency and LISS cardio are your main tools.`
@@ -10240,6 +10240,20 @@ const BODY_BASELINE = [
       torso: { m: 26.4, f: 5.8 },
       rLeg: { m: 8.4, f: 1.6 }, lLeg: { m: 8.5, f: 1.7 }
     }
+  },
+  {
+    // Done Sat 10 Oct after Sat Legs+Core (plan said Fri 9 Oct after an upper day). First scan
+    // after Ipamorelin ended (late Sep): the 1 kg muscle drop tracks water, not tissue — lifts went UP.
+    id: 'scan_2026_10_10',
+    date: '2026-10-10',
+    label: 'Phase 4 Wk 11 — pre-HK',
+    weight: 68.9, fat: 16, muscle: 79.5, bodyAge: 46,
+    visceral: 5, bmi: 25.3, whr: 0.98, bmr: 1561, bcm: 6271,
+    segments: {
+      rArm: { m: 3.2, f: 0.6 }, lArm: { m: 3.2, f: 0.6 },
+      torso: { m: 25.6, f: 5.7 },
+      rLeg: { m: 8.4, f: 1.7 }, lLeg: { m: 8.5, f: 1.7 }
+    }
   }
 ];
 
@@ -10298,7 +10312,7 @@ function renderBodyPage() {
   if (di && !di.value) di.value = new Date().toISOString().slice(0, 10);
 
   // ── Summary cards ──
-  const ACTUAL_AGE = 39;
+  const ACTUAL_AGE = 40;
   const metrics = [
     { label: 'Weight',       val: latest.weight + ' kg',  note: '' },
     { label: 'Body Fat',     val: latest.fat + '%',        note: latest.fat < 15 ? '✅ Athletic' : latest.fat < 20 ? '💡 Fitness' : '⚠️ High' },
