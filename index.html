@@ -7458,6 +7458,11 @@ function applyDataCorrections(sessions) {
         note: 'Restored 4 Oct: the row didn’t save, but he confirmed he hit the ask.'
       });
     }
+    // Tue 10-14 (HK gym) saved Straight-Arm Pulldown twice; the 31.8-31.8-36.3 row is the
+    // unedited 6 Oct prefill, the 12.5-15-17.5 row is what he did. Confirmed 2026-10-24.
+    if (s.id === 'custom_1791980035989' && Array.isArray(s.exercises)) {
+      s.exercises = s.exercises.filter(ex => !(ex.name === 'Straight-Arm Pulldown' && ex.weight === '31.8-31.8-36.3'));
+    }
   });
 
   return sessions;
@@ -8547,7 +8552,7 @@ const PHASE_PLAN = {
   posture: 'CUT — with 3 planned travel breaks',
   goal: 'Peak 10 Dec (Tomorrowland, BKK) + 31 Dec (White Party) · 3 birthdays en route: SG Sep, HK Oct, BKK Dec',
   baseline: '30 Jul 2026 · 69.2 kg · 14.2% fat (9.8 kg) · 56.2 kg muscle · BMR 1603',
-  note: 'Phase 4 Wk 3 → Wk 11 = cut. Phase 5 Wk 1 starts Mon 19 Oct (you are in HK until Wed 21) and the cut RESUMES Thu 22 Oct on the fixed weighed menu, running through Sat 5 Dec. Singapore and HK are PLANNED diet breaks at maintenance — a break every ~5-6 weeks on a 15-week cut restores training performance and adherence. Build phase deferred to January.',
+  note: 'Phase 4 Wk 3 → Wk 11 = cut. Phase 5 Wk 1 starts Mon 19 Oct (you are in HK until Wed 21) and the cut RESUMES on the fixed weighed menu from Mon 26 Oct (sheet printed for the maid that day), running through Sat 5 Dec. Singapore and HK are PLANNED diet breaks at maintenance — a break every ~5-6 weeks on a 15-week cut restores training performance and adherence. Build phase deferred to January.',
   // 2026-10-10: re-projected from the 10 Oct actual (11.0 kg fat, fat-free mass ~57.9 kg) at
   // 0.45–0.5 kg fat/wk on the fixed post-HK menu. Muscle shown ~55: BIA dropped ~1 kg of water
   // when Ipamorelin ended and carbs/glycogen will move it around — judge the fat column.
@@ -8573,7 +8578,7 @@ const PHASE_PLAN = {
       note: 'Real birthday. Maintenance ~2,400, protein floor 140 g. Budget 2 free days, not 5 — that halves the cost (0.2 kg vs 0.4 kg fat). Alcohol fine on the free days.' },
     { place: 'Hong Kong 🇭🇰', dates: '13–21 Oct', block: 'Phase 4 Wk 12', posture: 'break',
       note: 'Yacht 17 Oct. Maintenance (~2,400), NOT a free week: protein floor 140 g, ~2 relaxed days max (yacht day + one). Your fat trend cannot absorb a surplus week. Weigh in the morning after you land.' },
-    { place: 'Aunt visiting 🇺🇸', dates: '~22 Oct → mid-Nov', block: 'Phase 5 Wk 1–4', posture: 'cut',
+    { place: 'Aunt visiting 🇺🇸', dates: 'now → Thu 5 Nov', block: 'Phase 5 Wk 1–3', posture: 'cut',
       note: 'NOT a break — the cut runs through it. Home meals stay on the fixed menu. Dinners out follow the family-meal template (protein first, one small bowl of rice, nothing fried/santan/sweet, one bite of dessert, skip lunch rice that day). One fully free meal every 2 weeks.' },
     { place: 'Bangkok 🇹🇭',   dates: '~10 Dec', block: 'Phase 5 Wk 7', posture: 'peak',
       note: 'Tomorrowland — the unveiling. Carb-load 6–9 Dec. Then HOLD at maintenance to White Party 31 Dec; do not diet between the two events.' }
@@ -8590,9 +8595,9 @@ const PHASE_PLAN = {
     training: { kcal: '~1,850', protein: '~190 g', carbs: '~145 g', fat: '~45 g' },
     rest:     { kcal: '~1,700', protein: '~185 g', carbs: '~115 g', fat: '~40 g' },
     rules: [
-      'From Thu 22 Oct: FIXED WEIGHED MENU (below). Kitchen scale for rice, meat and fruit; oil in measuring TEASPOONS. The menu is the tracking — same food, same grams, every day.',
+      'From Mon 26 Oct: FIXED WEIGHED MENU (below). Kitchen scale for rice, meat and fruit; oil in measuring TEASPOONS. The menu is the tracking — same food, same grams, every day.',
       'Why: 2,100 on paper produced +1.2 kg fat in 10 weeks (~+130 kcal/day over maintenance). The leaks were weekend meals, Pocky, unportioned protein desserts, tablespoons of oil and the extra lunch pieces — not the base meals.',
-      'Deficit ~500/day → ~0.45–0.5 kg fat/week. Weigh in every morning (after toilet, before food/water). Ignore the first 4 days after HK. From Mon 2 Nov: if the 7-day average is falling < 0.4 kg/wk, drop the dinner rice (−150 kcal).',
+      'Deficit ~500/day → ~0.45–0.5 kg fat/week. Weigh in every morning (after toilet, before food/water). Weigh-ins start Mon 26 Oct. From Mon 9 Nov: if the 7-day average is falling < 0.4 kg/wk, drop the dinner rice (−150 kcal). With the longer walks (45–60 min) and Saturday Hyrox hour, if it falls > 0.8 kg/wk for 2 weeks, add 100 g rice back on Hyrox Saturdays — faster than that costs muscle.',
       'NO Pocky in the house until 10 Dec. The protein ice cream and brownie are the sweets — single-serve containers only, never a big tub.',
       'Family meals / aunt dinners: protein first (grilled/steamed fish or chicken, satay, tofu, clear soup, veg) · ONE small bowl of rice, no refill · nothing fried, santan or sweet-sauced · water/tea · one bite of dessert · no rice at lunch that day. One fully free meal every 2 weeks.',
       'Protein ~190 g (2.75 g/kg) — floor 170 g. Travel floor: 140 g.',
@@ -8605,7 +8610,7 @@ const PHASE_PLAN = {
     ]
   },
   proteinPlan: {
-    target: '~190 g/day on the fixed menu from Thu 22 Oct (170 g floor · 140 g travelling)',
+    target: '~190 g/day on the fixed menu from Mon 26 Oct (170 g floor · 140 g travelling)',
     meals: [
       { time: 'Breakfast',    food: '2 whole eggs + 200 g egg white (1 tsp oil) · 200 g fruit (mango max 100 g)', protein: '~35 g', change: '~400 kcal. Fruit is now WEIGHED — a free-poured bowl was the hidden part.' },
       { time: 'Lunch',        food: '200 g chicken mince (raw) stir-fried in 1 tsp oil · 100 g cooked rice · ~200 g boiled veg', protein: '~47 g', change: '~530 kcal. NO extra pieces of the family lauk — that was 150–350 kcal a day.' },
@@ -8613,7 +8618,7 @@ const PHASE_PLAN = {
       { time: 'Dinner',       food: '200 g chicken breast (raw) boiled with serai/shallot/garlic/chili, 1 tsp oil · 100 g rice · veg', protein: '~52 g', change: '~470 kcal. TEASPOON of oil, not tablespoon (−80 kcal). Sunday: no rice.' },
       { time: 'Evening',      food: 'Protein brownie — 2 of 4 pieces (pan = 2 scoops whey, 2 tbsp cocoa, 1 egg, 100 g plain yogurt)', protein: '~34 g', change: '~200 kcal. Replaces pre-bed yogurt. One pan = 2 days.' }
     ],
-    warning: 'Total ≈ 1,850 kcal / ~190 g protein on training days. The base meals were never the problem — Pocky, family meals "eating whatever", unportioned desserts and oil were. Maid sheet (Bahasa): Meal Plan/menu_harian_bapak.pdf.'
+    warning: 'Total ≈ 1,850 kcal / ~190 g protein on training days. The base meals were never the problem — Pocky, family meals "eating whatever", unportioned desserts and oil were. Maid sheet (Bahasa): Meal Plan/menu_harian.pdf.'
   },
   scanProtocol: [
     'Consistency beats the textbook ideal. Scan at the gym ~2 PM, AFTER your session and after lunch — that is your established pattern, so keep it. Do NOT switch to fasted/AM: a one-time change of state reads as a body-comp shift that is not real.',
@@ -8716,7 +8721,7 @@ const SUGGESTED_WORKOUTS = {
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
               11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
               14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
-      { name: 'Incline walk (finisher)', note: '10-15 min after the session — nothing to log.',
+      { name: 'Incline walk (finisher)', note: '45–60 min when you have the time, 20 min minimum — nothing to log.',
         wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
@@ -8801,7 +8806,7 @@ const SUGGESTED_WORKOUTS = {
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
-      { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
+      { name: 'Incline walk (finisher)', note: '45–60 min when you have the time, 20 min minimum. 12% incline @ 5.5 km/h — nothing to log',
         wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
@@ -8890,7 +8895,7 @@ const SUGGESTED_WORKOUTS = {
   },
   push_hypertrophy: {
     label: 'Push Hypertrophy',
-    focus: 'P5 Wk2 (Thu 29 Oct) — last Thursday ran the P4 Wk3 list, so the Iso-leverage Decline came back in place of the Cable Chest Fly. The fly returns this week, since chest is the priority. Overhead Extension jumped to 36.6 for a clean 15; check that number.',
+    focus: 'P5 Wk2 (Thu 29 Oct) — last Thursday ran the P4 Wk3 list, so the Iso-leverage Decline came back in place of the Cable Chest Fly. The fly returns this week, since chest is the priority. Overhead Extension jumped to 36.6 for a clean 15 and holds there.',
     exercises: [
       { name: 'DB Incline Press', note: '12,12,11 @ 22-22-24. Set 2 goes to 24. The 26 top set comes back in Wk3.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22-22' },
@@ -8936,7 +8941,7 @@ const SUGGESTED_WORKOUTS = {
               10: { reps: '1 x 15, 1 x 15, 1 x 14,12', weight: '18.1-18.1-18.1,9.1' },
               11: { reps: '1 x 15, 1 x 15, 1 x 15,12', weight: '18.1-18.1-18.1,9.1' },
               14: { reps: '1 x 15, 1 x 15, 1 x 15,15', weight: '18.1-18.1-18.1,9.1' } } },
-      { name: 'Cable Overhead Extension', note: '15,15,15 @ 27.2-31.8-36.6, up from 31.8 on 8 Oct. That’s two notches at once. If it was real, hold it. If 36.6 is a typo, tell me and I’ll fix the log.',
+      { name: 'Cable Overhead Extension', note: '✅ Clean 15,15,15 with 36.6 on top, up from 31.8 on 8 Oct, and you confirmed it was real. Hold 36.6 and keep the elbows still.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
               4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-27.2-29.5' },
               5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-27.2-29.5' },
@@ -8958,7 +8963,7 @@ const SUGGESTED_WORKOUTS = {
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
-      { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
+      { name: 'Incline walk (finisher)', note: '45–60 min when you have the time, 20 min minimum. 12% incline @ 5.5 km/h — nothing to log',
         wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
@@ -9034,7 +9039,7 @@ const SUGGESTED_WORKOUTS = {
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
               11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
               14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
-      { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
+      { name: 'Incline walk (finisher)', note: '45–60 min when you have the time, 20 min minimum. 12% incline @ 5.5 km/h — nothing to log',
         wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
@@ -9108,7 +9113,7 @@ const SUGGESTED_WORKOUTS = {
               10: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
               11: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
               14: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' } } },
-      { name: 'Conditioning — incline walk or Hyrox circuit', note: '25 min, 14% incline @ 5.0 km/h, HR 125-140. Nothing to log.',
+      { name: 'Conditioning — incline walk or Hyrox circuit', note: 'Hyrox circuit, 1 hour, every Saturday (or the incline walk if you skip it). Do it after the glute work, as you did on 24 Oct. Nothing to log.',
         wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   }
