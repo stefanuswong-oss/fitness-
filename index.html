@@ -6992,7 +6992,7 @@ const SESSION_META = {
   sat:              { label: 'Sat: Legs+Core',   day: 'Sat', color: '#ec4899' },
 };
 
-const PHASE_NAMES = { 1: 'Phase 1 — ChatGPT Program', 2: 'Phase 2 — Gemini Pro', 3: 'Phase 3 — Self-Designed', 4: 'Phase 4 — Cut to December (Current)' };
+const PHASE_NAMES = { 1: 'Phase 1 — ChatGPT Program', 2: 'Phase 2 — Gemini Pro', 3: 'Phase 3 — Self-Designed', 4: 'Phase 4 — Cut to December', 5: 'Phase 5 — Cut to December, cont. (Current)' };
 
 // Key lifts: { id, name, keywords[], sessionTypes[] }
 const KEY_LIFTS = [
@@ -8414,7 +8414,7 @@ function renderHistory(filter) {
   }
 
   let html = '';
-  for (const phase of [4,3,2,1]) {
+  for (const phase of [5,4,3,2,1]) {
     const pSessions = byPhase[phase];
     if (!pSessions) continue;
     html += `<div style="margin-bottom:4px;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em">${PHASE_NAMES[phase]}</div>`;
@@ -8648,9 +8648,9 @@ const PHASE_PLAN = {
 const SUGGESTED_WORKOUTS = {
   push_strength: {
     label: 'Push Strength',
-    focus: 'Wk11 (Mon 5 Oct) — last Push Strength before HK. Two earned adds: Incline Press (first clean 4×8 @ 26) and Rope Pushdown (first clean 12×3 @ 49.9). Everything else matched its ask, so it holds and chases the missing rep. If the cough is gone, train at normal effort. If it’s still there, keep last week’s rule: 1 rep in the tank, no breath-holding grinders.',
+    focus: 'P5 Wk2 (Mon 26 Oct) — your first Push Strength since Mon 12 Oct, when you hit every Wk11 ask. This is a re-entry week: same numbers, no new adds, and the Incline top set stays at 26. Adds come back in Wk3.',
     exercises: [
-      { name: 'DB or Machine Incline Press', note: '✅ First clean 8,8,8,8 @ 26 (28 Sep). The last set goes to 28, and 6 reps there is a good first try. If there are no 28s, stay at 26 and go for 9 on the last set.',
+      { name: 'DB or Machine Incline Press', note: 'Mon 12 Oct: 8,8,8 @ 26, then 4 @ 28. First week back, so the top set stays at 26 for a clean 4×8. The 28 comes back in Wk3.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '26-26-26-26' },
               4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' },
               5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '26-26-26-26' },
@@ -8659,8 +8659,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' },
               9: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' },
               10: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' },
-              11: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 6', weight: '26-26-26-28' } } },
-      { name: 'Machine Chest Press', note: '10,10,9 @ 70, matching the ask. Hold, get the last set to 10.',
+              11: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 6', weight: '26-26-26-28' },
+              14: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '26-26-26-26' } } },
+      { name: 'Machine Chest Press', note: '✅ Clean 10,10,10 @ 70 on both 5 and 12 Oct. Hold for the re-entry week and own the 2-second pause on every rep at 70. It goes up in Wk3.',
         wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '60-65-65' },
               4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' },
               5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-65' },
@@ -8669,8 +8670,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-65' },
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-70' },
               10: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-65-70' },
-              11: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-70' } } },
-      { name: 'Machine Shoulder Press', note: '10,9,8 @ 40-45-45 (the duplicate 10,10,10 row is cleaned up). That’s a rep under 14 Sep. Hold, get set 2 back to 10.',
+              11: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-70' },
+              14: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-65-70' } } },
+      { name: 'Machine Shoulder Press', note: '10,10,9 on both 5 and 12 Oct. Same load, chase the last rep.',
         wk: { 3: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
               4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '40-45-45' },
               5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' },
@@ -8679,8 +8681,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
               10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' },
-              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' } } },
-      { name: 'Cable Lateral Raise', note: '15,15,14 @ 18.1 flat, matching the ask. Hold, get set 3 to 15.',
+              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '40-45-45' },
+              14: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '40-45-45' } } },
+      { name: 'Cable Lateral Raise', note: '✅ Clean 15×3 @ 18.1 on 5 Oct, 12 Oct and last Thursday. Hold for the re-entry week. Lower each rep over 2 seconds to make it harder without adding load.',
         wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
               4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
               5: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '16.1-18.1-18.1' },
@@ -8689,8 +8692,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '16.1-18.1-18.1' },
               9: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '18.1-18.1-18.1' },
               10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '18.1-18.1-18.1' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-18.1-18.1' } } },
-      { name: 'Rope Tricep Pushdown', note: '✅ First clean 12,12,12 @ 49.9 flat. Set 3 goes to 52.4 (49.9 plus the 2.5 kg add-on plate). Keep the elbows pinned; once they start to flare, that’s the last rep.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-18.1-18.1' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-18.1-18.1' } } },
+      { name: 'Rope Tricep Pushdown', note: '12,12,10 @ 52.4 on 12 Oct, matching the ask. Hold, chase 11. Double-pulley station only. Keep the elbows pinned; once they flare, that’s the last rep.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45.4-49.9-49.9' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45.4-49.9-49.9' },
@@ -8699,8 +8703,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '49.9-49.9-49.9' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '49.9-49.9-49.9' },
               10: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '49.9-49.9-49.9' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '49.9-49.9-52.4' } } },
-      { name: 'Cable Abs Crunch', note: '15,15,14 with 59 on the top set. You got a clean 15 @ 59 on Saturday, so hold and get set 3 to 15.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '49.9-49.9-52.4' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '49.9-49.9-52.4' } } },
+      { name: 'Cable Abs Crunch', note: '✅ Clean 15×3 with 59 on top (12 Oct). Hold for the re-entry week.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-49.9' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
@@ -8709,16 +8714,17 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-59' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-59' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min after the session — nothing to log.',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
   pull_strength: {
     label: 'Pull Strength',
-    focus: 'Wk11 (Tue 6 Oct) — your best Pull Strength in weeks: a clean 4×8 on Lat Pulldown at 72.5 and a pain-free clean 12,12,12 on the Bayesian. Both move up. Hammer curl stays exactly where it is, as you asked, because the forearm gave a slight pang on the last set.',
+    focus: 'P5 Wk2 (Tue 27 Oct) — your first home Pull Strength since Tue 6 Oct. HK on the 14th was a different gym, so those numbers don’t carry over. Re-entry week: the Lat Pulldown top set steps back one notch, and everything else repeats your 6 Oct numbers.',
     exercises: [
-      { name: 'Machine Lat Pulldown or Assisted Pull-up', note: '✅ Clean 8,8,8,8 @ 72.5, forearm quiet. The top set goes to 75, and 7 reps is fine on the first try. If the forearm complains on set 1, stay at 72.5.',
+      { name: 'Machine Lat Pulldown or Assisted Pull-up', note: '6 Oct: 8,8,8,7 @ 75. It’s your first heavy pull in three weeks, so the top set steps back to 72.5 for a clean 8. 75 returns in Wk3.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-70' },
               4: { reps: '1 x 8, 1 x 8, 1 x 7, 1 x 7', weight: '60-65-70-70' },
               5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-70' },
@@ -8727,8 +8733,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-72.5' },
               9: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-72.5' },
               10: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-72.5' },
-              11: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-75' } } },
-      { name: 'Chest-Supported / Low Row', note: '10,10,9 @ 67.5, matching the ask. Hold, get the top set to 10.',
+              11: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '60-65-70-75' },
+              14: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '60-65-70-72.5' } } },
+      { name: 'Chest-Supported / Low Row', note: '✅ Clean 10,10,10 @ 67.5 on 6 Oct. Hold for the re-entry week; it goes up in Wk3.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '60-60-65' },
               4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-60-65' },
               5: { reps: '1 x 10, 1 x 10, 1 x 8', weight: '60-60-65' },
@@ -8737,8 +8744,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-65' },
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-67.5' },
               10: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '60-60-67.5' },
-              11: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-67.5' } } },
-      { name: 'Straight-Arm Pulldown', note: '12,12,10 @ 36.3 (it went mid-rep on 11). Hold and chase 11. Same rule: the set ends when the elbows bend or the torso rocks.',
+              11: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-67.5' },
+              14: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '60-60-67.5' } } },
+      { name: 'Straight-Arm Pulldown', note: '12,12,11 @ 36.3 on 6 Oct, matching the ask. Hold, chase 12. The set ends when the elbows bend.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '29.5-31.8-34' },
               4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '31.8-34-36.3' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '29.5-31.8-34' },
@@ -8747,8 +8755,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '31.8-31.8-34' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '31.8-31.8-36.3' },
               10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '31.8-31.8-36.3' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '31.8-31.8-36.3' } } },
-      { name: 'Cable Rear Delt / Face Pull', note: '15,15,14 @ 29.7, matching the ask. Hold, chase 15.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '31.8-31.8-36.3' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '31.8-31.8-36.3' } } },
+      { name: 'Cable Rear Delt / Face Pull', note: '✅ Clean 15×3 @ 29.7 on 6 Oct. Hold for the re-entry week.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' },
               5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-27.2' },
@@ -8757,8 +8766,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-27.2' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-29.5' },
               10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-29.5' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-29.7' } } },
-      { name: 'Bayesian Cable Curl', note: '✅ Clean 12,12,12, pain-free. As you asked, the top set goes up 2.5 kg (27.2 plus the add-on plate = 29.7). Stop the exercise if the forearm talks.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-29.7' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-29.7' } } },
+      { name: 'Bayesian Cable Curl', note: '6 Oct: 15,12,10 @ 29.7 (you went past the ask on set 1). Same ask: 12,12,10. Stop the set if the forearm talks.',
         wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '18.1-22.7-27.2' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
@@ -8767,8 +8777,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
               9: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '18.1-22.7-27.2' },
               10: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '18.1-22.7-27.2' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '18.1-22.7-29.7' } } },
-      { name: 'Hammer Cable Curl', note: 'Held, as you asked: 15,15,13 on the rope ramp. The forearm gave a slight pang on the last set, so don’t chase reps. If the pang comes back on set 3, do set 3 at 13.4. If it shows up on set 1 or 2, skip the exercise and book the physio.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '18.1-22.7-29.7' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '18.1-22.7-29.7' } } },
+      { name: 'Hammer Cable Curl', note: 'You said set 3 could go to 15 (6 Oct: 15,15,13, slight discomfort only). Same rope ramp. Same rule: a pang on set 3 → do set 3 at 13.4; a pang on set 1 or 2 → skip it and book the physio.',
         wk: { 3: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '10-12-12' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '10-10-10' },
               5: { reps: '', weight: '' },
@@ -8777,8 +8788,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '9.1-13.4-18.1' },
               9: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '9.1-13.4-18.1' },
               10: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '9.1-13.4-18.1' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '9.1-13.4-18.1' } } },
-      { name: 'Hanging or Lying Leg Raise', note: 'Clean 15×3 again. Same ask, with a slow 3-second lowering.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '9.1-13.4-18.1' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '9.1-13.4-18.1' } } },
+      { name: 'Hanging or Lying Leg Raise', note: 'Clean 15×3. Same ask, with a slow 3-second lowering.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
@@ -8787,16 +8799,17 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
   legs_strength: {
     label: 'Legs Strength',
-    focus: 'Wk11 (Wed 7 Oct) — last heavy legs before HK (you fly Mon 12). Same session as last Wednesday, the one that wrecked you. You went past the V-Squat ask (120 instead of 117.5), so it holds at 120. Leg Press (10,10,10 @ 120) and Hip Thrust (10,10,10 @ 100) both swept and move up. Leg Extension and the crunch weren’t done on Wednesday, so their asks carry over.',
+    focus: 'P5 Wk2 (Wed 28 Oct) — Wed 21 Oct beat its asks almost everywhere. Leg Press swept 10×3 @ 120 and moves up. Everything else holds and chases its missing rep on the way back to your Wk11 numbers.',
     exercises: [
-      { name: 'V-Squat', note: '8,8,8,7 @ 120. You took 120 instead of the 117.5 ask. Hold 120, chase the last set to 8.',
+      { name: 'V-Squat', note: '8,8,8,7 @ 115 on 21 Oct. Hold 115, chase a clean 8. 120 comes back once 115 is clean.',
         wk: { 3: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 6', weight: '100-105-110-115' },
               4: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-115' },
               5: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-115' },
@@ -8805,8 +8818,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 7', weight: '100-105-110-117.5' },
               9: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-117.5' },
               10: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-117.5' },
-              11: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-120' } } },
-      { name: 'Leg Press (low/narrow)', note: '✅ Clean 10,10,10 @ 120. The top set goes to 125, and 9 reps is fine on the first try.',
+              11: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-120' },
+              14: { reps: '1 x 8, 1 x 8, 1 x 8, 1 x 8', weight: '100-105-110-115' } } },
+      { name: 'Leg Press (low/narrow)', note: '✅ Clean 10,10,10 @ 120. The top set goes back to 125, and 9 reps is fine.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-120' },
               4: { reps: '1 x 10, 1 x 9, 1 x 8', weight: '110-115-115' },
               5: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-115' },
@@ -8815,8 +8829,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-120' },
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '110-115-120' },
               10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '110-115-120' },
-              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-125' } } },
-      { name: 'Machine Hip Thrust', note: '✅ Clean 10,10,10 @ 100 last Wednesday (the row didn’t save, so it’s been added back). The top set goes to 105, and 9 reps is fine on the first try. Check it’s in Today’s Session after you save.',
+              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-125' },
+              14: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '110-115-125' } } },
+      { name: 'Machine Hip Thrust', note: '10,10,9 @ 105 on 21 Oct. Hold, chase 10.',
         wk: { 3: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
               4: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-95' },
               5: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-95' },
@@ -8825,8 +8840,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
               9: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
               10: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '80-90-100' },
-              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-105' } } },
-      { name: 'Leg Curl', note: 'Set 3 dropped to 8 again, this time at 55 (it was 60 last time), so the load isn’t the problem. Rest a full 2 minutes before set 3. 10 reps there counts as a win.',
+              11: { reps: '1 x 10, 1 x 10, 1 x 9', weight: '80-90-105' },
+              14: { reps: '1 x 10, 1 x 10, 1 x 10', weight: '90-95-105' } } },
+      { name: 'Leg Curl', note: '12,12,11 @ 60: your best set 3 in weeks (it kept collapsing to 8). Hold, chase 12. Keep the 2-minute rest before set 3.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
@@ -8835,8 +8851,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' },
               10: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-55' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-55' } } },
-      { name: 'Leg Extension', note: 'The machine was taken on Wednesday, so you did it Saturday instead (12,12,10 @ 60). Same ask as last week, with a first try at 65. If it’s taken again, do it on Saturday like you did.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-55' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' } } },
+      { name: 'Leg Extension', note: '12,12,10 @ 60. Hold, chase 11. 65 comes back after that.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-60' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' },
@@ -8845,8 +8862,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-60' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-65' },
               10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-65' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-65' } } },
-      { name: 'Abductor or Adductor', note: '12,12,11 @ 75, matching the ask. Hold, chase 12.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '50-55-65' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-60' } } },
+      { name: 'Abductor or Adductor', note: '12,12,11 @ 65. Hold, chase 12, then it climbs back toward 75.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' },
@@ -8855,8 +8873,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-70' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-75' },
               10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-75' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-75' } } },
-      { name: 'Standing Cable Crunch', note: 'Not done on a Wednesday for a month. You’re doing clean 54.4–59 crunches on other days, so do it first if you want it, or skip it: Saturday covers core.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-75' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '55-60-65' } } },
+      { name: 'Standing Cable Crunch', note: 'Skipped on 21 Oct. Do it first if the station is free.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-49.9-49.9' },
@@ -8865,14 +8884,15 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '45.4-49.9-54.4' },
               9: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '45.4-49.9-54.4' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-54.4' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-54.4' } } }
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-54.4' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-54.4' } } }
     ]
   },
   push_hypertrophy: {
     label: 'Push Hypertrophy',
-    focus: 'Wk11 (Thu 8 Oct) — the drop-set fix works: last Thursday saved exactly one drop. Cable Fly earned its add. Everything else matched its ask or came within a rep, so it holds.',
+    focus: 'P5 Wk2 (Thu 29 Oct) — last Thursday ran the P4 Wk3 list, so the Iso-leverage Decline came back in place of the Cable Chest Fly. The fly returns this week, since chest is the priority. Overhead Extension jumped to 36.6 for a clean 15; check that number.',
     exercises: [
-      { name: 'DB Incline Press', note: '12,12,10 @ 26, one short of the ask. Hold, chase 11.',
+      { name: 'DB Incline Press', note: '12,12,11 @ 22-22-24. Set 2 goes to 24. The 26 top set comes back in Wk3.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22-22' },
               4: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '22-24-24' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-24' },
@@ -8881,8 +8901,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '22-24-26' },
               9: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '22-24-26' },
               10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-26' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-26' } } },
-      { name: 'Iso-leverage Decline', note: '✅ Clean 15×3 @ 10-12.5-12.5. Set 3 goes to 15 (12.5 plus the 2.5 plate). Keep the 1-count stretch pause.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-26' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '22-24-24' } } },
+      { name: 'Iso-leverage Decline', note: 'Last Thursday you did the Iso-leverage Decline (12,12,10 @ 25), from the P4 Wk3 list. The deep Cable Chest Fly takes this slot back: chest is the priority, and the fly gives the stretch the presses miss. Last fly: 15,15,13 @ 15 (8 Oct). Keep the 1-count stretch pause.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '20-22.5-25' },
               4: { name: 'Hybrid Pectoral Fly', reps: '1 x 12, 1 x 11, 1 x 10', weight: '20-20-25' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '20-22.5-25' },
@@ -8891,8 +8912,9 @@ const SUGGESTED_WORKOUTS = {
               8: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '10-10-12.5' },
               9: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '10-12.5-15' },
               10: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 15', weight: '10-12.5-12.5' },
-              11: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 13', weight: '10-12.5-15' } } },
-      { name: 'Machine Shoulder Press', note: '12,12,11 @ 45, matching the ask. Hold, chase 12.',
+              11: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 13', weight: '10-12.5-15' },
+              14: { name: 'Cable Chest Fly (deep, stretch-focused)', reps: '1 x 15, 1 x 15, 1 x 14', weight: '10-12.5-15' } } },
+      { name: 'Machine Shoulder Press', note: '12,12,10 @ 45. Hold, chase 11.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '30-35-35' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '30-35-35' },
               5: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-40' },
@@ -8901,8 +8923,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '35-40-45' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '35-40-50' },
               10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '35-40-45' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '35-40-45' } } },
-      { name: 'Cable Lateral Raise', note: '15,15,14 plus one drop, matching the ask. It saved as ONE drop this time, so the logging fix works. Hold, chase set 3 to 15.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '35-40-45' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '35-40-45' } } },
+      { name: 'Cable Lateral Raise', note: '✅ Clean 15×3 @ 18.1 plus one drop (15 @ 9.1). Hold. One drop only, after set 3.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12,12', weight: '13.6-14.8-14.8,9.1' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '13.6-14.8-14.8,9.1' },
               5: { reps: '1 x 15, 1 x 14, 1 x 13,12', weight: '14.8-16.1-16.1,9.1' },
@@ -8911,8 +8934,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '16.1-18.1-18.1,9.1' },
               9: { reps: '1 x 15, 1 x 15, 1 x 13,12', weight: '16.1-18.1-18.1,9.1' },
               10: { reps: '1 x 15, 1 x 15, 1 x 14,12', weight: '18.1-18.1-18.1,9.1' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15,12', weight: '18.1-18.1-18.1,9.1' } } },
-      { name: 'Cable Overhead Extension', note: '15,12,15: you misread set 2, then got 15 on the 31.8 top set, one past the ask. Hold, chase a clean 15,15,15, then the load goes up.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 15,12', weight: '18.1-18.1-18.1,9.1' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15,15', weight: '18.1-18.1-18.1,9.1' } } },
+      { name: 'Cable Overhead Extension', note: '15,15,15 @ 27.2-31.8-36.6, up from 31.8 on 8 Oct. That’s two notches at once. If it was real, hold it. If 36.6 is a typo, tell me and I’ll fix the log.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-27.2' },
               4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-27.2-29.5' },
               5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-27.2-29.5' },
@@ -8921,8 +8945,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '27.2-29.5-31.8' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-29.5-34' },
               10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-29.5-31.8' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-29.5-31.8' } } },
-      { name: 'Lying Leg Raise', note: 'You did cable crunches instead (15×3 @ 54.4), which is fine. Either one works.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-29.5-31.8' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-31.8-36.6' } } },
+      { name: 'Lying Leg Raise', note: 'Clean 15×3. Same ask.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
@@ -8931,16 +8956,17 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
   pull_hypertrophy: {
     label: 'Pull Hypertrophy',
-    focus: 'Wk11 (Fri 9 Oct) — SCAN DAY: do the body scan at the gym after this session (see the Phase 4 Plan card). Lat Pulldown finally swept 12×4 @ 62.5 and moves up. Everything else matched its ask. Shrug is now part of the plan, since you’ve been adding it yourself.',
+    focus: 'P5 Wk2 (Fri 30 Oct) — a strong Friday: Lat Pulldown and Low Row both ran heavier early sets than Wk11, and Rear Delt swept 15×3. Shrug and core were skipped; both are back on the list.',
     exercises: [
-      { name: 'Machine Lat Pulldown', note: '✅ First clean 12,12,12,12 @ 62.5, on the fourth try. The top set goes to 65, and 10 reps is a good first try. Stay at 62.5 if the forearm complains on set 1.',
+      { name: 'Machine Lat Pulldown', note: '12,12,12,10 @ 60-60-62.5-65: heavier early sets than Wk11. Hold, chase 11 on the top set.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '50-55-60-60' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-60' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '50-55-60-60' },
@@ -8949,8 +8975,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-62.5' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '50-55-60-65' },
               10: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '50-55-60-62.5' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '50-55-60-65' } } },
-      { name: 'Chest-Supported Low Row', note: '12,12,11 @ 62.5, matching the ask. Hold, chase 12.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '50-55-60-65' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '60-60-62.5-65' } } },
+      { name: 'Chest-Supported Low Row', note: '12,12,10 @ 65, a new top weight. Hold, chase 11.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
               5: { reps: '1 x 12, 1 x 11, 1 x 10', weight: '50-55-60' },
@@ -8959,8 +8986,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-62.5' },
               9: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-65' },
               10: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '50-55-62.5' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-62.5' } } },
-      { name: 'Jeff Nippard-style Cross-Body Lat Pulldown', note: '15,15,14 two Fridays running. Hold, chase 15×3, then the load goes up.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '50-55-62.5' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '55-60-65' } } },
+      { name: 'Jeff Nippard-style Cross-Body Lat Pulldown', note: '15,15,13, with set 1 at 22.7. Set 1 goes back to 27.2; chase 14 on the top set.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '27.2-31.8-34' },
               4: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '27.2-31.8-34' },
               5: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '27.2-31.8-34' },
@@ -8969,8 +8997,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-31.8-34' },
               9: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-31.8-34' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-31.8-34' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-31.8-34' } } },
-      { name: 'Rear Delt Row/Fly', note: '15,15,14 @ 31.8, matching the ask. Hold, chase 15.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '27.2-31.8-34' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '27.2-31.8-34' } } },
+      { name: 'Rear Delt Row/Fly', note: '✅ Clean 15×3 @ 29.5. The top set goes to 31.8 (your Wk11 load), and 13 is fine.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '22.7-27.2-29.5' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-29.5' },
               5: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-29.5' },
@@ -8979,10 +9008,11 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22.7-27.2-31.8' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-34' },
               10: { reps: '1 x 15, 1 x 15, 1 x 14', weight: '22.7-27.2-31.8' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-31.8' } } },
-      { name: 'Shrug', note: 'New in the plan: you’ve logged it on your own twice, and Smith shrugs were a Friday staple in your older program. Clean 12×3 @ 22-24-28 last week. Same weights, chase 15s with a 1-second hold at the top.',
-        wk: { 11: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '22-24-28' } } },
-      { name: 'Bayesian Cable Curl', note: '15,15,12, matching the ask. Hold, chase 13. Tuesday’s Bayesian moves up because it’s a 12-rep ask; this one waits until you reach 15s. Same swap rule if the attachment is taken: palms-up cable curl, never hammer.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '22.7-27.2-31.8' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '27.2-27.2-31.8' } } },
+      { name: 'Shrug', note: 'Skipped on Friday. You did 15,15,12 @ 28 on 9 Oct, so chase 13.',
+        wk: { 11: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '22-24-28' }, 14: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '22-24-28' } } },
+      { name: 'Bayesian Cable Curl', note: '15,15,12 @ 24. The top set goes back to 27.2 (15,15,13 there on 9 Oct), and 12 is fine.',
         wk: { 3: { reps: '1 x 14, 1 x 13, 1 x 12', weight: '18.1-22.7-24' },
               4: { reps: '1 x 15, 1 x 14, 1 x 13', weight: '18.1-22.7-24' },
               5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-24' },
@@ -8991,8 +9021,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '18.1-22.7-27.2' },
               9: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '18.1-22.7-27.2' },
               10: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '18.1-22.7-27.2' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-27.2' } } },
-      { name: 'Core — standing cable crunch / leg raise', note: 'You did leg raises instead (clean 15×3), which is fine. If you do the cable crunch, the top set stays at 59.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-27.2' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '18.1-22.7-27.2' } } },
+      { name: 'Core — standing cable crunch / leg raise', note: 'Skipped on Friday. Cable crunch or leg raises, either works.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '27.5-27.5-27.5' },
@@ -9001,16 +9032,17 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-49.9' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-54.4-59' } } },
       { name: 'Incline walk (finisher)', note: '10-15 min, 12% incline @ 5.5 km/h — nothing to log',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   },
   sat: {
     label: 'Legs + Core + Light Push Finisher',
-    focus: 'Wk11 (Sat 10 Oct) — last session before HK. Core beat its ask. Glute Kickback can go back to 29.5 if the squeeze held at 27.2. Seated Leg Curl wasn’t logged last week (Leg Extension took its slot), so its ask carries over. Keep the conditioning easy, since you fly Monday.',
+    focus: 'P5 Wk2 (Sat 31 Oct) — you added a 1-hour Hyrox circuit before the glute work, so the loads hold this week. Leg Curl and core were skipped; both are back, at lighter loads.',
     exercises: [
-      { name: 'Hip Thrust or Deficit Sumo Squat', note: '12,12,12,10 @ 90, matching the ask. Hold, chase 11.',
+      { name: 'Hip Thrust or Deficit Sumo Squat', note: '12,12,12,10 @ 85, after the Hyrox hour. Hold 85, chase 11. 90 comes back once 85 is clean.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '65-75-80-85' },
               4: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-85' },
               5: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-85' },
@@ -9019,8 +9051,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '65-75-80-85' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 12', weight: '65-75-80-90' },
               10: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 10', weight: '65-75-80-90' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-90' } } },
-      { name: 'Seated or Lying Leg Curl', note: 'Not logged last Saturday. Same ask as last week: a first try at 60 on the top set.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-90' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 12, 1 x 11', weight: '65-75-80-85' } } },
+      { name: 'Seated or Lying Leg Curl', note: 'Skipped on Saturday. Your last one was 12,12,8 @ 60 on 10 Oct, so it steps back to 55.',
         wk: { 3: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-55' },
               4: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
               5: { reps: '1 x 12, 1 x 12, 1 x 11', weight: '45-50-55' },
@@ -9029,8 +9062,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
               9: { reps: '1 x 12, 1 x 12, 1 x 12', weight: '45-50-55' },
               10: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-60' },
-              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-60' } } },
-      { name: 'Glute Kickback or Hip Abductor', note: '15,15,15 @ 27.2. If every one of those reps had the full 2-second squeeze, set 3 goes back to 29.5. If the squeeze goes at 29.5, finish the set at 27.2.',
+              11: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-60' },
+              14: { reps: '1 x 12, 1 x 12, 1 x 10', weight: '45-50-55' } } },
+      { name: 'Glute Kickback or Hip Abductor', note: '✅ Clean 15×3 @ 27.2. If the 2-second squeeze held on every rep, the top set goes to 29.5; if not, stay at 27.2. Reps without the squeeze don’t count.',
         wk: { 3: { reps: '1 x 15, 1 x 14, 1 x 12', weight: '19-24-27' },
               4: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '19-24-27' },
               5: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '19-24-27' },
@@ -9039,8 +9073,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 13', weight: '18.1-22.7-29.5' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-22.7-31.8' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '18.1-22.7-27.2' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '18.1-22.7-29.5' } } },
-      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', note: '✅ Beat the ask: clean 15×3 with 59 on the top set. Set 2 goes to 59 too.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '18.1-22.7-29.5' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 12', weight: '18.1-22.7-29.5' } } },
+      { name: 'Core (cable crunch / hanging leg raise / ab wheel)', note: 'Skipped on Saturday. Same ask as Wk11.',
         wk: { 3: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
               4: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
               5: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '45.4-45.4-45.4' },
@@ -9049,8 +9084,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-49.9-54.4' },
               9: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-59' },
               10: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '49.9-54.4-59' },
-              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-59-59' } } },
-      { name: 'Machine Chest Press or Pec Fly (light)', note: 'Light by design (15,20 @ 40). Hold.',
+              11: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-59-59' },
+              14: { reps: '1 x 15, 1 x 15, 1 x 15', weight: '54.4-59-59' } } },
+      { name: 'Machine Chest Press or Pec Fly (light)', note: '15,15 @ 30. Keep it light: this is a pump, not a working set.',
         wk: { 3: { reps: '1 x 15, 1 x 15', weight: '20-20' },
               4: { reps: '1 x 15, 1 x 15', weight: '20-20' },
               5: { reps: '1 x 15, 1 x 15', weight: '20-20' },
@@ -9059,8 +9095,9 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 18', weight: '15-15' },
               9: { reps: '1 x 15, 1 x 18', weight: '15-15' },
               10: { reps: '1 x 15, 1 x 18', weight: '40-40' },
-              11: { reps: '1 x 15, 1 x 20', weight: '40-40' } } },
-      { name: 'Cable Lateral Raise (light)', note: 'Light work with ascending reps. Held flat by design.',
+              11: { reps: '1 x 15, 1 x 20', weight: '40-40' },
+              14: { reps: '1 x 15, 1 x 20', weight: '30-30' } } },
+      { name: 'Cable Lateral Raise (light)', note: 'You used the lateral machine (15,20 @ 15), which is fine. Either works; keep it light.',
         wk: { 3: { reps: '1 x 18, 1 x 18', weight: '10.25-10.25' },
               4: { reps: '1 x 15, 1 x 18, 1 x 22', weight: '9-9-9' },
               5: { reps: '1 x 15, 1 x 18, 1 x 22', weight: '9-9-9' },
@@ -9069,9 +9106,10 @@ const SUGGESTED_WORKOUTS = {
               8: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
               9: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
               10: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
-              11: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' } } },
+              11: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' },
+              14: { reps: '1 x 15, 1 x 20, 1 x 25', weight: '9-9-9' } } },
       { name: 'Conditioning — incline walk or Hyrox circuit', note: '25 min, 14% incline @ 5.0 km/h, HR 125-140. Nothing to log.',
-        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' } } }
+        wk: { 3: { reps: '', weight: '' }, 4: { reps: '', weight: '' }, 5: { reps: '', weight: '' }, 6: { reps: '', weight: '' }, 7: { reps: '', weight: '' }, 8: { reps: '', weight: '' }, 9: { reps: '', weight: '' }, 10: { reps: '', weight: '' }, 11: { reps: '', weight: '' }, 14: { reps: '', weight: '' } } }
     ]
   }
 };
@@ -9101,9 +9139,17 @@ function numCell(s) {
   return s.split(' · ').map(t => `<span style="white-space:nowrap">${escapeHtml(t)}</span>`).join(' · ');
 }
 
-// Which week the Log form is currently set to.
+// Which plan week the Log form is currently set to. Prescriptions are keyed by one
+// running week number across the whole cut: P4 Wk1–12 = 1–12, then P5 Wk N = 12 + N
+// (so P5 Wk2 = wk[14]). Without this, P5 Wk1 looked up wk[1], found nothing below Wk3,
+// and fell back to P4 Wk3.
 function currentPlanWeek() {
-  return parseInt(document.getElementById('log-week')?.value, 10) || 1;
+  const phase = parseInt(document.getElementById('log-phase')?.value, 10) || 4;
+  const week = parseInt(document.getElementById('log-week')?.value, 10) || 1;
+  return phase >= 5 ? 12 + week : week;
+}
+function planWeekLabel(planWeek) {
+  return planWeek > 12 ? `P5 Wk${planWeek - 12}` : `Week ${planWeek}`;
 }
 
 // Resolve an exercise's prescription for a given week. Weeks past the last defined week
@@ -9112,7 +9158,8 @@ function resolveRx(ex, week) {
   const defined = Object.keys(ex.wk || {}).map(Number).sort((a, b) => a - b);
   if (!defined.length) return null;
   if (ex.wk[week]) return { ...ex.wk[week], carried: false };
-  const nearest = week > defined[defined.length - 1] ? defined[defined.length - 1] : defined[0];
+  // Latest defined week before this one (a gap like P5 Wk1 = 13 carries Wk11, not Wk3).
+  const nearest = defined.filter(w => w < week).pop() ?? defined[0];
   return { ...ex.wk[nearest], carried: true, carriedFrom: nearest };
 }
 
@@ -9138,7 +9185,7 @@ function renderSuggestedWorkout() {
 
   contentEl.innerHTML = `
     ${anyCarried ? `<div style="font-size:11px;color:var(--accent);background:rgba(255,255,255,.06);border-radius:8px;padding:8px 10px;margin-bottom:10px;line-height:1.5">
-      <strong>Week ${week} — no fixed prescription.</strong> Showing Week ${rows.find(r => r.rx.carried)?.rx.carriedFrom} as the baseline.
+      <strong>${planWeekLabel(week)} — no fixed prescription.</strong> Showing ${planWeekLabel(rows.find(r => r.rx.carried)?.rx.carriedFrom)} as the baseline.
       Apply double progression from your last logged session: hit the top of the rep range on <em>every</em> set → add 2.5–5 kg. Otherwise repeat the load and chase the reps.
     </div>` : ''}
     <table class="ex-table">
@@ -9186,7 +9233,7 @@ function loadSuggestedWorkout() {
   const loadable = plan.exercises
     .map(e => ({ e, rx: resolveRx(e, week) }))
     .filter(x => x.rx && x.rx.reps);
-  if (!confirm(`Load all ${loadable.length} exercises from Suggested Workout — ${plan.label} (Week ${week}), with prescribed weights, into Current Exercise? This replaces what's currently in the form.`)) return;
+  if (!confirm(`Load all ${loadable.length} exercises from Suggested Workout — ${plan.label} (${planWeekLabel(week)}), with prescribed weights, into Current Exercise? This replaces what's currently in the form.`)) return;
   document.getElementById('exercise-rows').innerHTML = '';
   exerciseRowCount = 0;
   setRowCounters = {};
@@ -9198,7 +9245,7 @@ function loadSuggestedWorkout() {
     stripDrops: false   // prescriptions include intended drop stages — keep them
   }));
   document.getElementById('exercise-rows').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  showToast(`Week ${week} prescription loaded — adjust to what you actually lifted before saving.`);
+  showToast(`${planWeekLabel(week)} prescription loaded — adjust to what you actually lifted before saving.`);
 }
 
 // ===== PHASE 4 PLAN CARD (Log page) =====
