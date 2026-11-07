@@ -8615,12 +8615,13 @@ const PHASE_PLAN = {
   ],
   nutrition: {
     tdee: '~2,400 kcal',
-    training: { kcal: '~1,850', protein: '~190 g', carbs: '~145 g', fat: '~45 g' },
-    rest:     { kcal: '~1,700', protein: '~185 g', carbs: '~115 g', fat: '~40 g' },
+    training: { kcal: '~1,720', protein: '~190 g', carbs: '~117 g', fat: '~45 g' },
+    rest:     { kcal: '~1,635', protein: '~185 g', carbs: '~101 g', fat: '~40 g' },
     rules: [
       'From Mon 26 Oct: FIXED WEIGHED MENU (below). Kitchen scale for rice, meat and fruit; oil in measuring TEASPOONS. The menu is the tracking — same food, same grams, every day.',
       'Why: 2,100 on paper produced +1.2 kg fat in 10 weeks (~+130 kcal/day over maintenance). The leaks were weekend meals, Pocky, unportioned protein desserts, tablespoons of oil and the extra lunch pieces — not the base meals.',
-      'Deficit ~500/day → ~0.45–0.5 kg fat/week. Weigh in every morning: same scale, after the toilet, before food or water, in underwear. Weigh-ins start Mon 2 Nov (none were taken the week of 26 Oct). First week’s average = Mon 2 – Sun 8 Nov; first check Mon 16 Nov, comparing it with Mon 9 – Sun 15 Nov. If the 7-day average is falling < 0.4 kg/wk, drop the dinner rice (−150 kcal). With the longer walks (45–60 min) and Saturday Hyrox hour, if it falls > 0.8 kg/wk for 2 weeks, add 100 g rice back on Hyrox Saturdays — faster than that costs muscle.',
+      'Deficit ~500/day → ~0.45–0.5 kg fat/week. Weigh in every morning: same scale, after the toilet, before food or water, in underwear. Weigh-ins start Mon 2 Nov (none were taken the week of 26 Oct). First week’s average = Mon 2 – Sun 8 Nov; first check Mon 16 Nov, comparing it with Mon 9 – Sun 15 Nov. From Mon 9 Nov (his call, 7 Nov): rice halved to 50 g at lunch and dinner (−130 kcal/day vs the 100 g menu), so the 16 Nov check compares the 100 g week (2–8 Nov) with the 50 g week (9–15 Nov). If the 7-day average is still falling < 0.4 kg/wk after that, drop the fruit snack first, then the dinner rice. With the longer walks (45–60 min) and Saturday Hyrox hour, if it falls > 0.8 kg/wk for 2 weeks, put rice back to 100 g at both meals on Hyrox Saturdays — faster than that costs muscle.',
+      'Hungry snack: 200 g mixed fruit (papaya/apple/pear), once a day max, ~100 kcal. It costs most of what the rice cut saves, so on snack days the net cut is only ~30 kcal.',
       'NO Pocky in the house until 10 Dec. The protein ice cream and brownie are the sweets — single-serve containers only, never a big tub.',
       'Family meals / aunt dinners: protein first (grilled/steamed fish or chicken, satay, tofu, clear soup, veg) · ONE small bowl of rice, no refill · nothing fried, santan or sweet-sauced · water/tea · one bite of dessert · no rice at lunch that day. One fully free meal every 2 weeks.',
       'Protein ~190 g (2.75 g/kg) — floor 170 g. Travel floor: 140 g.',
@@ -8636,12 +8637,12 @@ const PHASE_PLAN = {
     target: '~190 g/day on the fixed menu from Mon 26 Oct (170 g floor · 140 g travelling)',
     meals: [
       { time: 'Breakfast',    food: '2 whole eggs + 200 g egg white (1 tsp oil) · 200 g fruit (mango max 100 g)', protein: '~35 g', change: '~400 kcal. Fruit is now WEIGHED — a free-poured bowl was the hidden part.' },
-      { time: 'Lunch',        food: '200 g chicken mince (raw) stir-fried in 1 tsp oil · 100 g cooked rice · ~200 g boiled veg', protein: '~47 g', change: '~530 kcal. NO extra pieces of the family lauk — that was 150–350 kcal a day.' },
+      { time: 'Lunch',        food: '200 g chicken mince (raw) stir-fried in 1 tsp oil · 50 g cooked rice (from 9 Nov) · ~200 g boiled veg', protein: '~47 g', change: '~465 kcal. NO extra pieces of the family lauk — that was 150–350 kcal a day.' },
       { time: 'Post-workout', food: 'Protein ice cream, ONE serving: 1 banana + 1 scoop whey + 1 tbsp cocoa + stevia', protein: '~27 g', change: '~245 kcal. Replaces whey + 40 g carbs (same job). Single-serve container — never a tub.' },
-      { time: 'Dinner',       food: '200 g chicken breast (raw) boiled with serai/shallot/garlic/chili, 1 tsp oil · 100 g rice · veg', protein: '~52 g', change: '~470 kcal. TEASPOON of oil, not tablespoon (−80 kcal). Sunday: no rice.' },
+      { time: 'Dinner',       food: '200 g chicken breast (raw) boiled with serai/shallot/garlic/chili, 1 tsp oil · 50 g rice (from 9 Nov) · veg', protein: '~52 g', change: '~405 kcal. TEASPOON of oil, not tablespoon (−80 kcal). Sunday: no rice.' },
       { time: 'Evening',      food: 'Protein brownie — 2 of 4 pieces (pan = 2 scoops whey, 2 tbsp cocoa, 1 egg, 100 g plain yogurt)', protein: '~34 g', change: '~200 kcal. Replaces pre-bed yogurt. One pan = 2 days.' }
     ],
-    warning: 'Total ≈ 1,850 kcal / ~190 g protein on training days. The base meals were never the problem — Pocky, family meals "eating whatever", unportioned desserts and oil were. Maid sheet (Bahasa): Meal Plan/menu_harian.pdf.'
+    warning: 'Total ≈ 1,720 kcal / ~190 g protein on training days (from 9 Nov; +~100 on fruit-snack days). The base meals were never the problem — Pocky, family meals "eating whatever", unportioned desserts and oil were. Maid sheet (Bahasa): Meal Plan/menu_harian.pdf.'
   },
   scanProtocol: [
     'Consistency beats the textbook ideal. Scan at the gym ~2 PM, AFTER your session and after lunch — that is your established pattern, so keep it. Do NOT switch to fasted/AM: a one-time change of state reads as a body-comp shift that is not real.',
