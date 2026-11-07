@@ -1,9 +1,16 @@
 # Fitness Summary — Stefanus Wong
-**Last updated:** 2026-10-31
+**Last updated:** 2026-11-07
 
 ---
 
 ## Current Status
+
+- **2026-11-07: scan + P5 Wk3 log in; P5 Wk4 (`wk[16]`) NOT prescribed yet (offered).** Log backed up to `Fitness Log/stefanus-fitness-logs-2026-11-07.json`, scan image in `Body Scan Log/2026-11-07_fitscan.webp`, scan added to `BODY_BASELINE` and replaces the 9 Nov projection row.
+  - **Scan Sat 7 Nov** (after Sat Legs+Core + 45 min Hyrox, same state as 31 Oct): 68.2 kg · 16.0% (10.9 kg fat) · 79.5% muscle (~54.2 kg) · BCM 6104 · visceral 5 · WHR 0.98 · BMR 1551 · body age 48. Segments: arms 3.3/3.2 m, 0.6/0.6 f · torso 26.1 m / 5.8 f · legs 8.3/8.4 m, 1.7/1.7 f.
+  - **Read given to him:** weight −0.7 kg and **exactly on the 9 Nov projection (68.2)**. BIA booked the loss as lean/water (−0.9 kg, BCM −219) and read fat +0.2 kg, which is inside BIA noise and physically unlikely in a week the scale fell. Cause: biggest cardio week yet (stair stepper 40, walks 22/47, Hyrox 45) on the fixed menu → glycogen/water down. Judge by the 7-day AM average from now on, not single scans.
+  - **His AM weigh-ins:** Mon 2 Nov 66.5 · Sat 7 Nov 66.3. Only two given; asked for the daily numbers (the 16 Nov check needs 7-day averages). He's **tired** and **hungry**, and snacks on apple, papaya, pear: told him fruit is the right fix, one piece (~100 kcal) per hunger hit, not all three.
+  - **Training this week:** Mon at a **new FTL branch** (heavier cable stack, no wrist strap; Chest Press 10,9,5 @ 70 with a drop to 50). Shoulder Press 47.5 logged twice on Mon (10,10,8 and 10,10,6: likely the duplicate-save bug, not yet fixed). Wins: Lat Pulldown 75 top set (8,8,8,7), V-Squat 120 ×7, Leg Press 125 ×10×3, Hip Thrust 110 ×9, Leg Curl clean 12×3 @ 60, Thu Shoulder Press 12×3 to 45, OH Ext 15×3 to 36.6, Fri Lat Pulldown clean 12×4 to 65, Cross-Body 15×3 to 36.3, Hammer Curl to 22.7 pain-free. Misses: Thu DB Incline 12,10,11 @ 22-26-26 ("regressing"), Straight-Arm 36.3 not taken, Low Row S3 needed momentum, Bayesian 29.7 S3 = 10. Fatigue fits the tiredness.
+  - **Open:** which branch was the scan on (different units calibrate differently)? Aunt's length of stay. Daily weigh-ins 2–7 Nov.
 
 - **2026-10-31: P5 Wk2 logs + scan in, P5 Wk3 (2–7 Nov, `wk[15]`) prescribed and pushed.** Log backed up to `Fitness Log/stefanus-fitness-logs-2026-10-31.json`, scan image in `Body Scan Log/2026-10-31_fitscan.webp`. Read `PULL HYPERTROPHY.pdf` and `PUSH STRENGTH.pdf` first.
   - **His news:** the aunt's visit was cancelled, then **back on the same day: she arrives Thu 5 Nov**, length of stay unknown, and he doesn't know how often he'll join her for dinner. The `PHASE_PLAN` travel row is restored (`Thu 5 Nov → TBC`, cut posture, family-meal template, plus a note that salty dinners show up as water on the next morning's weigh-in). Asked how long she stays. He says he **complied with the diet all week**, the first week on the fixed menu. **He had never weighed in** (the 26 Oct start didn't happen). **Weigh-ins now start Mon 2 Nov**, so the first −150 kcal check moves Mon 9 → **Mon 16 Nov** (average of 2–8 Nov vs 9–15 Nov). The 9 Nov checkpoint row is now a projection only.

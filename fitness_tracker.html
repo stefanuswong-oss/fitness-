@@ -8578,7 +8578,7 @@ const PHASE_PLAN = {
     { label: 'Scan 10 Oct — ACTUAL', date: '10 Oct', posture: 'cut',   muscle: '54.8', fat: '11.0', weight: '68.9', bf: '16.0% (plan 11.3%)' },
     { label: 'HK — yacht 🛥',      date: '13–21 Oct', posture: 'hold',  muscle: '~55', fat: '11.2', weight: '69.1', bf: '~16%' },
     { label: 'Scan 31 Oct — ACTUAL', date: '31 Oct', posture: 'cut',   muscle: '55.1', fat: '10.7', weight: '68.9', bf: '15.5% (plan ~15.5%)' },
-    { label: 'Projection (no scan)', date: '9 Nov', posture: 'cut', muscle: '~55', fat: '10.1', weight: '68.2', bf: '~14.8%' },
+    { label: 'Scan 7 Nov — ACTUAL', date: '7 Nov', posture: 'cut', muscle: '54.2', fat: '10.9', weight: '68.2', bf: '16.0% (plan ~14.8%; weight on plan)' },
     { label: 'Scan — Phase 5 Wk 7', date: '1 Dec',   posture: 'cut',   muscle: '~55', fat: '8.6', weight: '66.5', bf: '~13%' },
     { label: 'Cut ends',          date: 'Sat 5 Dec', posture: 'cut',   muscle: '~55', fat: '8.3', weight: '66.2', bf: '12.3–12.7%' },
     { label: 'TOMORROWLAND 🎧',    date: '10 Dec',    posture: 'peak',  muscle: '~55.5', fat: '8.3', weight: '66.9', bf: '~12–12.5%' },
@@ -8605,6 +8605,7 @@ const PHASE_PLAN = {
     'Wed 16 Sep — moved OFF 19 Sep: you are in Singapore. Scan before you fly, for a clean read.',
     'DONE Sat 10 Oct (after Sat Legs+Core, not Fri after an upper day): 68.9 kg · 16.0% · 11.0 kg fat. Muscle −1 kg vs 16 Sep is mostly water (first scan after Ipamorelin ended; every main lift went up). Fat mass has risen 4 scans running.',
     'DONE Sat 31 Oct (after Sat Legs+Core + 45 min Hyrox, same state as 10 Oct): 68.9 kg · 15.5% · 10.7 kg fat · WHR 0.93. Fat −0.3 kg, the first drop since 30 Jul, and right on the re-projected line. Replaces the optional 9 Nov scan.',
+    'DONE Sat 7 Nov (after Sat Legs+Core + 45 min Hyrox, same state): 68.2 kg · 16.0% · 10.9 kg fat · WHR 0.98 · BCM 6104. Weight −0.7 kg and exactly on the projection line, but BIA put the loss on lean/water (−0.9 kg, BCM −219) and read fat +0.2 (inside BIA noise). Heavy cardio week (stair 40, walks 22/47, Hyrox 45) = glycogen/water down. Judge by the 7-day AM weigh-in average, not this scan.',
     'Mon 1 Dec — final trajectory check before the 10 Dec peak'
   ],
   nutrition: {
@@ -10383,6 +10384,21 @@ const BODY_BASELINE = [
       rArm: { m: 3.3, f: 0.6 }, lArm: { m: 3.3, f: 0.6 },
       torso: { m: 26.2, f: 5.6 },
       rLeg: { m: 8.3, f: 1.6 }, lLeg: { m: 8.4, f: 1.6 }
+    }
+  },
+  {
+    // Sat 7 Nov after Sat Legs+Core + 45 min Hyrox (same state as 31 Oct). Weight −0.7 kg, on the
+    // projection line; BIA read it as lean/water −0.9 (BCM −219) and fat +0.2, inside noise.
+    // Biggest cardio week yet. AM scale: Mon 2 Nov 66.5, Sat 7 Nov 66.3.
+    id: 'scan_2026_11_07',
+    date: '2026-11-07',
+    label: 'P5 Wk3 — aunt arrived Thu 5 Nov',
+    weight: 68.2, fat: 16, muscle: 79.5, bodyAge: 48,
+    visceral: 5, bmi: 25.1, whr: 0.98, bmr: 1551, bcm: 6104,
+    segments: {
+      rArm: { m: 3.3, f: 0.6 }, lArm: { m: 3.2, f: 0.6 },
+      torso: { m: 26.1, f: 5.8 },
+      rLeg: { m: 8.3, f: 1.7 }, lLeg: { m: 8.4, f: 1.7 }
     }
   }
 ];
