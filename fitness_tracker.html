@@ -7479,6 +7479,11 @@ function applyDataCorrections(sessions) {
       s.exercises = s.exercises.filter((ex, i, arr) => !(ex.name === 'Bayesian Cable Curl' &&
         arr.findIndex(e => e.name === ex.name && e.reps === ex.reps && e.weight === ex.weight) !== i));
     }
+    // Mon 11-02 saved Machine Shoulder Press twice (he confirmed 7 Nov): 10,10,8 in order, then
+    // 10,10,6 after the pushdown. Keep the first (in sequence); swap if he says 6 was the real set.
+    if (s.id === 'custom_1793604914957' && Array.isArray(s.exercises)) {
+      s.exercises = s.exercises.filter(ex => !(ex.name === 'Machine Shoulder Press' && ex.reps === '1 x 10, 1 x 10, 1 x 6'));
+    }
   });
 
   return sessions;
@@ -8595,8 +8600,8 @@ const PHASE_PLAN = {
       note: 'Real birthday. Maintenance ~2,400, protein floor 140 g. Budget 2 free days, not 5 — that halves the cost (0.2 kg vs 0.4 kg fat). Alcohol fine on the free days.' },
     { place: 'Hong Kong 🇭🇰', dates: '13–21 Oct', block: 'Phase 4 Wk 12', posture: 'break',
       note: 'Yacht 17 Oct. Maintenance (~2,400), NOT a free week: protein floor 140 g, ~2 relaxed days max (yacht day + one). Your fat trend cannot absorb a surplus week. Weigh in the morning after you land.' },
-    { place: 'Aunt visiting 🇺🇸', dates: 'Thu 5 Nov → TBC', block: 'Phase 5 Wk 3 →', posture: 'cut',
-      note: 'Back on (31 Oct): she arrives Thu 5 Nov, length of stay not known yet. NOT a break — the cut runs through it. Home meals stay on the fixed menu. Dinners out follow the family-meal template (protein first, one small bowl of rice, nothing fried/santan/sweet, one bite of dessert, skip lunch rice that day). One fully free meal every 2 weeks. A salty dinner out shows up as +0.5–1 kg on the next morning’s scale; that is water, and the 7-day average absorbs it.' },
+    { place: 'Aunt visiting 🇺🇸', dates: 'Thu 5 – Wed 25 Nov', block: 'Phase 5 Wk 3–6', posture: 'cut',
+      note: 'Thu 5 – Wed 25 Nov (confirmed 7 Nov); you will not join every dinner. NOT a break — the cut runs through it. Home meals stay on the fixed menu. Dinners out follow the family-meal template (protein first, one small bowl of rice, nothing fried/santan/sweet, one bite of dessert, skip lunch rice that day). One fully free meal every 2 weeks. A salty dinner out shows up as +0.5–1 kg on the next morning’s scale; that is water, and the 7-day average absorbs it.' },
     { place: 'Bangkok 🇹🇭',   dates: '~10 Dec', block: 'Phase 5 Wk 7', posture: 'peak',
       note: 'Tomorrowland — the unveiling. Carb-load 6–9 Dec. Then HOLD at maintenance to White Party 31 Dec; do not diet between the two events.' }
   ],
