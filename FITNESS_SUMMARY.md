@@ -1,10 +1,16 @@
 # Fitness Summary — Stefanus Wong
-**Last updated:** 2026-11-07
+**Last updated:** 2026-11-14
 
 ---
 
 ## Current Status
 
+- **2026-11-14: P5 Wk4 weigh-ins, scans stopped, no Hyrox next Sat.** Log backed up to `Fitness Log/stefanus-fitness-logs-2026-11-14.json` (Wk4 prescriptions not yet reviewed against it).
+  - **AM weigh-ins 10–14 Nov:** 65.85 · 66.55 · 66.0 · 66.0 · 66.45. The 14 Nov number came after an egg-white protein shake with water, so it's ~0.3–0.5 kg high. 5-day avg 66.17 (~66.1 adjusted). Last week only had 2 numbers (66.5 Mon 2, 66.3 Sat 7, avg 66.4) → ~−0.2 to −0.3 kg/wk, under the 0.4 line. Missing: 9 and 15 Nov. **Mon 16 Nov check is still open.** If the rule fires, it says drop the dinner rice; he decides.
+  - **Scans stopped (his call, "so defeating").** The 1 Dec scan is removed and the 1 Dec checkpoint is now the weigh-in average. Agreed: post-lunch BIA swings ±1 kg and has read against him two scans running.
+  - **Sat 21 Nov:** no Hyrox. Regular Sat Legs+Core at the usual branch + a 45 min incline walk to cover the burn.
+  - **Lunch swap OK:** 100 g boiled prawn + 150 g boiled chicken breast instead of the 200 g chicken mince. Keep the rice and veg.
+  - **Wk4 lifts were strong:** Mon Incline 4×8 @ 26 (first clean sweep), V-Squat 4×8 to 120, Lat Pulldown top 75, Hip Thrust 10×3 to 110. Wed Leg Extension: "no energy left".
 - **2026-11-07 (later): P5 Wk4 (9–14 Nov, `wk[16]`) prescribed and pushed.** Read all six PDFs first (text via PDFKit, since poppler isn't installed). All 44 exercises have `16:`, and the focus lines and notes are rewritten. Verified in preview: P5 Wk4 resolves to 16 on all six days, with no carried banner.
   - **Up:** Leg Press 130 · Leg Curl 65 (first clean 12×3 @ 60) · Leg Extension 65 · Thu Chest Fly 17.5 · Thu Shoulder Press 47.5 · Thu Lateral 20.6 · OH Ext set 2 → 36.6 · Fri Lat Pulldown 67.5 · Cross-Body set 2 → 34 · Fri Rear Delt 35 · Sat Sumo top set 26 · Sat Kickback set 2 → 22.7.
   - **Hold and chase reps:** Mon Incline 26 (8,8,8,6), Shoulder Press 47.5 → 10,10,9, Lat Pulldown 75 → 4×8, V-Squat 120 → 4×8, Hip Thrust 110 → 10×3, Low Row (strict, no momentum), Bayesian ×2, Thu DB Incline (rest, not strength), Fri Low Row.
