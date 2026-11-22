@@ -1,9 +1,18 @@
 # Fitness Summary — Stefanus Wong
-**Last updated:** 2026-11-14
+**Last updated:** 2026-11-22
 
 ---
 
 ## Current Status
+
+- **2026-11-22: P5 Wk5 reviewed, P5 Wk6 (23–28 Nov, `wk[18]`) prescribed.** Log backed up to `Fitness Log/stefanus-fitness-logs-2026-11-22.json`. Read all six PDFs first.
+  - **My miss, he caught it:** P5 Wk5 (`wk[17]`, 16–21 Nov) was never prescribed, so his phone carried Wk4's numbers. Wk6 jumps straight to `wk[18]`; all 44 exercises resolve with no carry (checked in preview). **Prescribe every week, or he trains a repeat week.**
+  - **Weights (Notes app, AM):** 9–15 Nov avg **66.20** (10–15, six days). 16–22 Nov: 65.85 · 65.95 · 66.70 · 66.60 · 66.20 · **67.20 · 68.00**. Mon–Fri avg 66.26 (flat). Sat/Sun jump = aunt dinners out (salt, food weight) + Hyrox Sat; 2 kg of fat in 2 days would need ~15,000 kcal, so it's water. **16 Nov check (late, owed to Emily):** 2–8 Nov 66.4 → 9–15 Nov 66.2 = −0.2 kg/wk, under the 0.4 line, so the rule fired (drop dinner rice). Trend flat since 2 Nov.
+  - **His diet news:** aunt = dinner out every evening until she leaves Wed 25 Nov. He has cut **lunch carbs to 30 g** (read as 30 g rice, by the same logic as the 7 Nov "50 g" mix-up; unconfirmed). Default given: dinners out = protein + veg first, no rice/noodles/fried/sweet drinks, one plate; **from Thu 26 Nov back on the menu and dinner rice off** (the 16 Nov rule), keep 30 g lunch. Reversible; goes ahead on 26 Nov unless he says no. Maid sheet not yet regenerated for it.
+  - **Wk5 training (served Wk4 asks):** clean sweeps: Mon Chest Press 10×3 @ 70, Shoulder Press 10×3 @ 47.5, Tue Lat Pulldown 4×8 @ 75, Reverse Fly 15×3 @ 30, Bayesian 12×3 to 31.8, Wed V-Squat 4×8 to 120 (2nd week), Seated Leg Curl 12×3 to 50, Leg Extension 12×3 to 60, Thu OH Ext 15×3 to 36.6, Fri Low Row 12×3 to 67.5 (2nd week). Mon 9 Nov Incline first clean 4×8 @ 26. His own changes: Seated Leg Curl (prefers it), Dips Mon/Thu, Decline press Mon 9 Nov and Thu 19 Nov in the fly slot, heavier Fri Lat Pulldown ramp, Hammer Curl to 28.9 pain-free. Sat 21 Nov Hyrox hit legs hard, so only light chest + DB laterals.
+  - **Wk6 adds:** Incline top 28 · Chest Press 72.5 · Shoulder Press 50 · Pushdown 49.9-52.4-54.4 · Lat Pulldown 77.5 · Reverse Fly 35 · Tue Bayesian 34 · V-Squat 125 · Seated Leg Curl 55 (name now `Seated Leg Curl`) · Leg Ext 65 (re-ask) · OH Ext 39.1 · Fri Low Row 70 · Sat Sumo 22-24-26-28. Thu Shoulder Press back to the 35-40-47.5 ramp. The rest hold and chase reps. Sat legs optional after a leg-heavy Hyrox.
+  - **Abs supersets (he asked for a comment):** fine as pairings (pulldown, Bayesian, pushdown, OH Ext, laterals; not with heavy presses/squats that need bracing), but volume is ~40 sets/wk, e.g. 9 crunch sets + 3 oblique sets on Mon 16 and Thu 19 Nov. Cap: one core block per day, 3 sets (≈4 days/wk), 12–15 reps with a squeeze. Visible abs on 10 Dec depend on body fat, not more sets. Answered: flat-bench leg raise = longer range below hip line; 45° = more load through the top. Logging: dumbbells per hand, machines/cables the total on the stack or plates.
+  - **Data fix:** Mon 9 Nov Standing Cable Crunch "5.4" → 54.4 via `applyDataCorrections()` (`custom_1794210485293`).
 
 - **2026-11-14: P5 Wk4 weigh-ins, scans stopped, no Hyrox next Sat.** Log backed up to `Fitness Log/stefanus-fitness-logs-2026-11-14.json` (Wk4 prescriptions not yet reviewed against it).
   - **AM weigh-ins 10–14 Nov:** 65.85 · 66.55 · 66.0 · 66.0 · 66.45. The 14 Nov number came after an egg-white protein shake with water, so it's ~0.3–0.5 kg high. 5-day avg 66.17 (~66.1 adjusted). Last week only had 2 numbers (66.5 Mon 2, 66.3 Sat 7, avg 66.4) → ~−0.2 to −0.3 kg/wk, under the 0.4 line. Missing: 9 and 15 Nov. **Mon 16 Nov check is still open.** If the rule fires, it says drop the dinner rice; he decides.
